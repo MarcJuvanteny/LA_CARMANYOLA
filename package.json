@@ -9,9 +9,13 @@
     "lint": "tsc --noEmit",
     "db:start": "bash scripts/db-start.sh",
     "db:stop": "supabase stop",
-    "db:reset": "supabase db reset && npm run db:seed",
-    "db:seed": "tsx scripts/seed.ts",
-    "test": "vitest run"
+    "db:reset": "supabase db reset && npm run db:seed && npm run sim:seed",
+    "db:seed": "tsx scripts/base-seed.ts",
+    "test": "vitest run",
+    "sim:seed": "tsx --env-file=.env.local scripts/sim-seed.ts",
+    "sim:tick": "tsx --env-file=.env.local scripts/sim-tick.ts",
+    "sim:report": "tsx --env-file=.env.local scripts/sim-report.ts",
+    "sim:reset-demo": "tsx --env-file=.env.local scripts/sim-reset-demo.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
