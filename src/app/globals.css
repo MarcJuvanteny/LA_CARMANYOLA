@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+/*
+ * Redgato no és a Google Fonts: deixa el fitxer a public/fonts/Redgato-Regular.woff2
+ * i s'activarà sol. Mentrestant, la reserva és Rubik 400.
+ */
+@font-face {
+  font-family: "Redgato";
+  src: url("/fonts/Redgato-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-granat: #77160e;
+  --color-granat-clar: #8f2c29;
+  --color-groc: #ffea80;
+  --color-groc-intens: #f7d21e;
+  --color-paper: #f7f2e9;
+  --color-tinta: #38383a;
+  --color-linia: #e6dccb;
+  --color-suau: #6e6259;
+  --color-rosa: #ddb3ad;
+  --color-rosa-clar: #f5e8e4;
+  --color-terra: #a8463d;
+  --color-crema: #f3ece2;
+
+  --font-titol: "Redgato", var(--font-rubik), system-ui, sans-serif;
+  --font-cos: "Acumin Variable Concept", var(--font-archivo), system-ui, sans-serif;
+  --font-logo: var(--font-gwendolyn), cursive;
+
+  --radius-targeta: 1.25rem;
+}
+
+@layer base {
+  html {
+    color: var(--color-tinta);
+    background: var(--color-paper);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    font-family: var(--font-cos);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  h1,
+  h2,
+  h3,
+  .font-titol {
+    font-family: var(--font-titol);
+    font-weight: 400;
+    line-height: 1.1;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-granat);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .eyebrow {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .textura-granat {
+    background-color: var(--color-granat);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cpath d='M28 6 L42 20 L28 34 L14 20 Z' fill='%238F2C29'/%3E%3Cpath d='M0 34 L14 48 L0 62 Z M56 34 L42 48 L56 62 Z' fill='%238F2C29'/%3E%3C/svg%3E");
+    background-size: 56px 56px;
+  }
+}
