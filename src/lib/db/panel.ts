@@ -120,7 +120,7 @@ interface FrangesRpc {
   prova: { enviada: string; durant: number; abans: number } | null;
 }
 
-export const FRANGES = ["12-13", "13-14", "14-15", "15-16", "20-21", "21-22"] as const;
+export const FRANGES = ["12-13", "13-14", "14-15", "15-16", "19-20", "20-21", "21-22", "22-23"] as const;
 export const DIES = ["Dl", "Dt", "Dc", "Dj", "Dv", "Ds"] as const;
 
 export const franges = cache(async () => {

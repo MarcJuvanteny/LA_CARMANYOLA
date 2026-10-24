@@ -6,7 +6,7 @@ import { useEffect, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { Imagotip } from "@/components/brand/Imagotip";
 import { Isotip } from "@/components/brand/Isotip";
-import { simulaComanda } from "@/app/panel/actions";
+import { posaAlDia } from "@/app/panel/actions";
 import { surt } from "@/app/entra/actions";
 import { hora } from "@/lib/dates";
 import { useEstatEnDirecte } from "./EnDirecte";
@@ -90,7 +90,7 @@ export function Sidebar() {
         <button
           type="button"
           disabled={simulant}
-          onClick={() => startTransition(() => simulaComanda())}
+          onClick={() => startTransition(async () => void (await posaAlDia()))}
           className="min-h-11 text-[0.8rem] font-semibold text-granat underline-offset-2 hover:underline disabled:opacity-50"
         >
           {simulant ? t("simulant") : t("simula")}

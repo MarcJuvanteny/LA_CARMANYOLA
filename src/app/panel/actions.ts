@@ -5,6 +5,8 @@ import { supabaseServidor } from "@/lib/supabase/server";
 import type { Idioma } from "@/lib/data/carta";
 import { local } from "@/lib/dates";
 import { queQueda } from "@/lib/db/panel";
+import { simulateUntil } from "@/lib/sim/catchup";
+import { serviceClient } from "@/lib/sim/db";
 
 // Accions del panell. Totes passen per l'RLS amb la sessió de l'amo (CONTEXT.md §11).
 
@@ -170,8 +172,12 @@ export async function desaVeu(seccions: { id: string; text: string }[]) {
   revalidatePath("/panel/veu-de-marca");
 }
 
-/** Una comanda simulada ara mateix: per veure el panell moure's fora d'horari. */
-export async function simulaComanda() {
+/** "Posa al dia": simula les franges pendents fins ara (el mateix que fa el cron). Només l'amo. */
+export async function posaAlDia() {
   const supabase = await client();
-  comprova((await supabase.rpc("simula_comanda_ara")).error);
+  const { data: amo } = await supabase.from("owners").select("user_id").limit(1);
+  if (!amo?.length) throw new Error("Només l'amo");
+  const r = await simulateUntil(serviceClient());
+  revalidatePath("/panel", "layout");
+  return r;
 }

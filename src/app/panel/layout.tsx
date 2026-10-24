@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { after } from "next/server";
 import { EnDirecte } from "@/components/panel/EnDirecte";
 import { PanelStateProvider } from "@/components/panel/PanelState";
 import { Sidebar } from "@/components/panel/Sidebar";
 import { resolucions } from "@/lib/db/panel";
+import { posaAlDiaEnSegonPla } from "@/lib/sim/pla-b";
 
 export const metadata: Metadata = {
   title: { default: "Panell", template: "%s · Panell · La Carmanyola" },
@@ -10,6 +12,8 @@ export const metadata: Metadata = {
 };
 
 export default async function PanelLayout({ children }: { children: React.ReactNode }) {
+  // Pla B: si el cron no ha passat, el panell posa el restaurant al dia en segon pla.
+  after(posaAlDiaEnSegonPla);
   const inicial = await resolucions();
   return (
     <PanelStateProvider inicial={inicial}>
