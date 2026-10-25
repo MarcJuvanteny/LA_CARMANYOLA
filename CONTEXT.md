@@ -107,7 +107,6 @@ Projecte de portfolio d'un Frontend Developer (perfil creatiu i tècnic). Consis
     - Aprenent: en registrar-se, amb un segell de regal.
     - Desbowlitzador: 1 carnet complet; regal, el postre.
     - Mestre de la carmanyola: 3 carnets; carmanyola reutilitzable i accés al Què Queda.
-    - Desbowlitzador d'honor.
   - Els segells **només es sumen demanant directe**, mai a les plataformes.
 - **L'hora del Què Queda:** l'última mitja hora de cada servei. Avís als nivells alts amb el que queda.
 - **Padró d'ingredients:** els ingredients de temporada "s'empadronen" i "es donen de baixa".

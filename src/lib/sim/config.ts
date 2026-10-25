@@ -165,7 +165,7 @@ export const CONTROL_SHARE = 0.25;
 // Carnet (PROVISIONAL fins que l'autor ho confirmi; la lògica és a registra_segell())
 // ---------------------------------------------------------------------------
 // · Paraules 5-8 del diccionari: pendents (es compten com a "paraula pendent").
-// · Mestre = 3 carnets complets · Cada carnet complet = postre · Desbowlitzador d'honor: desactivat.
+// · Mestre = 3 carnets complets · Cada carnet complet = postre.
 
 // ---------------------------------------------------------------------------
 // Dades externes
