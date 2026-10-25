@@ -151,7 +151,6 @@ interface ClientRpc {
   id: string;
   first_name: string;
   last_name: string;
-  gender: "f" | "m" | "x";
   created_at: string;
   wallet: boolean;
   consent_email: boolean;
@@ -170,7 +169,6 @@ interface ClientRpc {
   risc: number;
   en_risc: boolean;
   nou: boolean;
-  mestre: boolean;
   adormit: boolean;
 }
 
@@ -180,12 +178,6 @@ export interface ClientPanell extends Client {
   despesa90: number;
   wallet: boolean;
   consentiment: boolean;
-}
-
-function nivell(complets: number, g: "f" | "m" | "x") {
-  if (complets >= 3) return "Mestre";
-  if (complets >= 1) return g === "f" ? "Desbowlitzadora" : "Desbowlitzador";
-  return "Aprenent";
 }
 
 function venia(interval: number | null) {
@@ -200,22 +192,21 @@ export const clients = cache(async () => {
   const llista: ClientPanell[] = (r.clients ?? []).map((c) => ({
     id: c.id,
     nom: `${c.first_name} ${c.last_name.charAt(0)}.`,
-    nivell: nivell(c.complets, c.gender),
     venia: venia(c.interval_dies),
     senseVenir: c.sense_venir,
     paraules: c.paraules,
+    carnets: c.complets,
     platPreferit: c.preferit ?? "—",
     risc: c.risc,
     comandes: c.comandes,
     mesos: Math.floor((ara - new Date(c.created_at).getTime()) / (30.4 * 86400000)),
     ultima: c.ultima ? diaMes(c.ultima) : "—",
-    liFalta: c.li_falta ?? "—",
+    liFalta: c.li_falta ?? (c.paraules < 8 ? "paraula pendent" : "—"),
     avisos: c.wallet && c.consent_email ? "carnet-correu" : c.wallet ? "carnet" : "correu",
     segments: [
       "tots",
       ...(c.en_risc ? (["risc"] as const) : []),
       ...(c.nou ? (["nous"] as const) : []),
-      ...(c.mestre ? (["mestres"] as const) : []),
       ...(c.adormit ? (["adormits"] as const) : []),
     ],
     laborables: c.laborables ?? 0,
@@ -224,7 +215,7 @@ export const clients = cache(async () => {
     wallet: c.wallet,
     consentiment: c.consent_email,
   }));
-  const segments: Segment[] = ["tots", "risc", "nous", "mestres", "adormits"];
+  const segments: Segment[] = ["tots", "risc", "nous", "adormits"];
   const recompte = Object.fromEntries(segments.map((s) => [s, llista.filter((c) => c.segments.includes(s)).length])) as Record<Segment, number>;
   return { llista, recompte, totalComandes90: r.total_comandes_90, ia: ia.clients(llista, r.total_comandes_90) };
 });
@@ -255,7 +246,8 @@ export const queQueda = cache(async () => {
   const dema = deDiaIso(r.dema);
   const dowDema = local(dema).diaSetmana;
   const pluja = r.temps_dema && Number(r.temps_dema.pluja) >= 1;
-  const mestres = cl.llista.filter((c) => c.segments.includes("mestres")).length;
+  // Destinataris del Què Queda: clients amb carnet i consentiment comercial.
+  const destinataris = cl.llista.filter((c) => c.consentiment).length;
 
   return {
     ara: {
@@ -266,7 +258,7 @@ export const queQueda = cache(async () => {
     servei: r.servei,
     plats: (r.plats ?? []).map((p) => ({ id: p.id, nom: p.nom, fets: p.fets, venuts: p.venuts, previsio: p.previsio, inclos: p.inclos })),
     avis: r.avis,
-    proposta: { mestres, encert: r.encert ?? 0 },
+    proposta: { destinataris, encert: r.encert ?? 0 },
     produccio: {
       dema: r.dema,
       titol: `Producció del matí de ${diesSetmana[dowDema]}`,
@@ -480,17 +472,17 @@ export const veu = cache(async (): Promise<SeccioVeu[]> => {
   return (files ?? []).map((f) => ({ id: f.id, titol: f.title, text: f.body }));
 });
 
-export const carnet = cache(async () =>
-  rpc<{
-    total: number;
-    aprenents: number;
-    desbowlitzadors: number;
-    mestres: number;
-    paraules_setmana: number;
-    complets_setmana: number;
-    directes: number | null;
-  }>("panel_carnet"),
-);
+export interface DadesCarnet {
+  total: number;
+  amb_consentiment: number;
+  carnets_completats: number;
+  postres_setmana: number;
+  en_curs: { inici: number; meitat: number; a_punt: number };
+  paraules_setmana: number;
+  directes: number | null;
+}
+
+export const carnet = cache(async () => rpc<DadesCarnet>("panel_carnet"));
 
 /* ---------------------------------------------------------------------------
  * Propostes pendents (comptadors del menú i estat inicial del panell)

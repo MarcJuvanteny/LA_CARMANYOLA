@@ -57,7 +57,14 @@
       "ambCarnet": "{n} persones amb carnet",
       "paraulesSetmana": "Paraules recuperades",
       "complets": "Carnets completats",
-      "directes": "El {pct} de les comandes ja arriben directes, on es guanyen paraules."
+      "directes": "El {pct} de les comandes ja arriben directes, on es guanyen paraules.",
+      "enCurs": "Paraules del carnet en curs",
+      "tram": {
+        "inici": "1-2 paraules",
+        "meitat": "3-5 paraules",
+        "aPunt": "6-7 paraules (a punt de completar)"
+      },
+      "postresSetmana": "{n, plural, =0 {Cap postres de regal aquesta setmana.} one {# postres de regal aquesta setmana.} other {# postres de regal aquesta setmana.}}"
     },
     "vendes": {
       "titol": "Vendes",
@@ -114,18 +121,15 @@
         "tots": "Tots",
         "risc": "En risc",
         "nous": "Nous",
-        "mestres": "Mestres",
         "adormits": "Adormits"
       },
       "descripcio": {
         "tots": "Tothom que té el carnet",
         "risc": "Porten més del doble del seu temps habitual sense demanar",
         "nous": "S'han donat d'alta els últims 30 dies",
-        "mestres": "Mestres de la carmanyola: 3 carnets complets",
         "adormits": "Fa més de 45 dies que no demanen"
       },
       "client": "Client",
-      "nivell": "Nivell",
       "venia": "Venia",
       "senseVenir": "Sense venir",
       "carnet": "Carnet",
@@ -147,7 +151,8 @@
         "carnet-correu": "Carnet i correu",
         "carnet": "Carnet",
         "correu": "Correu"
-      }
+      },
+      "complets": "{n, plural, =0 {Cap carnet complet} one {# carnet complet} other {# carnets complets}}"
     },
     "franges": {
       "titol": "Franges",
@@ -252,14 +257,14 @@
       "nota": "La previsió surt de les vendes d'avui fins ara, els dimarts anteriors i el temps. Pots corregir-la a mà abans d'enviar.",
       "iaEyebrow": "Proposta de la IA · Què Queda",
       "obre": "Obre l'hora del Què Queda a les {hora}",
-      "perAls": "Per als <b>{n} mestres de la carmanyola</b> que acostumen a demanar a la tarda. Fins a les 16 h, només per a ells.",
-      "missatge": "Què queda avui? {plats}. Fins a les 16 h, només per a mestres. Baixa a buscar-ne un.",
+      "perAls": "Per als <b>{n} clients amb carnet</b> que han acceptat rebre avisos. Fins a les 16 h, només per a ells.",
+      "missatge": "Què queda avui? {plats}. Fins a les 16 h, només per als clients amb carnet. Baixa a buscar-ne un.",
       "missatgeBuit": "Tria almenys un plat perquè entri a l'avís.",
       "i": "i",
       "activa": "Activa l'avís",
       "corregeix": "Corregeix les quantitats",
       "fet": "Fet",
-      "activat": "Avís activat per a les {hora} · {n} mestres",
+      "activat": "Avís activat per a les {hora} · {n} clients amb carnet",
       "desfes": "Desfés",
       "encert": "Les últimes 4 setmanes, l'avís va vendre el <b>{pct}</b> del que quedava.",
       "dema": "Per a demà, la IA proposa",

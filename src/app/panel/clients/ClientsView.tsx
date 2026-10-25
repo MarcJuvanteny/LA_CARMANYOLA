@@ -50,7 +50,7 @@ export function ClientsView({ clients, recompte, ia }: Props) {
     setSeleccio(primer?.id);
   };
 
-  const segments: Segment[] = ["tots", "risc", "nous", "mestres", "adormits"];
+  const segments: Segment[] = ["tots", "risc", "nous", "adormits"];
 
   return (
     <>
@@ -80,7 +80,6 @@ export function ClientsView({ clients, recompte, ia }: Props) {
               <thead>
                 <tr>
                   <th className={th}>{t("client")}</th>
-                  <th className={th}>{t("nivell")}</th>
                   <th className={th}>{t("venia")}</th>
                   <th className={th}>{t("senseVenir")}</th>
                   <th className={th}>{t("carnet")}</th>
@@ -103,13 +102,18 @@ export function ClientsView({ clients, recompte, ia }: Props) {
                           {c.nom}
                         </button>
                       </td>
-                      <td className={td}>{c.nivell}</td>
                       <td className={`${td} whitespace-nowrap`}>{c.venia}</td>
                       <td className={cx(td, "whitespace-nowrap", segment === "risc" || segment === "adormits" ? "font-semibold text-granat" : "")}>
                         {t("dies", { n: c.senseVenir })}
                       </td>
                       <td className={td}>
-                        <CarnetDots filled={c.paraules} label={t("paraules", { n: c.paraules, total: PARAULES_CARNET })} />
+                        <span className="flex items-center gap-2 whitespace-nowrap">
+                          <CarnetDots filled={c.paraules} label={t("paraules", { n: c.paraules, total: PARAULES_CARNET })} />
+                          <span className="text-[0.78rem] text-suau">
+                            {c.paraules}/{PARAULES_CARNET}
+                            {c.carnets > 0 && ` · ${t("complets", { n: c.carnets })}`}
+                          </span>
+                        </span>
                       </td>
                       <td className={td}>{c.platPreferit}</td>
                       <td className={td}>
@@ -144,7 +148,7 @@ export function ClientsView({ clients, recompte, ia }: Props) {
               <AiEyebrow>{t("iaEyebrow")}</AiEyebrow>
               <h2 className="mt-3 text-[1.35rem]">{proposta.titol}</h2>
               <NumberedList items={proposta.punts} className="mt-4" />
-              <ButtonLink className="mt-5" href={segment === "mestres" ? "/panel/que-queda" : "/panel/campanyes"}>
+              <ButtonLink className="mt-5" href="/panel/campanyes">
                 {proposta.accio}
               </ButtonLink>
             </AiCard>
@@ -155,13 +159,18 @@ export function ClientsView({ clients, recompte, ia }: Props) {
               <p className="eyebrow text-tinta">{t("fitxa")}</p>
               <div className="mt-3 flex items-center justify-between gap-3">
                 <h2 className="text-[1.35rem]">{actual.nom}</h2>
-                <Pill>{actual.nivell}</Pill>
+                <Pill>{t("complets", { n: actual.carnets })}</Pill>
               </div>
               <dl className="mt-4 space-y-2.5 text-[0.9rem]">
                 <Fila label={t("comandes")}>{t("comandesMesos", { n: actual.comandes, mesos: actual.mesos })}</Fila>
                 <Fila label={t("ultima")}>{actual.ultima}</Fila>
                 <Fila label={t("carnet")}>
-                  <CarnetDots filled={actual.paraules} label={t("paraules", { n: actual.paraules, total: PARAULES_CARNET })} />
+                  <span className="flex items-center justify-end gap-2">
+                    <CarnetDots filled={actual.paraules} label={t("paraules", { n: actual.paraules, total: PARAULES_CARNET })} />
+                    <span className="text-suau">
+                      {actual.paraules}/{PARAULES_CARNET}
+                    </span>
+                  </span>
                 </Fila>
                 <Fila label={t("liFalta")}>
                   <span className="font-semibold text-granat">{actual.liFalta}</span>

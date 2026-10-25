@@ -198,7 +198,6 @@ async function main() {
   }
   const r = await simulateUntil(db, new Date(), (f, t) => process.stdout.write(`\r  franges ${f}/${t}`));
   process.stdout.write("\n");
-  await sql`select public.recalcula_nivells()`;
   const [{ n, f }] = await sql`select (select count(*) from public.orders where simulated)::int as n, (select count(*) from public.sim_runs)::int as f`;
   pas(`${n} comandes en ${f} franges (darrer tram: ${r.franges} franges)`);
   await sql.end();

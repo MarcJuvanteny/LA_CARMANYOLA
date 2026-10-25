@@ -46,14 +46,13 @@ export function probabilitatsClients(slot: Slot, ctx: SimContext): { client: Sim
 
 const nomsF = ["Laia", "Núria", "Carla", "Aina", "Berta", "Queralt", "Mireia", "Montse", "Gemma", "Rosa", "Elena", "Clara", "Paula", "Marta", "Júlia", "Anna", "Mariona", "Ona", "Txell", "Neus", "Sílvia", "Cristina", "Judit", "Alba", "Irene", "Ariadna", "Roser", "Èlia", "Meritxell", "Sara", "Marina", "Helena", "Abril", "Martina", "Jana", "Bruna", "Carlota", "Àngels", "Assumpta", "Montserrat"];
 const nomsM = ["Jordi", "Pol", "Marc", "Oriol", "Ivan", "Hugo", "Arnau", "Dani", "Xavi", "Albert", "Sergi", "Joan", "Tomàs", "Pau", "Jaume", "Ferran", "Roger", "Bernat", "Quim", "Gerard", "Àlex", "Martí", "David", "Pere", "Enric", "Biel", "Nil", "Jan", "Carles", "Lluís", "Adrià", "Eloi", "Guillem", "Aleix", "Genís", "Ot", "Pep", "Miquel", "Josep", "Xavier"];
-const cognoms = ["Puig", "Vila", "Soler", "Ferrer", "Serra", "Pons", "Roca", "Font", "Mas", "Riera", "Vidal", "Sala", "Pujol", "Casals", "Bosch", "Camps", "Martí", "Torres", "Rovira", "Batlle", "Codina", "Prat", "Valls", "Costa", "Bonet", "Sabaté", "Grau", "Comas", "Tarrés", "Planas", "Coll", "Ribas", "Badia", "Vilaró", "Esteve", "Fabra", "Gispert", "Llobet", "Mestres", "Noguera", "Oller", "Rius", "Solà", "Tort", "Viladecans", "Junyent", "Bertran", "Clos"];
+const cognoms = ["Puig", "Vila", "Soler", "Ferrer", "Serra", "Pons", "Roca", "Font", "Mas", "Riera", "Vidal", "Sala", "Pujol", "Casals", "Bosch", "Camps", "Martí", "Torres", "Rovira", "Batlle", "Codina", "Prat", "Valls", "Costa", "Bonet", "Sabaté", "Grau", "Comas", "Tarrés", "Planas", "Coll", "Ribas", "Badia", "Vilaró", "Esteve", "Fabra", "Gispert", "Llobet", "Noguera", "Oller", "Rius", "Solà", "Tort", "Viladecans", "Junyent", "Bertran", "Clos"];
 
 export interface NouClient {
   customer: {
     id: string;
     first_name: string;
     last_name: string;
-    gender: "f" | "m";
     email: string;
     locale: "ca" | "es" | "en";
     consent_email: boolean;
@@ -135,7 +134,6 @@ export function nouClient(seed: string, creat: Date, plats: SimDish[], avui: str
       id,
       first_name: first,
       last_name: last,
-      gender: femeni ? "f" : "m",
       email: `${treuAccents(first)}.${treuAccents(last)}.${rng.hex(4)}@${EMAIL_DOMAIN}`,
       locale,
       consent_email: consent,

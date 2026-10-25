@@ -162,10 +162,11 @@ export const DOUBLE_STAMP_SLOT_BOOST = 1.15;
 export const CONTROL_SHARE = 0.25;
 
 // ---------------------------------------------------------------------------
-// Carnet (PROVISIONAL fins que l'autor ho confirmi; la lògica és a registra_segell())
+// Carnet (la lògica és a registra_segell(), en SQL)
 // ---------------------------------------------------------------------------
+// · 1 segell de regal en fer-se el carnet · 1 paraula per comanda directa (mai plataformes).
+// · 8 paraules = carnet complet → "postres de regal" i comença un carnet nou. Cap altra recompensa.
 // · Paraules 5-8 del diccionari: pendents (es compten com a "paraula pendent").
-// · Mestre = 3 carnets complets · Cada carnet complet = postre.
 
 // ---------------------------------------------------------------------------
 // Dades externes

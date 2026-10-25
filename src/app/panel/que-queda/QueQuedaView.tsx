@@ -40,7 +40,7 @@ interface Fila {
 interface Props {
   ara: { subtitol: string; temps: string; hora: string };
   plats: Fila[];
-  proposta: { mestres: number; encert: number };
+  proposta: { destinataris: number; encert: number };
   produccio: { titol: string; items: { id: number; nom: string; motiu: string; abans: number; despres: number }[] };
   avis: { missatge: string } | null;
 }
@@ -165,14 +165,14 @@ export function QueQuedaView({ ara, plats: queQueda, proposta: propostaQueQueda,
           <AiEyebrow>{t("iaEyebrow")}</AiEyebrow>
           <h2 className="mt-3 text-[1.6rem]">{t("obre", { hora: ara.hora })}</h2>
           <p className="mt-3 text-[0.92rem]">
-            {t.rich("perAls", { n: propostaQueQueda.mestres, b: (c) => <strong className="font-semibold">{c}</strong> })}
+            {t.rich("perAls", { n: propostaQueQueda.destinataris, b: (c) => <strong className="font-semibold">{c}</strong> })}
           </p>
           <p className="mt-4 rounded-2xl bg-white p-4 leading-relaxed" aria-live="polite">
             {missatge}
           </p>
           {avisActiu ? (
             <div className="mt-5 flex flex-wrap items-center gap-3 text-sm" role="status">
-              <span className="font-semibold">{t("activat", { hora: ara.hora, n: propostaQueQueda.mestres })}</span>
+              <span className="font-semibold">{t("activat", { hora: ara.hora, n: propostaQueQueda.destinataris })}</span>
               <button type="button" className="min-h-11 underline" onClick={() => desfes(AVIS)}>
                 {t("desfes")}
               </button>

@@ -75,9 +75,9 @@ export const provesVeu: Record<Situacio, Record<Idioma, string>> = {
     en: "Tuesday evenings are calm in the kitchen, so we're celebrating: from 8 to 10 pm, every carmanyola adds two words to your card.",
   },
   queQueda: {
-    ca: "Què queda avui? 6 Fricandó amb Bolets, 5 Tot Escalivat i 4 Pollastre de Diumenge. Fins a les 16 h, només per a mestres. Baixa a buscar-ne un.",
-    es: "¿Qué queda hoy? 6 Fricandó amb Bolets, 5 Tot Escalivat y 4 Pollastre de Diumenge. Hasta las 16 h, solo para maestros. Baja a por uno.",
-    en: "What's left today? 6 Fricandó amb Bolets, 5 Tot Escalivat and 4 Pollastre de Diumenge. Until 4 pm, for masters only. Come down and grab one.",
+    ca: "Què queda avui? 6 Fricandó amb Bolets, 5 Tot Escalivat i 4 Pollastre de Diumenge. Fins a les 16 h, només per als clients amb carnet. Baixa a buscar-ne un.",
+    es: "¿Qué queda hoy? 6 Fricandó amb Bolets, 5 Tot Escalivat y 4 Pollastre de Diumenge. Hasta las 16 h, solo para quien tiene carnet. Baja a por uno.",
+    en: "What's left today? 6 Fricandó amb Bolets, 5 Tot Escalivat and 4 Pollastre de Diumenge. Until 4 pm, for card holders only. Come down and grab one.",
   },
   padro: {
     ca: "Nova veïna al padró: la carxofa del Prat s'empadrona a partir del 9 de novembre. Ve del Baix Llobregat i es quedarà fins a la primavera.",

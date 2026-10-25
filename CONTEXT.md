@@ -101,14 +101,14 @@ Projecte de portfolio d'un Frontend Developer (perfil creatiu i tècnic). Consis
 - **Operació Desbowlitzar:** campanya de llançament. Fa servir el recurs del ratllat (~~bowl~~ carmanyola).
 - **La faixa "Desbowlitza aquí":** tanca l'envàs i porta un **QR únic per comanda** que porta a `/c/[codi]`.
 - **El carnet de desbowlitzador:** una targeta a Apple i Google Wallet, sense app.
-  - Cada comanda directa recupera una paraula del diccionari. Amb 8 paraules el carnet és complet.
+  - En fer-se el carnet, el client rep **1 segell de regal**.
+  - Cada comanda directa (web o local) recupera **1 paraula** del diccionari. Màxim 1 segell per comanda.
+  - Amb **8 paraules** el carnet és complet: recompensa **"postres de regal"** i comença un carnet nou, buit.
+  - **No hi ha cap altra recompensa**, ni nivells ni rànquings.
   - Diccionari conegut: bowl→carmanyola, topping→picada, takeaway→per emportar, brunch→esmorzar de forquilla. Les altres 4 paraules estan pendents.
-  - Nivells:
-    - Aprenent: en registrar-se, amb un segell de regal.
-    - Desbowlitzador: 1 carnet complet; regal, el postre.
-    - Mestre de la carmanyola: 3 carnets; carmanyola reutilitzable i accés al Què Queda.
   - Els segells **només es sumen demanant directe**, mai a les plataformes.
-- **L'hora del Què Queda:** l'última mitja hora de cada servei. Avís als nivells alts amb el que queda.
+  - **Targeta del wallet:** nom, paraules recuperades (X de 8), la paraula que falta i el nombre de carnets completats.
+- **L'hora del Què Queda:** l'última mitja hora de cada servei. Avís amb el que queda a **tots els clients amb carnet i consentiment comercial**.
 - **Padró d'ingredients:** els ingredients de temporada "s'empadronen" i "es donen de baixa".
   - Tardor: bolets (Solsonès), moniato (Baix Llobregat), castanyes (Montseny), codony (Segrià).
   - Hivern: calçots.
@@ -172,13 +172,13 @@ Al panell, **tot el que proposa o escriu la IA va en targetes grogues (`#FFEA80`
   - `dish_ingredients`.
   - `build_options`.
 - **Clients i comandes:**
-  - `customers`: amb consentiment i data, nivell, ids del wallet, idioma i `simulated`.
+  - `customers`: amb consentiment i data, ids del wallet, idioma i `simulated`.
   - `orders`: canal web, local o plataforma; QR únic d'un sol ús; `simulated`.
   - `order_items`.
 - **Carnet:**
   - `words`: les 8 paraules.
-  - `stamps`: una comanda dona com a màxim un segell.
-  - `rewards`.
+  - `stamps`: una comanda dona com a màxim un segell; cada segell porta el número de carnet (1, 2, 3…).
+  - `rewards`: només "postres de regal", una per carnet completat.
 - **Màrqueting:**
   - `campaigns`: tipus, segment, missatge ca/es/en, canal, estat (esborrany, aprovada, enviada) i **raonament de la IA**.
   - `campaign_recipients`: amb la comanda de tornada.
@@ -265,6 +265,12 @@ El restaurant no té clients reals. Les dades es generen amb `scripts/seed.ts`:
 4. Dades simulades i panell: resum, vendes, clients i franges.
 5. IA: veu de marca, campanyes, enviament, atribució, Què Queda i padró.
 6. Poliment, accessibilitat, rendiment, cas d'estudi i vídeo.
+
+## 13. Descartat
+
+Decisions de producte que ja no es fan. No les tornis a introduir.
+
+- **Nivells i rànquings del carnet.**
 
 ### Pla per setmanes
 

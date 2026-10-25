@@ -7,6 +7,7 @@ import { usePanelState } from "@/components/panel/PanelState";
 import { AiCard, AiEyebrow, ButtonLink, Card, CardTitle, Meter, PageHeader, Pill, StatCard, cx } from "@/components/panel/ui";
 import type { Ingredient } from "@/lib/data/padro";
 import type { DadesVendes } from "@/lib/data/vendes";
+import type { DadesCarnet } from "@/lib/db/panel";
 import { diesSetmana, local } from "@/lib/dates";
 import { euros, nombre, percent } from "@/lib/format";
 
@@ -18,7 +19,7 @@ interface Props {
   ara: { subtitol: string; temps: string; hora: string };
   queden: { nom: string; previsio: number }[];
   empadronats: Ingredient[];
-  carnet: { total: number; aprenents: number; desbowlitzadors: number; mestres: number; paraules_setmana: number; complets_setmana: number; directes: number | null };
+  carnet: DadesCarnet;
   propostes: { id: string; seccio: string; titol: string; href: string }[];
 }
 
@@ -26,18 +27,12 @@ export function ResumView({ avui, setmana, ara, queden, empadronats, carnet: cb,
   const t = useTranslations("panel.resum");
   const tn = useTranslations("panel.nav");
   const { resolts, pendents } = usePanelState();
-  const carnet = {
-    total: cb.total,
-    paraulesSetmana: cb.paraules_setmana,
-    carnetsComplets: cb.complets_setmana,
-    directes: cb.directes ?? 0,
-    nivells: [
-      { nom: "Aprenent", n: cb.aprenents },
-      { nom: "Desbowlitzador", n: cb.desbowlitzadors },
-      { nom: "Mestre de la carmanyola", n: cb.mestres },
-    ],
-  };
-  const maxNivell = Math.max(1, ...carnet.nivells.map((n) => n.n));
+  const trams = [
+    { clau: "inici", n: cb.en_curs.inici },
+    { clau: "meitat", n: cb.en_curs.meitat },
+    { clau: "aPunt", n: cb.en_curs.a_punt },
+  ] as const;
+  const maxTram = Math.max(1, ...trams.map((x) => x.n));
   const n = pendents();
   const dia = diesSetmana[local(new Date()).diaSetmana];
 
@@ -150,29 +145,32 @@ export function ResumView({ avui, setmana, ara, queden, empadronats, carnet: cb,
 
         <Card>
           <CardTitle>{t("carnet")}</CardTitle>
-          <p className="mt-1 text-[0.82rem] text-suau">{t("ambCarnet", { n: carnet.total })}</p>
-          <ul className="mt-4 space-y-3">
-            {carnet.nivells.map((nv) => (
-              <li key={nv.nom} className="text-[0.88rem]">
+          <p className="mt-1 text-[0.82rem] text-suau">{t("ambCarnet", { n: cb.total })}</p>
+          <p className="eyebrow mt-4 text-tinta">{t("enCurs")}</p>
+          <ul className="mt-3 space-y-3">
+            {trams.map((x) => (
+              <li key={x.clau} className="text-[0.88rem]">
                 <span className="flex justify-between">
-                  <span>{nv.nom}</span>
-                  <span className="text-suau">{nv.n}</span>
+                  <span>{t(`tram.${x.clau}`)}</span>
+                  <span className="text-suau">{x.n}</span>
                 </span>
-                <Meter value={nv.n / maxNivell} className="mt-1.5" />
+                <Meter value={x.n / maxTram} className="mt-1.5" />
               </li>
             ))}
           </ul>
           <dl className="mt-5 grid grid-cols-2 gap-3 border-t border-linia pt-4 text-[0.82rem]">
             <div>
               <dt className="text-suau">{t("paraulesSetmana")}</dt>
-              <dd className="font-titol text-[1.4rem]">{carnet.paraulesSetmana}</dd>
+              <dd className="font-titol text-[1.4rem]">{cb.paraules_setmana}</dd>
             </div>
             <div>
               <dt className="text-suau">{t("complets")}</dt>
-              <dd className="font-titol text-[1.4rem]">{carnet.carnetsComplets}</dd>
+              <dd className="font-titol text-[1.4rem]">{cb.carnets_completats}</dd>
             </div>
           </dl>
-          <p className="mt-3 text-[0.8rem] text-suau">{t("directes", { pct: percent(carnet.directes) })}</p>
+          <p className="mt-3 text-[0.8rem] text-suau">
+            {t("postresSetmana", { n: cb.postres_setmana })} {t("directes", { pct: percent(cb.directes ?? 0) })}
+          </p>
         </Card>
       </div>
     </>

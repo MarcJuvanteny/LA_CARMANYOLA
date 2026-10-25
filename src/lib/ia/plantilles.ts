@@ -83,7 +83,6 @@ export function clients(tots: (Client & { laborables: number; tarda: number; wal
   const de = (s: Segment) => tots.filter((c) => c.segments.includes(s));
   const risc = de("risc");
   const nous = de("nous");
-  const mestres = de("mestres");
   const adormits = de("adormits");
 
   const oficina = risc.filter((c) => c.comandes && c.laborables / c.comandes >= 0.5).length;
@@ -114,19 +113,6 @@ export function clients(tots: (Client & { laborables: number; tarda: number; wal
             `${nous.filter((c) => c.platPreferit === "Fricandó amb Bolets" || c.platPreferit === "La Castanyera").length} tenen un plat de tardor de preferit.`,
           ],
           accio: "Prepara una benvinguda",
-        }
-      : null,
-    mestres: mestres.length
-      ? {
-          titol: "Els mestres sostenen el migdia",
-          punts: [
-            `${mestres.length} persones, el ${percent(mestres.length / Math.max(1, tots.length))} dels clients, fan el ${percent(
-              mestres.reduce((s, c) => s + c.comandes, 0) / Math.max(1, tots.reduce((s, c) => s + c.comandes, 0)),
-            )} de les comandes amb carnet.`,
-            `${mestres.filter((c) => c.comandes && c.tarda / c.comandes >= 0.25).length} acostumen a demanar a partir de les 14 h: són el públic natural del Què Queda.`,
-            `${mestres.filter((c) => c.paraules === 7).length} estan a una paraula del següent carnet complet.`,
-          ],
-          accio: "Avisa'ls del Què Queda",
         }
       : null,
     adormits: adormits.length

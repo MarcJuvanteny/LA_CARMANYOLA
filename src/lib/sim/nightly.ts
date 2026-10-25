@@ -34,10 +34,7 @@ export async function nightly(db: SupabaseClient, ara = new Date(), forca = fals
     // sense xarxa: es quedarà el temps que hi hagi
   }
 
-  // 2. Nivells
-  await ok(db.rpc("recalcula_nivells"));
-
-  // 3. 0-2 clients nous (es van donar d'alta ahir)
+  // 2. 0-2 clients nous (es van donar d'alta ahir)
   const ahir = addDays(dia, -1);
   const rng = new Rng(`carmanyola:nit:${dia}`);
   const n = rng.int(...NIGHTLY_NEW_CUSTOMERS);
@@ -53,10 +50,10 @@ export async function nightly(db: SupabaseClient, ara = new Date(), forca = fals
     }
   }
 
-  // 4. La demo torna al punt de partida
+  // 3. La demo torna al punt de partida
   await resetDemo(db);
 
-  // 5. Detectors i IA (pendent)
+  // 4. Detectors i IA (pendent)
   await detectorsIIA(db, dia);
 
   await ok(db.from("sim_nights").upsert({ day: dia }));
