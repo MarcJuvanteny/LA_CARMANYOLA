@@ -14,9 +14,7 @@ export default async function EntraPage({ searchParams }: { searchParams: Promis
   return (
     <main className="textura-granat grid min-h-dvh place-items-center px-4 py-10">
       <div className="w-full max-w-sm rounded-targeta bg-paper p-7">
-        <p className="text-[1.15rem]">
-          <Imagotip />
-        </p>
+        <Imagotip className="h-9" />
         <h1 className="mt-6 text-[1.8rem]">{t("titol")}</h1>
         <p className="mt-1 text-suau">{t("subtitol")}</p>
         <EntraForm torna={torna ?? "/panel"} />

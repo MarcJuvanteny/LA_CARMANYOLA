@@ -28,7 +28,6 @@
 
   --font-titol: "Redgato", var(--font-rubik), system-ui, sans-serif;
   --font-cos: "Acumin Variable Concept", var(--font-archivo), system-ui, sans-serif;
-  --font-logo: var(--font-gwendolyn), cursive;
 
   --radius-targeta: 1.25rem;
 }
@@ -65,9 +64,11 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
   }
+  /* Textura de marca: el morter repetit to sobre to (public/brand/textura-*.svg) */
   .textura-granat {
-    background-color: var(--color-granat);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cpath d='M28 6 L42 20 L28 34 L14 20 Z' fill='%238F2C29'/%3E%3Cpath d='M0 34 L14 48 L0 62 Z M56 34 L42 48 L56 62 Z' fill='%238F2C29'/%3E%3C/svg%3E");
-    background-size: 56px 56px;
+    background: var(--color-granat) url("/brand/textura-granat.svg") center / 760px auto repeat;
+  }
+  .textura-groc {
+    background: var(--color-groc) url("/brand/textura-groc.svg") center / 760px auto repeat;
   }
 }

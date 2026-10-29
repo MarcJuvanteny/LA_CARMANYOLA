@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375.83 525.39">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: 0em;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5 {
+        font-family: AcuminConcept-WideLight, 'Acumin Variable Concept';
+        font-variation-settings: 'wght' 300, 'wdth' 115, 'slnt' 0;
+        font-weight: 300;
+      }
+
+      .cls-6, .cls-7, .cls-8, .cls-9, .cls-10, .cls-11 {
+        stroke-width: 0px;
+      }
+
+      .cls-6, .cls-12 {
+        fill: #77160d;
+      }
+
+      .cls-7, .cls-13 {
+        fill: #f7d21e;
+      }
+
+      .cls-14, .cls-9 {
+        fill: #8f2c29;
+      }
+
+      .cls-14, .cls-13, .cls-15, .cls-16, .cls-17 {
+        font-family: MyriadPro-Regular, 'Myriad Pro';
+      }
+
+      .cls-14, .cls-13, .cls-15, .cls-17, .cls-12, .cls-18 {
+        font-size: 18px;
+      }
+
+      .cls-8 {
+        fill: #f7f2e9;
+      }
+
+      .cls-3 {
+        letter-spacing: .04em;
+      }
+
+      .cls-15, .cls-11 {
+        fill: #38383a;
+      }
+
+      .cls-10 {
+        fill: #f9e880;
+      }
+
+      .cls-4 {
+        letter-spacing: .07em;
+      }
+
+      .cls-17 {
+        fill: #f6f1e6;
+      }
+
+      .cls-18 {
+        fill: #ffea80;
+      }
+
+      .cls-5 {
+        letter-spacing: 0em;
+      }
+    </style>
+  </defs>
+  <rect class="cls-6" x="-.51" y="-2.38" width="188.43" height="175.92"/>
+  <rect class="cls-9" x="-.51" y="173.54" width="188.43" height="175.92"/>
+  <rect class="cls-8" x="-.51" y="349.46" width="188.43" height="175.92"/>
+  <rect class="cls-10" x="187.91" y="-2.38" width="187.91" height="175.92"/>
+  <rect class="cls-7" x="187.91" y="173.54" width="187.91" height="175.92"/>
+  <rect class="cls-11" x="187.91" y="349.46" width="187.91" height="175.92"/>
+  <text class="cls-18" transform="translate(16.33 30.85)"><tspan class="cls-16" x="0" y="0">#</tspan><tspan class="cls-4" x="8.95" y="0">7</tspan><tspan class="cls-3" x="19.53" y="0">7</tspan><tspan class="cls-1" x="29.65" y="0">1</tspan><tspan class="cls-2" x="36.63" y="0">60D </tspan></text>
+  <text class="cls-13" transform="translate(20.69 212.1)"><tspan x="0" y="0">#8F2C29</tspan></text>
+  <text class="cls-12" transform="translate(201.9 30.85)"><tspan class="cls-16" x="0" y="0">#</tspan><tspan class="cls-2" x="8.95" y="0">F9E</tspan><tspan class="cls-5" x="44.84" y="0">8</tspan><tspan class="cls-2" x="56.12" y="0">80</tspan></text>
+  <text class="cls-14" transform="translate(208.28 212.1)"><tspan x="0" y="0">#F7D21E</tspan></text>
+  <text class="cls-15" transform="translate(21.72 388.91)"><tspan x="0" y="0">#F7F2E9</tspan></text>
+  <text class="cls-17" transform="translate(208.34 388.91)"><tspan x="0" y="0">#38383A</tspan></text>
+</svg>

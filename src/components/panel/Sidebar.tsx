@@ -108,8 +108,8 @@ export function Sidebar() {
     <>
       {/* Mòbil: barra superior + calaix */}
       <div className="sticky top-0 z-30 flex items-center justify-between border-b border-linia bg-white px-4 py-3 lg:hidden">
-        <Link href="/panel" className="pt-2 text-[0.95rem]">
-          <Imagotip />
+        <Link href="/panel" className="py-1">
+          <Imagotip className="h-6" />
         </Link>
         <button
           type="button"
@@ -132,8 +132,8 @@ export function Sidebar() {
       {/* Escriptori */}
       <aside className="sticky top-0 hidden h-dvh w-[236px] shrink-0 flex-col justify-between border-r border-linia bg-white px-4 pt-8 pb-6 lg:flex">
         <div>
-          <Link href="/panel" className="mb-9 block px-1 pt-1 text-[1rem]">
-            <Imagotip />
+          <Link href="/panel" className="mb-9 block px-1 pt-2">
+            <Imagotip className="h-[26px]" />
           </Link>
           {nav}
         </div>

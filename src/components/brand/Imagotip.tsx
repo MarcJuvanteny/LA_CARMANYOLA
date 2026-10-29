@@ -1,19 +1,18 @@
-// Imagotip: "La" en cursiva (Gwendolyn) i "Carmanyola" a sota.
+// Imagotip: "La" en cursiva i "Carmanyola" (public/brand/imagotip-*.svg).
 
 interface Props {
   className?: string;
   versio?: "granat" | "groc";
 }
 
-export function Imagotip({ className = "", versio = "granat" }: Props) {
-  const color = versio === "granat" ? "text-granat" : "text-groc";
+export function Imagotip({ className = "h-7", versio = "granat" }: Props) {
   return (
-    <span className={`relative inline-block leading-none ${color} ${className}`}>
-      <span aria-hidden className="absolute -top-2.5 -left-1 font-logo text-[0.8em]">
-        La
-      </span>
-      <span aria-hidden className="font-titol text-[1.45em] tracking-tight">Carmanyola</span>
-      <span className="sr-only">La Carmanyola</span>
-    </span>
+    // eslint-disable-next-line @next/next/no-img-element -- SVG de marca, sense optimització d'imatge
+    <img
+      src={`/brand/imagotip-${versio}.svg`}
+      alt="La Carmanyola"
+      className={`block w-auto ${className}`}
+      draggable={false}
+    />
   );
 }
