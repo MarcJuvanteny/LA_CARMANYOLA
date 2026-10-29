@@ -34,18 +34,31 @@ function supabaseBin() {
   return existsSync(local) ? local : "supabase";
 }
 
-const env = Object.fromEntries(
-  execFileSync(supabaseBin(), ["status", "-o", "env"], { encoding: "utf8" })
-    .split("\n")
-    .filter((l) => l.includes("="))
-    .map((l) => {
-      const i = l.indexOf("=");
-      return [l.slice(0, i), l.slice(i + 1).replace(/^"|"$/g, "")];
-    }),
-);
+/**
+ * Local (per defecte): claus de `supabase status`; escriu .env.local i el Vault, i crea l'amo de prova.
+ * Núvol (--nuvol): claus de .env.local (tsx --env-file); NO toca .env.local ni el Vault i no crea l'amo
+ * (això ho fa `npm run amo`, que demana la contrasenya sense mostrar-la).
+ */
+const NUVOL = process.argv.includes("--nuvol");
 
-if (!env.DB_URL?.includes("127.0.0.1")) {
-  throw new Error("El seed només es pot executar contra la base de dades local.");
+const env: Record<string, string> = NUVOL
+  ? {
+      DB_URL: process.env.DATABASE_URL ?? "",
+      API_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+      SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
+    }
+  : Object.fromEntries(
+      execFileSync(supabaseBin(), ["status", "-o", "env"], { encoding: "utf8" })
+        .split("\n")
+        .filter((l) => l.includes("="))
+        .map((l) => {
+          const i = l.indexOf("=");
+          return [l.slice(0, i), l.slice(i + 1).replace(/^"|"$/g, "")];
+        }),
+    );
+
+if (NUVOL ? !env.DB_URL || env.DB_URL.includes("127.0.0.1") : !env.DB_URL?.includes("127.0.0.1")) {
+  throw new Error(NUVOL ? "--nuvol necessita DATABASE_URL del projecte al núvol a .env.local." : "Sense --nuvol, el seed només es pot executar contra la base de dades local.");
 }
 
 const sql = postgres(env.DB_URL, { onnotice: () => {} });
@@ -61,6 +74,9 @@ const dia = (offset: number) => {
 // ---------------------------------------------------------------------------
 
 async function netejar() {
+  // Mai esborrem dades reals: si n'hi ha, parem.
+  const [{ reals }] = await sql`select ((select count(*) from public.orders where not simulated) + (select count(*) from public.customers where not simulated))::int as reals`;
+  if (reals > 0) throw new Error(`Hi ha ${reals} comandes o clients reals: el seed base no s'executa per no esborrar-los.`);
   await sql`
     truncate public.campaign_recipients, public.campaigns, public.campaign_requests, public.stamps, public.rewards,
       public.order_items, public.orders, public.sim_profiles, public.sim_runs, public.customers, public.leftovers,
@@ -251,9 +267,13 @@ async function main() {
   pas("carta, padró, paraules i veu de marca");
   await campanyesFixes();
   pas("propostes en esborrany");
-  const appUrl = await amo();
-  pas(`amo: ${AMO.email} · .env.local escrit · Vault: ${appUrl}`);
-  console.log("Ara: npm run sim:seed");
+  if (NUVOL) {
+    console.log("Ara: npm run sim:seed i, per crear l'amo, npm run amo -- <correu>");
+  } else {
+    const appUrl = await amo();
+    pas(`amo: ${AMO.email} · .env.local escrit · Vault: ${appUrl}`);
+    console.log("Ara: npm run sim:seed");
+  }
   await sql.end();
 }
 

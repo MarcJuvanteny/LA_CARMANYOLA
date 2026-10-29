@@ -15,7 +15,9 @@
     "sim:seed": "tsx --env-file=.env.local scripts/sim-seed.ts",
     "sim:tick": "tsx --env-file=.env.local scripts/sim-tick.ts",
     "sim:report": "tsx --env-file=.env.local scripts/sim-report.ts",
-    "sim:reset-demo": "tsx --env-file=.env.local scripts/sim-reset-demo.ts"
+    "sim:reset-demo": "tsx --env-file=.env.local scripts/sim-reset-demo.ts",
+    "db:seed:nuvol": "tsx --env-file=.env.local scripts/base-seed.ts --nuvol",
+    "amo": "tsx --env-file=.env.local scripts/amo.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
