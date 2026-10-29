@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Rubik } from "next/font/google";
+import { Archivo } from "next/font/google";
+import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
 import "./globals.css";
 
-const rubik = Rubik({ subsets: ["latin"], weight: "400", variable: "--font-rubik" });
+// Redgato: títols, sempre en pes Regular (400).
+const redgato = localFont({ src: "./fonts/Redgato-Regular.woff2", weight: "400", style: "normal", variable: "--font-redgato", display: "swap" });
 const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo" });
 
 export const metadata: Metadata = {
@@ -19,7 +21,7 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = await getLocale();
   return (
-    <html lang={locale} className={`${rubik.variable} ${archivo.variable}`}>
+    <html lang={locale} className={`${redgato.variable} ${archivo.variable}`}>
       <body>
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>

@@ -6,3 +6,6 @@ next-env.d.ts
 .env*.local
 .DS_Store
 node_modules
+
+# Tipografies originals (llicència): no es pugen al repositori públic
+docs/brand/type/

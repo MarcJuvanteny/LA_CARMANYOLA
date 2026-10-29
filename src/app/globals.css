@@ -1,17 +1,5 @@
 @import "tailwindcss";
 
-/*
- * Redgato no és a Google Fonts: deixa el fitxer a public/fonts/Redgato-Regular.woff2
- * i s'activarà sol. Mentrestant, la reserva és Rubik 400.
- */
-@font-face {
-  font-family: "Redgato";
-  src: url("/fonts/Redgato-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 @theme {
   --color-granat: #77160e;
   --color-granat-clar: #8f2c29;
@@ -26,7 +14,7 @@
   --color-terra: #a8463d;
   --color-crema: #f3ece2;
 
-  --font-titol: "Redgato", var(--font-rubik), system-ui, sans-serif;
+  --font-titol: var(--font-redgato), system-ui, sans-serif;
   --font-cos: "Acumin Variable Concept", var(--font-archivo), system-ui, sans-serif;
 
   --radius-targeta: 1.25rem;

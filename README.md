@@ -64,4 +64,4 @@ select status_code, content from net._http_response order by id desc limit 3;
 - `src/lib/db/panel.ts`: lectures del panell (sessió de l'amo, sense claus de servei).
 - `src/app/panel/actions.ts`: el que l'amo aprova, descarta o edita queda desat a la base de dades.
 - Textos de la interfície a `messages/ca.json` (next-intl).
-- Tipografia de títols: deixa `Redgato-Regular.woff2` a `public/fonts/`. Mentrestant es fa servir Rubik 400.
+- Tipografia de títols: Redgato (`src/app/fonts/Redgato-Regular.woff2`). Els originals .otf/.ttf són a `docs/brand/type/`, fora del repositori per la llicència.
