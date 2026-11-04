@@ -1,0 +1,155 @@
+/* Web pública: el que Tailwind no cobreix (animacions lligades al scroll i textures en mosaic). */
+/* A la capa components perquè les utilitats de Tailwind (hidden, md:…) hi puguin passar per sobre. */
+@layer components {
+  .web {
+    font-family: var(--font-cos);
+    font-weight: 300;
+    font-stretch: 106%;
+    color: var(--color-tinta);
+    background: var(--color-paper);
+    overflow-x: clip;
+  }
+  .web a:not([class]) {
+    color: var(--color-granat);
+  }
+  .web a:not([class]):hover {
+    color: #4f0e08;
+  }
+
+  .tex-granat {
+    background-color: var(--color-granat);
+  }
+  .tex-groc {
+    background-color: var(--color-groc);
+  }
+
+  .web-eb {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .web-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 16px 28px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      transform 0.2s,
+      background-color 0.2s;
+  }
+  .web-btn:active {
+    transform: scale(0.97);
+  }
+
+  /* Paraula ratllada: la línia creix d'esquerra a dreta (scaleX). */
+  .ratlla {
+    position: relative;
+    display: inline-block;
+  }
+  .ratlla i {
+    position: absolute;
+    left: -4%;
+    right: -4%;
+    top: 52%;
+    height: 0.09em;
+    border-radius: 99px;
+    transform-origin: left center;
+  }
+
+  .plat-card {
+    transition:
+      transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 0.35s;
+  }
+  .plat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgb(56 56 58 / 0.1);
+  }
+  .plat-card img {
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .plat-card:hover img {
+    transform: rotate(14deg) scale(1.04);
+  }
+
+  .bota {
+    animation: bota 0.45s cubic-bezier(0.2, 1.6, 0.4, 1);
+  }
+  @keyframes bota {
+    40% {
+      transform: scale(1.28);
+    }
+  }
+
+  .sense-barra {
+    scrollbar-width: none;
+  }
+  .sense-barra::-webkit-scrollbar {
+    display: none;
+  }
+
+  @supports (animation-timeline: view()) {
+    .rv {
+      animation: rv linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+    @keyframes rv {
+      from {
+        opacity: 0;
+        transform: translateY(60px);
+      }
+    }
+    .pop {
+      animation: pop linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 35%;
+    }
+    @keyframes pop {
+      from {
+        opacity: 0;
+        transform: scale(0.3) rotate(-30deg);
+      }
+    }
+    .drop {
+      animation: drop linear both;
+      animation-timeline: view();
+      animation-range: entry 30% cover 50%;
+    }
+    @keyframes drop {
+      from {
+        opacity: 0;
+        transform: translateY(-140px) rotate(-90deg);
+      }
+      70% {
+        opacity: 1;
+        transform: translateY(8px) rotate(6deg);
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rv,
+    .pop,
+    .drop,
+    .bota {
+      animation: none !important;
+    }
+    .plat-card,
+    .plat-card img,
+    .ratlla i {
+      transition: none !important;
+    }
+  }
+}
