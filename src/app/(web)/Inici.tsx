@@ -189,15 +189,21 @@ export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: numbe
   const galeria = useDesfila();
   const [feste, setFeste] = useState(false);
   const [llest, setLlest] = useState(false);
+  const [senseBowl, setSenseBowl] = useState(false);
 
   useEffect(() => {
     const id = setTimeout(() => setLlest(true), 60);
-    return () => clearTimeout(id);
+    // Quan la ratlla acaba de tatxar «bowl», el bowl es fa carmanyola: sense haver de baixar.
+    const plat = setTimeout(() => setSenseBowl(true), 1500);
+    return () => {
+      clearTimeout(id);
+      clearTimeout(plat);
+    };
   }, []);
 
   const ratlla = (i: number) => suau(0.08 + i * 0.16, 0.2 + i * 0.16, s.d);
-  // A la portada: el bowl es fa plat mentre el títol canvia (només fos, res no es mou).
-  const aCarmanyola = suau(0.38, 0.6, s.h);
+  // A la portada: el bowl es fa plat en tatxar-lo (o, si es baixa abans, mentre el títol canvia).
+  const aCarmanyola = senseBowl ? 1 : suau(0.38, 0.6, s.h);
   const titol1 = 1 - suau(0.3, 0.48, s.h);
   const titol2 = suau(0.52, 0.72, s.h);
   const imatge = (slug: string) => plats.find((p) => p.slug === slug)?.imatge ?? "/web/plats/fricando-amb-bolets.webp";
@@ -330,9 +336,16 @@ export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: numbe
                   tabIndex={copia ? -1 : undefined}
                   onClick={() => setFeste(true)}
                   aria-haspopup="dialog"
-                  className="plat-card tex-groc flex w-[clamp(220px,22vw,280px)] shrink-0 cursor-pointer items-center justify-center rounded-[28px] border-0 p-4 text-granat"
+                  className="plat-card tex-groc flex w-[clamp(220px,22vw,280px)] shrink-0 cursor-pointer flex-col rounded-[28px] border-0 p-4 pb-[18px] text-left text-granat"
                 >
-                  <span className="font-titol text-[44px] leading-none">Fes-te’l tu</span>
+                  <span className="font-titol flex flex-1 items-center justify-center text-center text-[44px] leading-none">Fes-te’l tu</span>
+                  {/* Com a les altres targetes: el preu a baix i el + al costat */}
+                  <span className="flex w-full items-center justify-between">
+                    <span className="font-titol text-[19px] text-tinta">{euros(preuFeste)}</span>
+                    <span aria-hidden className="flex size-12 items-center justify-center rounded-full bg-granat text-2xl leading-none text-groc">
+                      +
+                    </span>
+                  </span>
                 </button>
               </div>
             ))}
@@ -423,38 +436,41 @@ export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: numbe
       </section>
 
       {/* El carnet */}
-      <section id="carnet" className="py-[clamp(80px,10vw,150px)]">
+      {/* Tot l'apartat, QR inclòs, cap en una pantalla (sota la capçalera) */}
+      <section id="carnet" className="flex scroll-mt-[72px] items-center py-[clamp(56px,7vw,96px)] md:min-h-[calc(100svh-72px)]">
         <div className={`${wrap} grid grid-cols-[repeat(auto-fit,minmax(min(100%,440px),1fr))] items-center gap-[clamp(40px,6vw,90px)]`}>
           <div className="flex flex-col gap-6">
             <span className="web-eb rv text-granat">{t("carnetEyebrow")}</span>
-            <h2 className="rv m-0 text-[clamp(44px,5.6vw,88px)] leading-none text-granat">{t.rich("carnetTitol", { br: () => <br /> })}</h2>
-            <p className="rv m-0 max-w-[500px] text-lg leading-[1.7]">{t("carnetText")}</p>
+            <h2 className="rv m-0 text-[clamp(44px,5vw,76px)] leading-none text-granat">{t.rich("carnetTitol", { br: () => <br /> })}</h2>
+            <p className="rv m-0 max-w-[500px] text-lg leading-[1.6]">{t("carnetText")}</p>
             <div className="rv flex flex-wrap items-center gap-3">
               <Link href="/carnet" className="web-btn bg-granat text-groc">
                 {t("carnetCta")}
               </Link>
               <span className="text-sm">{t("carnetNota")}</span>
             </div>
+          </div>
+          <div className="flex flex-col items-center gap-[clamp(24px,3vw,40px)]">
+            <div className="grid grid-cols-[repeat(4,minmax(0,max-content))] justify-center gap-[clamp(10px,1.4vw,16px)]">
+              {desbowlitza.map(([, aqui]) => (
+                <div key={aqui} className={`${paraula} pop font-titol bg-granat text-groc`}>
+                  {aqui}
+                </div>
+              ))}
+              {[0, 1, 2].map((i) => (
+                <div key={i} className={`${paraula} pop font-titol border-2 border-dashed border-granat text-[26px] text-granat`}>
+                  ?
+                </div>
+              ))}
+              <div className={`${paraula} pop bg-groc !p-1.5`}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/web/plats/crema-catalana.webp" alt={t("cremaRegal")} className="size-full object-contain" />
+              </div>
+            </div>
             {/* Des de l'ordinador, el camí curt: escanejar i fer-se'l al mòbil */}
-            <div className="rv hidden max-w-[460px] items-center gap-5 rounded-[22px] bg-white p-4 pr-6 md:flex">
+            <div className="rv hidden w-full max-w-[496px] items-center gap-5 rounded-[22px] bg-white p-4 pr-6 md:flex">
               <QrCarnet className="size-[112px] shrink-0" />
               <span className="text-[15px] leading-[1.55]">{t("carnetQr")}</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-[repeat(4,minmax(0,max-content))] justify-center gap-[clamp(10px,1.4vw,16px)]">
-            {desbowlitza.map(([, aqui]) => (
-              <div key={aqui} className={`${paraula} pop font-titol bg-granat text-groc`}>
-                {aqui}
-              </div>
-            ))}
-            {[0, 1, 2].map((i) => (
-              <div key={i} className={`${paraula} pop font-titol border-2 border-dashed border-granat text-[26px] text-granat`}>
-                ?
-              </div>
-            ))}
-            <div className={`${paraula} pop bg-groc !p-1.5`}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/web/plats/crema-catalana.webp" alt={t("cremaRegal")} className="size-full object-contain" />
             </div>
           </div>
         </div>
