@@ -409,18 +409,19 @@
     "inici": {
       "eyebrow": "Cuina catalana per emportar · Poblenou",
       "titol": "Si traiem el <x>bowl</x>,<br></br>què queda?",
-      "veureCarta": "Veure la carta",
       "recull": "Recull-la en 10 minuts",
       "demanaEyebrow": "Demana ara · tardor",
       "demanaTitol": "Avui a la carmanyola",
       "totaCarta": "Tota la carta",
+      "anterior": "Plat anterior",
+      "seguent": "Plat següent",
       "afegeix": "Afegeix {plat}",
-      "festeEyebrow": "El teu",
-      "festeText": "Plat, guarnició, dos acompanyaments i salsa a part. La picada, inclosa.",
       "dinar": "Afegeix-hi beguda o postres per <b>+2 €</b> i és El Dinar.",
       "desbEyebrow": "Operació Desbowlitzar",
       "desbText": "Deixem d’importar paraules, i plats. Això ja ho teníem aquí, i és boníssim.",
       "quedaTitol": "El que queda<br></br>és d’aquí.",
+      "puntsEyebrow": "Com treballem",
+      "puntsTitol": "Així es fa<br></br>una carmanyola.",
       "punts": [
         {
           "titol": "A xup-xup",
@@ -447,6 +448,7 @@
       "carnetText": "Cada comanda directa recupera una paraula d’aquí. Amb vuit, les postres són nostres. I si tens el carnet, a l’última mitja hora de cada servei t’avisem del que ha quedat a la cuina: és l’hora del Què Queda.",
       "carnetCta": "Fes-te el carnet",
       "carnetNota": "Al wallet del mòbil. Sense apps.",
+      "carnetQr": "Més ràpid: escaneja aquest QR amb el mòbil, posa-hi el nom i el número i el carnet va directe al teu wallet.",
       "cremaRegal": "Crema catalana de regal",
       "onEyebrow": "On som",
       "onTitol": "Un taulell petit al Poblenou.",
@@ -507,6 +509,7 @@
     },
     "comanda": {
       "titol": "La teva comanda",
+      "tanca": "Tanca la comanda",
       "buida": "Encara no hi ha res a la carmanyola.",
       "anaCarta": "Mira la carta",
       "dinar": "El Dinar · {nom}",
@@ -522,14 +525,35 @@
       "recull": "Passa-la a recollir a les <b>{hora}</b>",
       "numero": "Comanda {n}",
       "estat": "Confirmada",
-      "primera": "Recupera la primera paraula",
-      "primeraText": "Desa el carnet de desbowlitzador al mòbil. Aquesta comanda ja hi suma <s>bowl</s> <b>carmanyola</b>.",
-      "qr": "Codi QR de la comanda",
-      "faixa": "El mateix codi és a la faixa de la carmanyola",
-      "apple": "Afegeix a Apple Wallet",
-      "google": "Afegeix a Google Wallet",
+      "mobilCarnet": "Tens el carnet? El teu mòbil",
+      "opcional": "(opcional)",
+      "mobilPlaceholder": "600 000 000",
+      "mobilCarnetNota": "Hi sumem la paraula d'aquesta comanda.",
+      "sumant": "Sumant la paraula al carnet…",
+      "sumada": "+1 paraula al carnet de {nom}: <s>{de}</s> <b>{a}</b> · {n} de 8",
+      "sumadaSenseParaula": "+1 paraula al carnet de {nom} · {n} de 8",
+      "complet": "Carnet complet: les postres són nostres!",
+      "noCarnet": "No trobem cap carnet amb el {mobil}. La comanda, però, ja és feta.",
       "noTrobada": "No trobem aquesta comanda en aquest dispositiu.",
       "tornaInici": "Torna a l'inici"
+    },
+    "feste": {
+      "subtitol": "Un principal, una base i tres complements. La picada, inclosa.",
+      "tanca": "Tanca",
+      "grups": {
+        "principal": "El principal",
+        "base": "La base",
+        "complement": "Tres complements"
+      },
+      "compte": "{n} de {de}",
+      "tardor": "Tardor",
+      "alergens": "Al·lèrgens: {llista}.",
+      "confirma": "Confirma · {preu}",
+      "falta": {
+        "principal": "Tria el principal",
+        "base": "Tria la base",
+        "complement": "Tria tres complements"
+      }
     },
     "carnet": {
       "eyebrow": "Operació Desbowlitzar",
@@ -543,13 +567,26 @@
       "nomPlaceholder": "Laia",
       "correu": "Correu electrònic",
       "correuPlaceholder": "laia@exemple.cat",
+      "mobil": "Mòbil",
+      "mobilPlaceholder": "600 000 000",
+      "mobilNota": "És el que ens diràs en fer la comanda per sumar-hi la paraula.",
+      "opcional": "(opcional, per als avisos)",
       "consentiment": "Vull rebre avisos del padró, de l'hora del Què Queda i de les meves recompenses. Me'n puc donar de baixa quan vulgui.",
       "desa": "Desa el carnet al mòbil",
       "nota": "Es guarda a Apple Wallet o Google Wallet. Només sumen les comandes fetes directament a La Carmanyola.",
       "privacitat": "Privacitat",
-      "privacitatText": "Només fem servir el teu nom i el correu per al carnet. Si no marques la casella, no t'enviarem cap avís.",
+      "privacitatText": "Només fem servir el teu nom, el mòbil i el correu per al carnet. Si no marques la casella, no t'enviarem cap avís.",
       "fet": "Fet, {nom}! El carnet ja és teu.",
-      "fetText": "Aviat el podràs desar a Apple Wallet i Google Wallet des d'aquí mateix."
+      "fetText": "Aviat el podràs desar a Apple Wallet i Google Wallet des d'aquí mateix.",
+      "desant": "Fent-te el carnet…",
+      "error": "No hem pogut fer-te el carnet. Torna-ho a provar d'aquí a una estona.",
+      "escaneja": "Escaneja el QR amb la càmera del mòbil i el carnet anirà directe al teu wallet.",
+      "desaMobil": "Desa'l al wallet",
+      "qrTitol": "Fes-te'l al mòbil",
+      "qrText": "Escaneja el QR amb la càmera, posa-hi el nom i el mòbil i el carnet va directe al teu wallet.",
+      "oAqui": "o fes-te'l des d'aquí",
+      "elTeu": "El carnet de {nom}",
+      "aviat": "Encara no el podem posar al wallet. Desa aquesta pàgina: aquí hi tens el carnet fins que arribi."
     }
   }
 }

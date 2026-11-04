@@ -8,5 +8,5 @@ export const revalidate = 300;
 export default async function IniciPage() {
   const carta = await cartaPublica();
   const feste = carta.find((p) => p.seccio === "fes");
-  return <Inici plats={carmanyoles(carta).filter((p) => p.disponible)} preuFeste={feste?.preu ?? 1190} />;
+  return <Inici plats={carmanyoles(carta).filter((p) => p.disponible)} preuFeste={feste?.preu ?? 1390} />;
 }

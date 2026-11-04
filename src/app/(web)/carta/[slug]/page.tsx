@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { plats as cartaLocal } from "@/lib/data/carta";
 import { cartaPublica } from "@/lib/db/web";
@@ -34,6 +34,8 @@ export default async function FitxaPage({ params }: PageProps<"/carta/[slug]">) 
   const web = platWeb(plat);
   const ambDinar = plat.seccio === "casa" || plat.seccio === "fes";
   const dinar = ambDinar ? carta.filter((p) => opcionsDinar.includes(p.slug) && p.disponible).map((p) => ({ slug: p.slug, nom: p.nom })) : [];
+  // El Fes-te'l tu es tria en un popup, des de la carta.
+  if (plat.seccio === "fes") redirect("/carta?feste");
 
   return (
     <main className="mx-auto w-full max-w-[1240px] pb-10 md:px-[clamp(18px,4vw,56px)] md:pt-6">

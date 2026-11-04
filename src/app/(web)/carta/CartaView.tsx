@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { BarraComanda } from "@/components/web/BarraComanda";
 import { useCistella } from "@/components/web/Cistella";
+import { TriaFeste } from "@/components/web/TriaFeste";
 import type { Seccio } from "@/lib/data/carta";
 import { euros } from "@/lib/format";
 import type { PlatWeb } from "@/lib/web/contingut";
@@ -26,6 +27,13 @@ export function CartaView({ plats, seccions }: { plats: PlatWeb[]; seccions: Sec
   const { afegeix } = useCistella();
   const [filtre, setFiltre] = useState<Filtre>("tot");
   const [afegit, setAfegit] = useState<string | null>(null);
+  const [feste, setFeste] = useState(false);
+  const platFeste = plats.find((p) => p.seccio === "fes");
+
+  // Qui arriba des de /carta/fes-te-l-tu (?feste) ja el troba obert.
+  useEffect(() => {
+    if (new URLSearchParams(location.search).has("feste")) setFeste(true);
+  }, []);
 
   const posa = (p: PlatWeb) => {
     afegeix({ slug: p.slug, nom: p.nom, preu: p.preu });
@@ -38,7 +46,7 @@ export function CartaView({ plats, seccions }: { plats: PlatWeb[]; seccions: Sec
       type="button"
       disabled={!p.disponible}
       aria-label={t("afegeix", { plat: p.nom })}
-      onClick={() => posa(p)}
+      onClick={() => (p.seccio === "fes" ? setFeste(true) : posa(p))}
       className="relative z-10 flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full bg-granat text-xl leading-none text-groc transition-transform hover:scale-110 active:scale-90 disabled:cursor-not-allowed disabled:bg-linia disabled:text-suau"
     >
       {afegit === p.slug ? "✓" : "+"}
@@ -86,9 +94,21 @@ export function CartaView({ plats, seccions }: { plats: PlatWeb[]; seccions: Sec
                       <img src={p.imatge} alt="" className="size-[84px] shrink-0 object-contain" />
                     )}
                     <div className="flex min-w-0 flex-1 flex-col gap-1">
-                      <Link href={`/carta/${p.slug}`} className="font-titol text-base leading-tight text-tinta no-underline after:absolute after:inset-0 after:rounded-[20px]">
-                        {p.nom}
-                      </Link>
+                      {seccio === "fes" ? (
+                        <button
+                          type="button"
+                          disabled={!p.disponible}
+                          onClick={() => setFeste(true)}
+                          aria-haspopup="dialog"
+                          className="font-titol cursor-pointer border-0 bg-transparent p-0 text-left text-base leading-tight text-tinta after:absolute after:inset-0 after:rounded-[20px]"
+                        >
+                          {p.nom}
+                        </button>
+                      ) : (
+                        <Link href={`/carta/${p.slug}`} className="font-titol text-base leading-tight text-tinta no-underline after:absolute after:inset-0 after:rounded-[20px]">
+                          {p.nom}
+                        </Link>
+                      )}
                       <span className="text-[13px] leading-[1.4]">{p.resum}</span>
                       {(p.lema || !p.disponible) && <span className="text-xs text-granat">{p.disponible ? p.lema : t("noDisponible")}</span>}
                     </div>
@@ -124,6 +144,7 @@ export function CartaView({ plats, seccions }: { plats: PlatWeb[]; seccions: Sec
       </p>
 
       <BarraComanda />
+      {platFeste && <TriaFeste obert={feste} tanca={() => setFeste(false)} plat={{ slug: platFeste.slug, nom: platFeste.nom, preu: platFeste.preu }} />}
     </main>
   );
 }

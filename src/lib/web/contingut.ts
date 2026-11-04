@@ -121,11 +121,12 @@ export const fitxes: Record<string, FitxaWeb> = {
     empadronats: [],
   },
   "fes-te-l-tu": {
+    // No té fitxa: es tria en un popup des de la carta i des de l'inici.
     imatge: "/web/plats/tot-escalivat.webp",
-    resum: "Plat, guarnició, 2 acompanyaments i salsa a part.",
-    descripcio: "Tria el plat, la guarnició, dos acompanyaments i la salsa, que va a part. La picada hi és inclosa.",
-    zones: { gran: "El plat que triïs", petita: "La guarnició que triïs" },
-    nota: "La salsa, sempre a part.",
+    resum: "Un principal, una base i tres complements. La picada, inclosa.",
+    descripcio: "Tria un principal, una base (arròs, cigrons o fesols) i tres complements. La picada hi és inclosa.",
+    zones: { gran: "El principal i els complements", petita: "La base" },
+    nota: "",
     empadronats: [],
   },
   "crema-catalana": {
@@ -147,7 +148,11 @@ export interface CartaPadro {
   fins: string;
   cita: string;
   qui: string;
+  /** Text alternatiu de la foto. */
   foto: string;
+  imatge: string;
+  /** Foto del producte, a la targeta de l'ingredient. */
+  producte: string;
 }
 
 export const padroTardor: CartaPadro[] = [
@@ -158,6 +163,8 @@ export const padroTardor: CartaPadro[] = [
     cita: "«El bolet no es cultiva: es busca.»",
     qui: "Montse, boletaire del Solsonès",
     foto: "la Montse al bosc",
+    imatge: "/web/productors/bolets.webp",
+    producte: "/web/producte/bolets.webp",
   },
   {
     ingredient: "Castanyes",
@@ -166,6 +173,8 @@ export const padroTardor: CartaPadro[] = [
     cita: "«Quan cauen soles, és que són a punt.»",
     qui: "Ramon, castanyer del Montseny",
     foto: "el Ramon sota el castanyer",
+    imatge: "/web/productors/castanyes.webp",
+    producte: "/web/producte/castanyes.webp",
   },
   {
     ingredient: "Moniato",
@@ -174,6 +183,8 @@ export const padroTardor: CartaPadro[] = [
     cita: "«Del camp a la teva carmanyola hi ha quinze quilòmetres.»",
     qui: "Pau, pagès del delta",
     foto: "el Pau al camp",
+    imatge: "/web/productors/moniato.webp",
+    producte: "/web/producte/moniato.webp",
   },
   {
     ingredient: "Codony",
@@ -182,6 +193,8 @@ export const padroTardor: CartaPadro[] = [
     cita: "«El codony fa olor de tardor tot l’any.»",
     qui: "Núria, de l’horta del Segrià",
     foto: "la Núria a l’horta",
+    imatge: "/web/productors/codony.webp",
+    producte: "/web/producte/codony.webp",
   },
 ];
 

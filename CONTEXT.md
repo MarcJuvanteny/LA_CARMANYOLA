@@ -68,29 +68,29 @@ Projecte de portfolio d'un Frontend Developer (perfil creatiu i tècnic). Consis
 
 | Plat | Preu | Notes |
 |---|---|---|
-| La de Sempre | 12,50 € | Botifarra amb mongetes de Santa Pau |
-| Pollastre de Diumenge | 12,50 € | Pollastre amb prunes i pinyons |
-| L'Esqueixat | 13,50 € | Plat fred |
-| Tot Escalivat | 11,90 € | Vegà (amb anxoves, +2,00 €) |
-| Fricandó amb Bolets | 13,90 € | Tardor |
-| La Castanyera | 12,90 € | Tardor, vegetarià |
+| La de Sempre | 11,50 € | Botifarra amb mongetes de Santa Pau |
+| Pollastre de Diumenge | 11,50 € | Pollastre amb prunes i pinyons |
+| L'Esqueixat | 12,50 € | Plat fred |
+| Tot Escalivat | 10,90 € | Vegà (amb anxoves, +2,00 €) |
+| Fricandó amb Bolets | 12,90 € | Tardor |
+| La Castanyera | 11,90 € | Tardor, vegetarià |
 
-- **Fes-te'l tu:** 11,90 €. Plat, guarnició, 2 acompanyaments i salsa a part; la picada és inclosa. Té suplements.
+- **Fes-te'l tu:** 13,90 €. Un principal, una base (arròs, cigrons o fesols) i tres complements; la picada és inclosa. Bacallà, fricandó, formatge i anxoves porten suplement.
 - **Per acompanyar:**
-  - Coca de recapte: 4,50 €
-  - Pa amb tomàquet per muntar: 3,50 €
-  - Olives i encurtits: 3,50 €
-- **Postres (4,50 € cadascun):**
+  - Coca de recapte: 3,50 €
+  - Pa amb tomàquet per muntar: 2,50 €
+  - Olives i encurtits: 2,50 €
+- **Postres (3,50 € cadascun):**
   - Crema catalana
   - Pa amb tomàquet i xocolata
   - Mel i mató
 
   Els panellets **no** són a la carta.
 - **Begudes:**
-  - Llimonada de marialluïsa: 2,90 €
-  - Vermut sense alcohol: 3,20 €
-  - Beguda de temporada: 3,20 €
-  - Aigua: 1,80 €
+  - Llimonada de marialluïsa: 1,90 €
+  - Vermut sense alcohol: 2,20 €
+  - Beguda de temporada: 2,20 €
+  - Aigua: 0,80 €
 - **El Dinar:** qualsevol carmanyola + beguda o postre per **+2 €**.
 - **Salses sempre a part.** No hi ha fregidora.
 
@@ -291,7 +291,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### La de Sempre
 - **Sección:** casa
-- **Precio:** 12,50 €
+- **Precio:** 11,50 €
 - **Temporada:** todo el año
 - **Etiquetas:** caliente, el más contundente
 - **Alérgenos:** gluten, frutos de cáscara (picada), huevo (allioli), sulfitos\* (cebolla encurtida)
@@ -304,7 +304,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### Pollastre de Diumenge
 - **Sección:** casa
-- **Precio:** 12,50 €
+- **Precio:** 11,50 €
 - **Temporada:** todo el año
 - **Etiquetas:** caliente
 - **Alérgenos:** gluten, frutos de cáscara (picada), sulfitos (vi ranci; vinagre de la salsa verde)
@@ -317,7 +317,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### L'Esqueixat
 - **Sección:** casa
-- **Precio:** 13,50 €
+- **Precio:** 12,50 €
 - **Temporada:** todo el año (en verano, el pimiento pasa a ser tomate)
 - **Etiquetas:** frío, pescado
 - **Alérgenos:** pescado, gluten, frutos de cáscara, sulfitos\* (romesco)
@@ -330,7 +330,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### Tot Escalivat
 - **Sección:** casa
-- **Precio:** 11,90 €
+- **Precio:** 10,90 €
 - **Temporada:** todo el año
 - **Etiquetas:** vegano, templado
 - **Alérgenos:** gluten, frutos de cáscara (picada y romesco), sulfitos\*. Con anchoas: + pescado.
@@ -343,7 +343,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### Fricandó amb Bolets
 - **Sección:** casa
-- **Precio:** 13,90 €
+- **Precio:** 12,90 €
 - **Temporada:** otoño
 - **Etiquetas:** caliente, de temporada, padró
 - **Alérgenos:** gluten (harina y picada), frutos de cáscara (picada), sulfitos (vi ranci)
@@ -356,7 +356,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### La Castanyera
 - **Sección:** casa
-- **Precio:** 12,90 €
+- **Precio:** 11,90 €
 - **Temporada:** otoño
 - **Etiquetas:** vegetariano (vegano sin el queso), sin gluten por receta, de temporada, padró
 - **Alérgenos:** leche (queso)
@@ -373,7 +373,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### Fes-te'l tu
 - **Sección:** Fes-te'l tu
-- **Precio:** 11,90 €
+- **Precio:** 13,90 €
 - **Temporada:** todo el año (las opciones de otoño, solo en otoño)
 - **Etiquetas:** configurable; con ruta vegana y ruta sin gluten
 - **Alérgenos:** según la combinación. Picada: gluten y frutos de cáscara. Allioli: huevo. Romesco: gluten, frutos de cáscara y sulfitos\*. Bacalao y anchoas: pescado. Queso: leche. Fricandó: gluten y sulfitos.
@@ -401,7 +401,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### Coca de recapte
 - **Sección:** acompañar
-- **Precio:** 4,50 €
+- **Precio:** 3,50 €
 - **Temporada:** todo el año
 - **Etiquetas:** vegano
 - **Alérgenos:** gluten
@@ -414,7 +414,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### Pa amb tomàquet per muntar
 - **Sección:** acompañar
-- **Precio:** 3,50 €
+- **Precio:** 2,50 €
 - **Temporada:** todo el año
 - **Etiquetas:** vegano, kit
 - **Alérgenos:** gluten
@@ -427,7 +427,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### Olives i encurtits
 - **Sección:** acompañar
-- **Precio:** 3,50 €
+- **Precio:** 2,50 €
 - **Temporada:** todo el año
 - **Etiquetas:** vegano, sin gluten
 - **Alérgenos:** sulfitos\*
@@ -444,7 +444,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### Crema catalana
 - **Sección:** postres
-- **Precio:** 4,50 €
+- **Precio:** 3,50 €
 - **Temporada:** todo el año
 - **Etiquetas:** vegetariano, frío
 - **Alérgenos:** leche, huevo
@@ -457,7 +457,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### Pa amb tomàquet i xocolata
 - **Sección:** postres
-- **Precio:** 4,50 €
+- **Precio:** 3,50 €
 - **Temporada:** todo el año
 - **Etiquetas:** vegano, para comer con la mano, pendiente de validar con marketing
 - **Alérgenos:** gluten (soja si el chocolate lleva lecitina; elegir uno sin ella)
@@ -470,7 +470,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### Mel i mató
 - **Sección:** postres
-- **Precio:** 4,50 €
+- **Precio:** 3,50 €
 - **Temporada:** todo el año
 - **Etiquetas:** vegetariano, frío, sin gluten
 - **Alérgenos:** leche, frutos de cáscara (nueces)
@@ -489,7 +489,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### Llimonada de marialluïsa
 - **Sección:** bebidas
-- **Precio:** 2,90 €
+- **Precio:** 1,90 €
 - **Temporada:** todo el año
 - **Etiquetas:** sin alcohol, propia, hecha cada mañana
 - **Alérgenos:** —
@@ -502,7 +502,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### Vermut de la casa sense alcohol
 - **Sección:** bebidas
-- **Precio:** 3,20 €
+- **Precio:** 2,20 €
 - **Temporada:** todo el año
 - **Etiquetas:** sin alcohol, propia
 - **Alérgenos:** sulfitos
@@ -515,7 +515,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### Beguda de temporada
 - **Sección:** bebidas
-- **Precio:** 3,20 €
+- **Precio:** 2,20 €
 - **Temporada:** cambia cada temporada
   - Otoño: most del Penedès
   - Invierno: llimonada de mandarina de l'Ebre
@@ -532,7 +532,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### Aigua
 - **Sección:** bebidas
-- **Precio:** 1,80 €
+- **Precio:** 0,80 €
 - **Temporada:** todo el año
 - **Etiquetas:** sin alcohol
 - **Alérgenos:** —
@@ -542,7 +542,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### Vermut de Reus
 - **Sección:** bebidas
-- **Precio:** 3,50 €
+- **Precio:** 2,50 €
 - **Temporada:** todo el año
 - **Etiquetas:** con alcohol, solo en el local
 - **Alérgenos:** sulfitos
@@ -555,7 +555,7 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ### Cervesa artesana del Poblenou
 - **Sección:** bebidas
-- **Precio:** 3,90 €
+- **Precio:** 2,90 €
 - **Temporada:** todo el año
 - **Etiquetas:** con alcohol, solo en el local
 - **Alérgenos:** gluten
@@ -570,4 +570,4 @@ Decisions de producte que ja no es fan. No les tornis a introduir.
 
 ## El Dinar (combo de mediodía)
 
-Cualquier carmanyola + bebida propia sin alcohol o postre: **+2,00 €**. Entre 13,90 € y 15,90 €, siempre por debajo de los 16 € del menú del día. Suma sello en el carnet si se pide en directo. Se aceptan cheques comida.
+Cualquier carmanyola + bebida propia sin alcohol o postre: **+2,00 €**. Entre 12,90 € y 15,90 €, siempre por debajo de los 16 € del menú del día. Suma sello en el carnet si se pide en directo. Se aceptan cheques comida.

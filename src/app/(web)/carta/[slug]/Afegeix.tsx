@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useCistella } from "@/components/web/Cistella";
@@ -8,15 +7,17 @@ import { SUPLEMENT_DINAR } from "@/lib/data/carta";
 import { euros } from "@/lib/format";
 
 interface Props {
-  plat: { slug: string; nom: string; preu: number; disponible: boolean };
+  plat: { slug: string; nom: string; preu: number; disponible: boolean; detall?: string };
   dinar: { slug: string; nom: string }[];
+  /** Si encara no es pot afegir (un Fes-te'l tu a mitges), què falta */
+  falta?: string;
 }
 
 /** El Dinar, la quantitat i el botó d'afegir. Al mòbil, la barra queda enganxada a baix. */
-export function Afegeix({ plat, dinar }: Props) {
+export function Afegeix({ plat, dinar, falta }: Props) {
   const t = useTranslations("web.fitxa");
   const tc = useTranslations("web.carta");
-  const { afegeix } = useCistella();
+  const { afegeix, obre } = useCistella();
   const [opcio, setOpcio] = useState<string>("");
   const [quantitat, setQuantitat] = useState(1);
   const [fet, setFet] = useState(false);
@@ -62,20 +63,25 @@ export function Afegeix({ plat, dinar }: Props) {
           </button>
         </div>
         {fet ? (
-          <Link href="/comanda" className="flex-1 rounded-full bg-tinta p-4 text-center text-[13px] font-medium tracking-[.06em] text-paper uppercase no-underline">
+          <button
+            type="button"
+            onClick={obre}
+            aria-haspopup="dialog"
+            className="flex-1 cursor-pointer rounded-full border-0 bg-tinta p-4 text-center text-[13px] font-medium tracking-[.06em] text-paper uppercase"
+          >
             {t("afegit")} · {t("veureComanda")}
-          </Link>
+          </button>
         ) : (
           <button
             type="button"
-            disabled={!plat.disponible}
+            disabled={!plat.disponible || !!falta}
             onClick={() => {
-              afegeix({ slug: plat.slug, nom: plat.nom, preu: plat.preu, dinar: triat }, quantitat);
+              afegeix({ slug: plat.slug, nom: plat.nom, preu: plat.preu, dinar: triat, detall: plat.detall }, quantitat);
               setFet(true);
             }}
             className="flex-1 cursor-pointer rounded-full border-0 bg-granat p-4 text-center text-[13px] font-medium tracking-[.06em] text-paper uppercase disabled:cursor-not-allowed disabled:bg-linia disabled:text-suau"
           >
-            {plat.disponible ? t("afegeix", { preu: euros(total) }) : tc("noDisponible")}
+            {!plat.disponible ? tc("noDisponible") : (falta ?? t("afegeix", { preu: euros(total) }))}
           </button>
         )}
       </div>

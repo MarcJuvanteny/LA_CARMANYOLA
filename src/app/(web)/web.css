@@ -92,6 +92,35 @@
     }
   }
 
+  /* Calaix de la comanda: entra des de la dreta */
+  .calaix[open] {
+    animation: calaix 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .calaix[open]::backdrop,
+  .popup[open]::backdrop {
+    animation: fosc 0.32s ease-out;
+  }
+  /* Popup: apareix al mig, creixent una mica */
+  .popup[open] {
+    animation: popup 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  @keyframes popup {
+    from {
+      opacity: 0;
+      transform: translateY(16px) scale(0.97);
+    }
+  }
+  @keyframes calaix {
+    from {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes fosc {
+    from {
+      opacity: 0;
+    }
+  }
+
   .sense-barra {
     scrollbar-width: none;
   }
@@ -143,7 +172,11 @@
     .rv,
     .pop,
     .drop,
-    .bota {
+    .bota,
+    .calaix[open],
+    .calaix[open]::backdrop,
+    .popup[open],
+    .popup[open]::backdrop {
       animation: none !important;
     }
     .plat-card,

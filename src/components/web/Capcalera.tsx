@@ -17,7 +17,7 @@ export function IconaCistella({ className = "" }: { className?: string }) {
 /** Capçalera fixa: el logotip gran es fa petit (isotip) quan es baixa; a l'inici, quan s'acaba la portada. */
 export function Capcalera() {
   const t = useTranslations("web.nav");
-  const { unitats, bot } = useCistella();
+  const { unitats, bot, obre } = useCistella();
   const [avall, setAvall] = useState(false);
   const cap = useRef<HTMLElement>(null);
 
@@ -71,13 +71,13 @@ export function Capcalera() {
 
           <div className="flex items-center gap-3.5 justify-self-end">
             <span className="hidden text-xs tracking-[.08em] whitespace-nowrap opacity-60 lg:inline">{t("idiomes")}</span>
-            <Link key={bot} href="/comanda" aria-label={t("cistella", { n: unitats })} className={`relative flex size-12 items-center justify-center rounded-full text-groc ${bot ? "bota" : ""}`}>
+            <button key={bot} type="button" onClick={obre} aria-haspopup="dialog" aria-label={t("cistella", { n: unitats })} className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-groc ${bot ? "bota" : ""}`}>
               <IconaCistella />
               {unitats > 0 && (
                 <b className="absolute -top-1 -right-1 flex h-[22px] min-w-[22px] items-center justify-center rounded-full bg-groc px-1.5 text-xs font-semibold text-granat">{unitats}</b>
               )}
-            </Link>
-            <Link href="/#demana" className="web-btn hidden bg-groc px-[22px] py-3.5 whitespace-nowrap text-granat hover:bg-paper md:inline-flex">
+            </button>
+            <Link href="/carta" className="web-btn hidden bg-groc px-[22px] py-3.5 whitespace-nowrap text-granat hover:bg-paper md:inline-flex">
               {t("demana")}
             </Link>
           </div>

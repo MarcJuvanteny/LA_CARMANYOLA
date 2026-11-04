@@ -4,9 +4,15 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useCistella } from "@/components/web/Cistella";
+import { QrCarnet } from "@/components/web/QrCarnet";
+import { TriaFeste } from "@/components/web/TriaFeste";
 import { euros } from "@/lib/format";
 import { desbowlitza, padroTardor, type PlatWeb } from "@/lib/web/contingut";
 
+/** Alçada de la capçalera quan es fa petita (en baixar) */
+const CAP_PETITA = 72;
+/** Granat que queda sota les targetes del padró quan s'acaba */
+const AIRE_PADRO = 110;
 const voraWrap = "max(18px, calc((100vw - 1240px) / 2 + 56px))";
 const wrap = "mx-auto w-full max-w-[1240px] px-[clamp(18px,4vw,56px)]";
 
@@ -46,7 +52,7 @@ function useScrollInici() {
       setS({
         h: progres("portada", vh),
         d: progres("desb", Math.min(vh - 90, 640)),
-        pr: progres("padro", Math.min(vh, 860)),
+        pr: progres("padro", Math.min(vh - CAP_PETITA, 860) + AIRE_PADRO),
       });
     };
     const programa = () => {
@@ -65,11 +71,123 @@ function useScrollInici() {
   return { s, recorregut, pista };
 }
 
+/** La galeria de plats avança sola i dona la volta (la llista hi és dues vegades). Es para mentre s'hi toca. */
+function useDesfila() {
+  const ref = useRef<HTMLDivElement>(null);
+  const salta = useRef<(sentit: 1 | -1) => void>(() => {});
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    let abans = 0;
+    let pos = el.scrollLeft;
+    let sobre = false;
+    let quiet = 0;
+    // Les fletxes: avança o recula una targeta (i, si cal, dona la volta abans de recular).
+    salta.current = (sentit) => {
+      const v = volta();
+      const targeta = (el.querySelector("article") as HTMLElement | null)?.offsetWidth ?? 280;
+      quiet = performance.now() + 4000;
+      // Es dona la volta abans de lliscar, perquè el bucle no l'hagi de fer a mig moviment.
+      if (v && sentit < 0 && el.scrollLeft < targeta + 18) el.scrollLeft += v;
+      if (v && sentit > 0 && el.scrollLeft + targeta + 18 >= v) el.scrollLeft -= v;
+      el.scrollBy({ left: sentit * (targeta + 18), behavior: "smooth" });
+    };
+    // Distància d'una volta: on comença la còpia respecte de l'original.
+    const volta = () => {
+      const copia = el.querySelector<HTMLElement>("[data-copia]");
+      return copia ? copia.offsetLeft - (el.firstElementChild as HTMLElement).offsetLeft : 0;
+    };
+    const pas = (ara: number) => {
+      const dt = abans ? Math.min(ara - abans, 50) : 0;
+      abans = ara;
+      const v = volta();
+      if (sobre || ara < quiet || !v) {
+        pos = el.scrollLeft;
+      } else {
+        pos += dt * 0.035;
+      }
+      if (v && pos >= v) pos -= v;
+      if (v && pos < 0) pos += v;
+      if (Math.abs(el.scrollLeft - pos) >= 0.5) el.scrollLeft = pos;
+      raf = requestAnimationFrame(pas);
+    };
+    const entra = (e: PointerEvent) => {
+      if (e.pointerType === "mouse") sobre = true;
+    };
+    const surt = () => {
+      sobre = false;
+    };
+    const toca = () => {
+      quiet = performance.now() + 2500;
+    };
+    // Amb el ratolí, s'arrossega; si s'ha arrossegat, el clic no obre el plat.
+    let agafat: { x: number; inici: number } | null = null;
+    let arrossegat = false;
+    const prem = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      agafat = { x: e.clientX, inici: el.scrollLeft };
+      arrossegat = false;
+    };
+    const mou = (e: PointerEvent) => {
+      if (!agafat) return;
+      const dx = e.clientX - agafat.x;
+      if (Math.abs(dx) > 5) arrossegat = true;
+      if (arrossegat) {
+        e.preventDefault();
+        el.scrollLeft = agafat.inici - dx;
+      }
+    };
+    const deixa = () => {
+      agafat = null;
+    };
+    const noArrossega = (e: DragEvent) => e.preventDefault();
+    const clic = (e: MouseEvent) => {
+      if (arrossegat) {
+        e.preventDefault();
+        e.stopPropagation();
+        arrossegat = false;
+      }
+    };
+    el.addEventListener("pointerenter", entra);
+    el.addEventListener("pointerleave", surt);
+    el.addEventListener("touchstart", toca, { passive: true });
+    el.addEventListener("touchmove", toca, { passive: true });
+    el.addEventListener("wheel", toca, { passive: true });
+    el.addEventListener("focusin", toca);
+    el.addEventListener("pointerdown", prem);
+    el.addEventListener("click", clic, true);
+    el.addEventListener("dragstart", noArrossega);
+    window.addEventListener("pointermove", mou);
+    window.addEventListener("pointerup", deixa);
+    raf = requestAnimationFrame(pas);
+    return () => {
+      cancelAnimationFrame(raf);
+      el.removeEventListener("pointerenter", entra);
+      el.removeEventListener("pointerleave", surt);
+      el.removeEventListener("touchstart", toca);
+      el.removeEventListener("touchmove", toca);
+      el.removeEventListener("wheel", toca);
+      el.removeEventListener("focusin", toca);
+      el.removeEventListener("pointerdown", prem);
+      el.removeEventListener("click", clic, true);
+      el.removeEventListener("dragstart", noArrossega);
+      window.removeEventListener("pointermove", mou);
+      window.removeEventListener("pointerup", deixa);
+    };
+  }, []);
+
+  return { ref, salta: (sentit: 1 | -1) => salta.current(sentit) };
+}
+
 export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: number }) {
   const t = useTranslations("web.inici");
   const tn = useTranslations("web.nav");
   const { afegeix } = useCistella();
   const { s, recorregut, pista } = useScrollInici();
+  const galeria = useDesfila();
+  const [feste, setFeste] = useState(false);
   const [llest, setLlest] = useState(false);
 
   useEffect(() => {
@@ -89,8 +207,8 @@ export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: numbe
       {/* Portada: es queda quieta mentre el bowl es fa plat i la pregunta troba resposta */}
       <section id="portada" className="tex-granat relative h-[300vh] text-groc" style={{ marginTop: "calc(-1 * var(--cap, 106px))" }}>
         <div className="sticky top-0 flex h-svh items-center overflow-hidden" style={{ paddingTop: "var(--cap, 106px)" }}>
-          {/* El plat, ampliat i tallat per la vora dreta */}
-          <div aria-hidden className="pointer-events-none absolute top-[calc(50%+var(--cap,106px)/2)] right-[-16vh] hidden aspect-square h-[84vh] -translate-y-1/2 md:block">
+          {/* El plat, sencer al costat del text: el text (i la seva A) hi passa per sobre */}
+          <div aria-hidden className="pointer-events-none absolute top-[calc(50%+var(--cap,106px)/2)] right-[clamp(24px,4vw,90px)] hidden aspect-square h-[min(66vh,42vw)] -translate-y-1/2 md:block">
             <svg viewBox="0 0 200 200" className="absolute inset-0 size-full transition-opacity duration-500" style={{ opacity: 1 - aCarmanyola }}>
               <circle cx="100" cy="100" r="96" fill="#2EC4B6" />
               <circle cx="100" cy="100" r="82" fill="#E9FBF9" />
@@ -144,14 +262,9 @@ export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: numbe
                 <img src="/brand/imagotip-groc.svg" alt="La Carmanyola" className="h-auto w-[min(100%,clamp(300px,52vw,860px))] self-start" />
               </div>
             </div>
-            <div className="flex flex-wrap items-center gap-x-7 gap-y-3.5">
-              <a href="#demana" className="web-btn bg-groc text-granat">
-                {tn("demana")}
-              </a>
-              <Link href="/carta" className="text-[15px] text-groc underline decoration-groc/40 underline-offset-[6px] hover:decoration-groc">
-                {t("veureCarta")}
-              </Link>
-            </div>
+            <Link href="/carta" className="web-btn self-start bg-groc text-granat">
+              {tn("demana")}
+            </Link>
           </div>
         </div>
       </section>
@@ -167,40 +280,65 @@ export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: numbe
             {t("totaCarta")}
           </Link>
         </div>
-        <div className="sense-barra mt-[34px] flex snap-x snap-mandatory gap-[18px] overflow-x-auto pt-2.5 pb-6" style={{ paddingInline: voraWrap }}>
-          {plats.map((p) => (
-            <article key={p.slug} className="plat-card relative flex flex-[0_0_clamp(220px,22vw,280px)] snap-start flex-col gap-2.5 rounded-[28px] bg-white p-4 pb-[18px]">
-              {p.imatge && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={p.imatge} alt={p.nom} className="aspect-square w-full object-contain" />
-              )}
-              {p.lema && <span className="web-eb text-[11px] text-granat">{p.lema}</span>}
-              <Link href={`/carta/${p.slug}`} className="font-titol text-xl leading-[1.15] text-tinta no-underline after:absolute after:inset-0 after:rounded-[28px]">
-                {p.nom}
-              </Link>
-              <div className="mt-auto flex items-center justify-between">
-                <span className="font-titol text-[19px]">{euros(p.preu)}</span>
+        {/* Desfila sola; en passar-hi el ratolí o tocar-la, s'atura i es pot moure a mà */}
+        <div className="relative mt-[34px]">
+          {/* Les fletxes, una a cada costat de la pantalla: cap on apunten, cap allà va la galeria */}
+          {([-1, 1] as const).map((sentit) => (
+            <button
+              key={sentit}
+              type="button"
+              onClick={() => galeria.salta(sentit)}
+              aria-label={t(sentit < 0 ? "anterior" : "seguent")}
+              className={`absolute top-1/2 z-20 hidden size-14 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-0 bg-granat text-2xl text-groc shadow-[0_8px_24px_rgb(56_56_58/0.25)] transition-transform hover:scale-110 active:scale-95 md:flex ${sentit < 0 ? "left-[clamp(12px,2vw,32px)]" : "right-[clamp(12px,2vw,32px)]"}`}
+            >
+              {sentit < 0 ? "←" : "→"}
+            </button>
+          ))}
+          <div ref={galeria.ref} className="sense-barra flex gap-[18px] overflow-x-auto pt-2.5 pb-6" style={{ paddingInline: voraWrap }}>
+            {[false, true].map((copia) => (
+              <div key={String(copia)} data-copia={copia || undefined} aria-hidden={copia || undefined} className="flex shrink-0 gap-[18px]">
+                {plats.map((p) => (
+                  <article key={p.slug} className="plat-card relative flex w-[clamp(220px,22vw,280px)] shrink-0 flex-col gap-2.5 rounded-[28px] bg-white p-4 pb-[18px]">
+                    {p.imatge && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={p.imatge} alt={p.nom} className="aspect-square w-full object-contain" />
+                    )}
+                    {p.lema && <span className="web-eb text-[11px] text-granat">{p.lema}</span>}
+                    <Link
+                      href={`/carta/${p.slug}`}
+                      tabIndex={copia ? -1 : undefined}
+                      className="font-titol text-xl leading-[1.15] text-tinta no-underline after:absolute after:inset-0 after:rounded-[28px]"
+                    >
+                      {p.nom}
+                    </Link>
+                    <div className="mt-auto flex items-center justify-between">
+                      <span className="font-titol text-[19px]">{euros(p.preu)}</span>
+                      <button
+                        type="button"
+                        tabIndex={copia ? -1 : undefined}
+                        aria-label={t("afegeix", { plat: p.nom })}
+                        onClick={() => afegeix({ slug: p.slug, nom: p.nom, preu: p.preu })}
+                        className="relative z-10 flex size-12 cursor-pointer items-center justify-center rounded-full bg-granat text-2xl leading-none text-groc transition-transform hover:scale-110 active:scale-90"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </article>
+                ))}
                 <button
                   type="button"
-                  aria-label={t("afegeix", { plat: p.nom })}
-                  onClick={() => afegeix({ slug: p.slug, nom: p.nom, preu: p.preu })}
-                  className="relative z-10 flex size-12 cursor-pointer items-center justify-center rounded-full bg-granat text-2xl leading-none text-groc transition-transform hover:scale-110 active:scale-90"
+                  tabIndex={copia ? -1 : undefined}
+                  onClick={() => setFeste(true)}
+                  aria-haspopup="dialog"
+                  className="plat-card tex-groc flex w-[clamp(220px,22vw,280px)] shrink-0 cursor-pointer items-center justify-center rounded-[28px] border-0 p-4 text-granat"
                 >
-                  +
+                  <span className="font-titol text-[44px] leading-none">Fes-te’l tu</span>
                 </button>
               </div>
-            </article>
-          ))}
-          <Link
-            href="/carta#fes"
-            className="plat-card tex-groc flex flex-[0_0_clamp(220px,22vw,280px)] snap-start flex-col justify-between gap-2.5 rounded-[28px] p-4 pb-[18px] text-granat no-underline"
-          >
-            <span className="web-eb">{t("festeEyebrow")}</span>
-            <span className="font-titol text-[44px] leading-none">Fes-te’l tu</span>
-            <span className="text-[15px] leading-normal text-tinta">{t("festeText")}</span>
-            <span className="font-titol text-[19px]">{euros(preuFeste)} →</span>
-          </Link>
+            ))}
+          </div>
         </div>
+        <TriaFeste obert={feste} tanca={() => setFeste(false)} plat={{ slug: "fes-te-l-tu", nom: "Fes-te'l tu", preu: preuFeste }} />
         <div className={wrap}>
           <p className="m-0 text-[15px]">
             {t.rich("dinar", {
@@ -233,10 +371,14 @@ export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: numbe
         </div>
       </section>
 
-      {/* El que queda és d'aquí: els tres punts (el títol és a la portada) */}
+      {/* Així es fa una carmanyola: els tres punts */}
       <section className="pb-[clamp(60px,8vw,120px)]">
         <div className={`${wrap} flex flex-col gap-[clamp(36px,5vw,64px)]`}>
-          <div className="grid max-w-[1000px] grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-[18px]">
+          <div className="flex flex-col gap-[22px]">
+            <span className="web-eb rv text-granat">{t("puntsEyebrow")}</span>
+            <h2 className="rv m-0 text-[clamp(44px,5.6vw,88px)] leading-none text-granat">{t.rich("puntsTitol", { br: () => <br /> })}</h2>
+          </div>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-[18px]">
             {(t.raw("punts") as { titol: string; text: string }[]).map((p) => (
               <div key={p.titol} className="rv flex flex-col gap-2.5 border-t-2 border-granat pt-5">
                 <span className="font-titol text-[30px] text-granat">{p.titol}</span>
@@ -248,8 +390,8 @@ export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: numbe
       </section>
 
       {/* El padró: la fila avança de costat mentre es baixa */}
-      <section id="padro" className="tex-granat relative h-[2600px] text-paper">
-        <div className="sticky top-0 flex h-[min(100vh,860px)] flex-col justify-center gap-[34px] overflow-hidden">
+      <section id="padro" className="tex-granat relative h-[2600px] pb-[110px] text-paper">
+        <div className="sticky top-[72px] flex h-[min(calc(100vh-72px),860px)] flex-col justify-center gap-[34px] overflow-hidden">
           <div className={`${wrap} flex flex-wrap items-end justify-between gap-3.5`}>
             <div className="flex flex-col gap-2.5">
               <span className="web-eb text-groc">{t("padroEyebrow")}</span>
@@ -293,6 +435,11 @@ export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: numbe
               </Link>
               <span className="text-sm">{t("carnetNota")}</span>
             </div>
+            {/* Des de l'ordinador, el camí curt: escanejar i fer-se'l al mòbil */}
+            <div className="rv hidden max-w-[460px] items-center gap-5 rounded-[22px] bg-white p-4 pr-6 md:flex">
+              <QrCarnet className="size-[112px] shrink-0" />
+              <span className="text-[15px] leading-[1.55]">{t("carnetQr")}</span>
+            </div>
           </div>
           <div className="grid grid-cols-[repeat(4,minmax(0,max-content))] justify-center gap-[clamp(10px,1.4vw,16px)]">
             {desbowlitza.map(([, aqui]) => (
@@ -334,9 +481,9 @@ export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: numbe
               ))}
             </dl>
             <div className="rv flex flex-wrap gap-3">
-              <a href="#demana" className="web-btn bg-granat text-groc">
+              <Link href="/carta" className="web-btn bg-granat text-groc">
                 {tn("demana")}
-              </a>
+              </Link>
               <a href="https://www.google.com/maps/search/?api=1&query=Poblenou%2C%20Barcelona" target="_blank" rel="noopener" className="web-btn border-[1.5px] border-granat text-granat">
                 {t("comArribar")}
               </a>
@@ -355,17 +502,21 @@ const paraula = "flex aspect-square w-[clamp(78px,8vw,112px)] items-center justi
 function PadroParella({ p, etiqueta }: { p: (typeof padroTardor)[number]; etiqueta: string }) {
   return (
     <>
-      <article className={`${targeta} bg-groc text-granat`}>
+      <article className={`${targeta} @container bg-groc text-granat`}>
         <span className="web-eb">{etiqueta}</span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={p.producte} alt={p.ingredient} loading="lazy" className="my-4 min-h-0 w-full flex-1 rounded-[20px] object-cover" />
         <div className="flex flex-col gap-2">
-          <span className="font-titol text-[64px] leading-[.95]">{p.ingredient}</span>
+          <span className="font-titol text-[min(56px,12.5cqi)] leading-[.95] whitespace-nowrap">{p.ingredient}</span>
           <span className="text-base text-tinta">{p.origen}</span>
           <span className="text-sm text-tinta">{p.fins}</span>
         </div>
       </article>
-      <article className={`${targeta} bg-[repeating-linear-gradient(135deg,rgb(255_234_128/0.10)_0_14px,transparent_14px_28px)] bg-granat-clar text-groc`}>
-        <span className="text-xs tracking-[.08em] uppercase opacity-80">[ Foto · {p.foto} ]</span>
-        <div className="flex flex-col gap-2.5">
+      <article className={`${targeta} justify-end! bg-granat-clar text-groc`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={p.imatge} alt={p.foto} loading="lazy" className="absolute inset-0 size-full object-cover" />
+        <span className="absolute inset-0 bg-linear-to-t from-granat via-granat/50 via-35% to-transparent to-60%" />
+        <div className="relative flex flex-col gap-2.5">
           <span className="font-titol text-[28px] leading-[1.15]">{p.cita}</span>
           <span className="text-[15px] text-paper">{p.qui}</span>
         </div>

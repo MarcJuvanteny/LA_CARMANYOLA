@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CalaixComanda } from "@/components/web/CalaixComanda";
 import { Capcalera } from "@/components/web/Capcalera";
 import { CistellaProvider } from "@/components/web/Cistella";
 import { Peu } from "@/components/web/Peu";
@@ -16,6 +17,7 @@ export default function WebLayout({ children }: { children: React.ReactNode }) {
         <Capcalera />
         {children}
         <Peu />
+        <CalaixComanda />
       </div>
     </CistellaProvider>
   );
