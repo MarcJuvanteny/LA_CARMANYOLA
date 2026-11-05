@@ -5,8 +5,9 @@ import { Imagotip } from "@/components/brand/Imagotip";
 export async function Peu() {
   const t = await getTranslations("web");
   return (
-    <footer className="tex-granat py-[60px] pb-10 text-paper">
-      <div className="mx-auto flex max-w-[1240px] flex-wrap items-center justify-between gap-6 px-[clamp(18px,4vw,56px)]">
+    <footer className="tex-granat text-paper">
+      <div aria-hidden className="franja-granat" />
+      <div className="mx-auto flex max-w-[1240px] flex-wrap items-center justify-between gap-6 px-[clamp(18px,4vw,56px)] py-14">
         <Imagotip versio="groc" className="h-[54px]" />
         <nav aria-label={t("peu.label")} className="flex flex-wrap gap-[22px] text-sm">
           <Link href="/carta" className="text-paper underline">
@@ -24,6 +25,7 @@ export async function Peu() {
         </nav>
         <span className="text-sm text-groc">{t("peu.lema")}</span>
       </div>
+      <div aria-hidden className="franja-granat" />
     </footer>
   );
 }

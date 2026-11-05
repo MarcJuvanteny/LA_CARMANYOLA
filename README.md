@@ -47,6 +47,15 @@ select j.jobname, d.status, d.start_time from cron.job_run_details d join cron.j
 select status_code, content from net._http_response order by id desc limit 3;
 ```
 
+### IA (Gemini)
+
+La IA redacta; els números els calcula SQL (CONTEXT.md §9). Tot passa per `src/lib/ia/gemini.ts`.
+
+- **Clau:** `GEMINI_API_KEY` a `.env.local` i a Vercel (Google AI Studio). Sense clau, el panell fa servir les plantilles de `src/lib/ia/plantilles.ts`.
+- **Models:** `GEMINI_MODELS` (opcional, per ordre de preferència). Per defecte `gemini-3.5-flash,gemini-flash-lite-latest`.
+- **Targetes** (Vendes, Franges, Clients, Padró): es mostra la plantilla i la IA la redacta en segon pla; el text es desa a `ai_texts` i només es torna a redactar quan canvien les dades.
+- **Sota demanda:** Veu de marca (prova), Què Queda (reescriu l'avís), Campanyes (reescriu i demana una campanya nova).
+
 ### Producció (Vercel + Supabase)
 
 1. `supabase link` i `supabase db push` per aplicar les migracions.

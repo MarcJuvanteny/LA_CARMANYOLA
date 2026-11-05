@@ -23,6 +23,36 @@
     background-color: var(--color-groc);
   }
 
+  /* Ribet amb l'estampat de marca, petit i to sobre to: un detall, no un fons.
+     Cada fila fa 20px i les files van al tresbolillo; --files diu quantes se'n veuen (2 per defecte).
+     Sempre amb marge de color pla a dalt i a baix: l'estampat mai toca la vora. */
+  .franja-granat,
+  .franja-groc {
+    --files: 2;
+    padding-block: 14px;
+  }
+  .franja-granat::before,
+  .franja-groc::before {
+    content: "";
+    display: block;
+    height: calc(var(--files) * 20px);
+    background-position: 0 0;
+    background-size: 40px 40px;
+    background-repeat: repeat;
+  }
+  .franja-granat {
+    background-color: var(--color-granat);
+  }
+  .franja-granat::before {
+    background-image: url("/web/textura-granat.svg");
+  }
+  .franja-groc {
+    background-color: var(--color-groc);
+  }
+  .franja-groc::before {
+    background-image: url("/web/textura-groc.svg");
+  }
+
   .web-eb {
     font-size: 12px;
     font-weight: 600;

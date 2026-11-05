@@ -2,7 +2,7 @@
 
 import { Fragment, useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { demanaCampanya } from "@/app/panel/actions";
+import { demanaCampanya, reescriuCampanya } from "@/app/panel/accions-ia";
 import { useTranslations } from "next-intl";
 import { Isotip } from "@/components/brand/Isotip";
 import { usePanelState, type Resolucio } from "@/components/panel/PanelState";
@@ -47,6 +47,8 @@ export function CampanyesView({ campanyes, peticions, inicial, exemple }: Props)
   const [demanant, setDemanant] = useState(false);
   const router = useRouter();
   const [enviant, startTransition] = useTransition();
+  const [reescrivint, startReescriu] = useTransition();
+  const [errorIA, setErrorIA] = useState<string | null>(null);
 
   const perRevisar = campanyes.filter((c) => c.estat === "esborrany");
   const enviades = campanyes.filter((c) => c.estat === "enviada");
@@ -71,10 +73,24 @@ export function CampanyesView({ campanyes, peticions, inicial, exemple }: Props)
     const form = new FormData(e.currentTarget);
     const objectiu = String(form.get("objectiu") ?? "").trim();
     if (!objectiu) return;
+    setErrorIA(null);
     startTransition(async () => {
-      await demanaCampanya(objectiu);
+      const slug = await demanaCampanya(objectiu);
       setDemanant(false);
+      if (slug) setSeleccio(slug);
+      else setErrorIA(t("iaNoRespon"));
       router.refresh();
+    });
+  };
+
+  const reescriu = () => {
+    setErrorIA(null);
+    startReescriu(async () => {
+      const ok = await reescriuCampanya(actual.id);
+      if (ok) {
+        setMissatges((s) => ({ ...s, [actual.id]: { ...m, to: "original", editat: {}, editant: false } }));
+        router.refresh();
+      } else setErrorIA(t("iaNoRespon"));
     });
   };
 
@@ -108,7 +124,7 @@ export function CampanyesView({ campanyes, peticions, inicial, exemple }: Props)
             <p className="text-[0.82rem]">{t("demanaNota")}</p>
             <div className="flex flex-wrap gap-2">
               <Button type="submit" disabled={enviant}>
-                {t("demanaEnvia")}
+                {enviant ? t("iaPreparant") : t("demanaEnvia")}
               </Button>
               <Button variant="ghost" onClick={() => setDemanant(false)}>
                 {t("cancel")}
@@ -116,6 +132,12 @@ export function CampanyesView({ campanyes, peticions, inicial, exemple }: Props)
             </div>
           </form>
         </AiCard>
+      )}
+
+      {errorIA && (
+        <p className="mb-5 rounded-2xl bg-rosa-clar p-4 text-sm font-semibold text-granat" role="alert">
+          {errorIA}
+        </p>
       )}
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-[280px_1fr]">
@@ -174,7 +196,15 @@ export function CampanyesView({ campanyes, peticions, inicial, exemple }: Props)
 
             <Card>
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <CardTitle>{t("missatge")}</CardTitle>
+                <div className="flex flex-wrap items-center gap-3">
+                  <CardTitle>{t("missatge")}</CardTitle>
+                  {estatDe(actual) === "esborrany" && (
+                    <Button variant="ghost" onClick={reescriu} disabled={reescrivint}>
+                      <Isotip className="size-4" />
+                      {reescrivint ? t("iaEscrivint") : t("iaReescriu")}
+                    </Button>
+                  )}
+                </div>
                 <Segmented<Idioma>
                   label={t("idioma")}
                   value={m.idioma}

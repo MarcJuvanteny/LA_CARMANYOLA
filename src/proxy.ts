@@ -20,10 +20,11 @@ export async function proxy(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   if (!user && request.nextUrl.pathname.startsWith("/panel")) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/entra";
-    url.search = `?torna=${encodeURIComponent(request.nextUrl.pathname + request.nextUrl.search)}`;
-    return NextResponse.redirect(url);
+    // Darrere d'un proxy (Codespaces, Vercel) el navegador ha de tornar al mateix domini, no a localhost.
+    const host = request.headers.get("x-forwarded-host") ?? request.headers.get("host") ?? request.nextUrl.host;
+    const protocol = request.headers.get("x-forwarded-proto") ?? request.nextUrl.protocol.replace(":", "");
+    const torna = encodeURIComponent(request.nextUrl.pathname + request.nextUrl.search);
+    return NextResponse.redirect(new URL(`/entra?torna=${torna}`, `${protocol}://${host}`));
   }
   return response;
 }

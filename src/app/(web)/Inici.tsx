@@ -274,6 +274,7 @@ export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: numbe
           </div>
         </div>
       </section>
+      <div aria-hidden className="franja-granat [--files:3]" />
 
       {/* Avui a la carmanyola */}
       <section id="demana" className="scroll-mt-24 pt-[clamp(70px,8vw,120px)] pb-[clamp(50px,6vw,90px)]">

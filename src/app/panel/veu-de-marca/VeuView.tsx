@@ -6,7 +6,7 @@ import { AiCard, AiEyebrow, Button, Card, CardTitle, PageHeader, Segmented, cx }
 import type { Idioma } from "@/lib/data/carta";
 import { paraulesProhibides, situacions, type SeccioVeu, type Situacio } from "@/lib/data/veu";
 import { desaVeu } from "@/app/panel/actions";
-import { provaVeu } from "./actions";
+import { provaVeu, type ProvaVeu } from "./actions";
 
 /** Les paraules prohibides les detecta el codi, no la IA. */
 function detector(llista: string[]) {
@@ -40,7 +40,7 @@ export function VeuView({ inicial }: { inicial: SeccioVeu[] }) {
   const [desat, setDesat] = useState(inicial);
   const [situacio, setSituacio] = useState<Situacio>("recuperacio");
   const [idioma, setIdioma] = useState<Idioma>("ca");
-  const [resultat, setResultat] = useState<string | null>(null);
+  const [resultat, setResultat] = useState<ProvaVeu | null>(null);
   const [error, setError] = useState(false);
   const [pendent, startTransition] = useTransition();
   const [textPropi, setTextPropi] = useState("");
@@ -63,7 +63,7 @@ export function VeuView({ inicial }: { inicial: SeccioVeu[] }) {
     });
   };
 
-  const enResultat = resultat ? trobades(resultat) : [];
+  const enResultat = resultat ? trobades(resultat.text) : [];
   const enPropi = trobades(textPropi);
 
   return (
@@ -167,8 +167,9 @@ export function VeuView({ inicial }: { inicial: SeccioVeu[] }) {
               {resultat && !pendent && (
                 <>
                   <p className="mt-4 rounded-2xl bg-white p-4 leading-relaxed">
-                    <Marcat text={resultat} re={re} />
+                    <Marcat text={resultat.text} re={re} />
                   </p>
+                  {resultat.font === "exemple" && <p className="mt-2 text-[0.82rem] font-semibold text-granat">{t("exemple")}</p>}
                   <p className="mt-2 text-[0.82rem]">
                     {enResultat.length ? t("trobades", { paraules: enResultat.join(", ") }) : t("netes")}
                   </p>

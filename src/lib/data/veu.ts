@@ -62,7 +62,22 @@ export type Situacio = "recuperacio" | "franja" | "queQueda" | "padro";
 
 export const situacions: Situacio[] = ["recuperacio", "franja", "queQueda", "padro"];
 
-/** Respostes de prova. Quan hi hagi clau de l'API, sortiran del model des del servidor. */
+/**
+ * Encàrrec per a la IA a cada situació de prova: només els fets (com els donaria SQL).
+ * La manera de dir-ho la posa la veu de marca.
+ */
+export const encarrecsVeu: Record<Situacio, string> = {
+  recuperacio:
+    "Avís per recuperar una clienta que fa 5 setmanes que no ve. Fets: es diu Laia; al carnet li falta la paraula «picada»; el seu plat preferit és el Fricandó amb Bolets, que és a la carta fins al desembre; aquesta setmana cada carmanyola suma doble al carnet.",
+  franja:
+    "Avís per omplir una franja fluixa. Fets: dimarts al vespre és la franja més tranquil·la de la setmana; de 20 a 22 h cada carmanyola suma dues paraules al carnet en comptes d'una.",
+  queQueda:
+    "Avís del Què Queda (l'última mitja hora del servei de migdia), només per a clients amb carnet. Fets: queden 6 Fricandó amb Bolets, 5 Tot Escalivat i 4 Pollastre de Diumenge; es poden recollir fins a les 16 h.",
+  padro:
+    "Avís d'alta al padró d'ingredients. Fets: la carxofa del Prat s'empadrona el 9 de novembre; ve del Baix Llobregat; es quedarà fins a la primavera.",
+};
+
+/** Respostes d'exemple: es fan servir si la IA no respon (sense clau, saturada o límit gratuït). */
 export const provesVeu: Record<Situacio, Record<Idioma, string>> = {
   recuperacio: {
     ca: "Fa dies que no et veiem, Laia. Et falta la paraula «picada» i el fricandó amb bolets t'espera fins al desembre. Aquesta setmana, la carmanyola suma doble.",

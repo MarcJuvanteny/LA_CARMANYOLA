@@ -144,14 +144,6 @@ export async function desfesProposta(id: string) {
   revalidatePath("/panel", "layout");
 }
 
-export async function demanaCampanya(objectiu: string) {
-  const supabase = await client();
-  const goal = objectiu.trim().slice(0, 500);
-  if (goal.length < 3) return;
-  comprova((await supabase.from("campaign_requests").insert({ goal })).error);
-  revalidatePath("/panel/campanyes");
-}
-
 export async function actualitzaPlat(
   slug: string,
   canvis: Partial<{ available: boolean; que_queda_ok: boolean; price_cents: number; description: Record<Idioma, string> }>,

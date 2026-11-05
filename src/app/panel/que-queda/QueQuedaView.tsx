@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { reescriuQueQueda } from "@/app/panel/accions-ia";
 import { useTranslations } from "next-intl";
 import { PROPOSTES, usePanelState } from "@/components/panel/PanelState";
 import {
@@ -61,11 +62,22 @@ export function QueQuedaView({ ara, plats: queQueda, proposta: propostaQueQueda,
   const alAvis = queQueda
     .map((f, i) => ({ ...f, n: quantitats[i], inclos: inclosos[i] }))
     .filter((f) => f.inclos && f.n > 0);
-  const missatge = avisActiu && avis
-    ? avis.missatge
-    : alAvis.length
-      ? t("missatge", { plats: llista(alAvis.map((f) => `${f.n} ${f.nom}`), t("i")) })
-      : t("missatgeBuit");
+  const base = alAvis.length ? t("missatge", { plats: llista(alAvis.map((f) => `${f.n} ${f.nom}`), t("i")) }) : t("missatgeBuit");
+  // El text de la IA només val per a les quantitats amb què s'ha escrit: si l'amo les corregeix, torna la plantilla.
+  const signatura = alAvis.map((f) => `${f.n}×${f.id}`).join(",");
+  const [ia, setIa] = useState<{ signatura: string; text: string } | null>(null);
+  const [errorIa, setErrorIa] = useState(false);
+  const [reescrivint, startReescriu] = useTransition();
+  const missatge = avisActiu && avis ? avis.missatge : ia?.signatura === signatura ? ia.text : base;
+
+  const reescriu = () => {
+    setErrorIa(false);
+    startReescriu(async () => {
+      const text = await reescriuQueQueda(alAvis.map((f) => ({ n: f.n, nom: f.nom })), base);
+      if (text) setIa({ signatura, text });
+      else setErrorIa(true);
+    });
+  };
 
   const activa = () => {
     setCorregint(false);
@@ -185,8 +197,12 @@ export function QueQuedaView({ ara, plats: queQueda, proposta: propostaQueQueda,
               <Button variant="ghost" aria-pressed={corregint} onClick={() => setCorregint((c) => !c)}>
                 {corregint ? t("fet") : t("corregeix")}
               </Button>
+              <Button variant="ghost" onClick={reescriu} disabled={reescrivint || alAvis.length === 0}>
+                {reescrivint ? t("iaEscrivint") : t("iaReescriu")}
+              </Button>
             </div>
           )}
+          {errorIa && !avisActiu && <p className="mt-3 text-sm font-semibold text-granat">{t("iaNoRespon")}</p>}
           <p className="mt-4 text-[0.85rem]">
             {t.rich("encert", { pct: percent(propostaQueQueda.encert), b: (c) => <strong className="font-semibold">{c}</strong> })}
           </p>

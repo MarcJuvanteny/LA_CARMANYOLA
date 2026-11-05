@@ -25,6 +25,8 @@ export async function resetDemo(db: SupabaseClient) {
     await ok(db.from("campaigns").update({ status: "esborrany", saved_at: null, messages: missatges(font) }).eq("slug", slug).is("sent_at", null));
   }
   await ok(db.from("campaign_requests").delete().gte("id", 0));
+  // Les campanyes que ha preparat la IA a petició de l'amo (i no s'han enviat) també marxen.
+  await ok(db.from("campaigns").delete().like("slug", "ia-%").is("sent_at", null));
 
   for (const p of plats) {
     await ok(

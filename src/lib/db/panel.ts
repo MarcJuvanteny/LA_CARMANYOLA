@@ -9,7 +9,9 @@ import type { AvisPadro, Estacio, EstatPadro, Ingredient } from "@/lib/data/padr
 import type { SeccioVeu } from "@/lib/data/veu";
 import type { DadesVendes, Periode } from "@/lib/data/vendes";
 import { euros, percent } from "@/lib/format";
+import { ambIA } from "@/lib/ia/memoria";
 import * as ia from "@/lib/ia/plantilles";
+import * as iaTargetes from "@/lib/ia/targetes";
 
 /* Tot el que hi ha aquí llegeix amb la sessió de l'amo; els càlculs pesats són funcions SQL (panel_*). */
 
@@ -103,7 +105,9 @@ export const vendes = cache(async (periode: Periode): Promise<DadesVendes> => {
     altres: { dinar: c.dinar * 200, acompanyamentsBegudes: r.altres ?? 0 },
     ia: { titol: "", punts: [] },
   };
-  dades.ia = ia.vendes(periode, dades, p.comandes ? p.dinar / p.comandes : 0);
+  const dinarAnterior = p.comandes ? p.dinar / p.comandes : 0;
+  const fets = iaTargetes.fetsVendes(periode, dades, dinarAnterior);
+  dades.ia = (await ambIA(`vendes:${periode}`, fets, ia.vendes(periode, dades, dinarAnterior), () => iaTargetes.redactaVendes(fets))).valor;
   return dades;
 });
 
@@ -132,6 +136,11 @@ export const franges = cache(async () => {
     return { dia, base: p?.base ?? 0, extra: p?.extra ?? 0 };
   });
   const prova = r.prova && r.prova.abans ? r.prova.durant / r.prova.abans - 1 : null;
+  const mitjanaFluixes = Math.round(r.mitjana_fluixes ?? 0);
+  const mitjanaMigdia = Math.round(r.mitjana_migdia ?? 0);
+  const plantilla = ia.franges(r.fluixes ?? [], mitjanaFluixes, mitjanaMigdia, prova);
+  const fets = iaTargetes.fetsFranges(r.fluixes ?? [], mitjanaFluixes, mitjanaMigdia, prova);
+  const redactada = await ambIA("franges", fets, { titol: plantilla.titol, punts: plantilla.punts }, () => iaTargetes.redactaFranges(fets));
   return {
     matriu,
     fluixes,
@@ -139,7 +148,7 @@ export const franges = cache(async () => {
     mitjanaFluixes: Math.round(r.mitjana_fluixes ?? 0),
     mitjanaMigdia: Math.round(r.mitjana_migdia ?? 0),
     prova,
-    proposta: ia.franges(r.fluixes ?? [], Math.round(r.mitjana_fluixes ?? 0), Math.round(r.mitjana_migdia ?? 0), prova),
+    proposta: { ...plantilla, ...redactada.valor },
   };
 });
 
@@ -217,7 +226,17 @@ export const clients = cache(async () => {
   }));
   const segments: Segment[] = ["tots", "risc", "nous", "adormits"];
   const recompte = Object.fromEntries(segments.map((s) => [s, llista.filter((c) => c.segments.includes(s)).length])) as Record<Segment, number>;
-  return { llista, recompte, totalComandes90: r.total_comandes_90, ia: ia.clients(llista, r.total_comandes_90) };
+  const plantilles = ia.clients(llista, r.total_comandes_90);
+  const propostes = await Promise.all(
+    (["risc", "nous", "adormits"] as const).map(async (s) => {
+      const plantilla = plantilles[s];
+      const fets = iaTargetes.fetsClients(s, llista);
+      if (!plantilla || !fets) return [s, plantilla] as const;
+      const r = await ambIA(`clients:${s}`, fets, { titol: plantilla.titol, punts: plantilla.punts }, () => iaTargetes.redactaClients(fets));
+      return [s, { ...plantilla, ...r.valor }] as const;
+    }),
+  );
+  return { llista, recompte, totalComandes90: r.total_comandes_90, ia: { ...plantilles, ...Object.fromEntries(propostes) } as typeof plantilles };
 });
 
 /* ---------------------------------------------------------------------------
@@ -429,7 +448,16 @@ export const padro = cache(async () => {
     campanya: a.campaign_slug ?? undefined,
     estat: a.status,
   }));
-  return { ingredients, avisos };
+  // La IA redacta el titular, els punts i l'anunci de cada avís (els aprovats ja no es toquen).
+  const redactats = await Promise.all(
+    avisos.map(async (a) => {
+      if (a.estat !== "proposada") return a;
+      const fets = iaTargetes.fetsPadro(a, ingredients.find((i) => i.id === a.ingredient));
+      const r = await ambIA(`padro:${a.id}`, fets, { titol: a.titol, punts: a.punts, anunci: a.anunci }, () => iaTargetes.redactaPadro(fets));
+      return { ...a, ...r.valor };
+    }),
+  );
+  return { ingredients, avisos: redactats };
 });
 
 /* ---------------------------------------------------------------------------
