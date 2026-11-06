@@ -571,7 +571,7 @@
       "sumada": "+1 paraula al carnet de {nom}: <s>{de}</s> <b>{a}</b> · {n} de 8",
       "sumadaSenseParaula": "+1 paraula al carnet de {nom} · {n} de 8",
       "complet": "Carnet complet: les postres són nostres!",
-      "noCarnet": "No trobem cap carnet amb el {mobil}. La comanda, però, ja és feta.",
+      "noCarnet": "El {mobil} no coincideix amb cap carnet. El guardem per si hi ha cap problema amb la comanda. <a>Vols fer-te el carnet de desbowlitzador?</a>",
       "noTrobada": "No trobem aquesta comanda.",
       "tornaInici": "Torna a l'inici",
       "paga": "Paga · {total}",
@@ -585,7 +585,17 @@
       "adreca": "[ADREÇA], Poblenou",
       "faixa": "Si tens el carnet, escaneja el QR de la faixa en recollir-la i hi sumarem la paraula.",
       "esperant": "Confirmant el pagament…",
-      "cancellada": "Aquesta comanda no s'ha arribat a pagar."
+      "cancellada": "Aquesta comanda no s'ha arribat a pagar.",
+      "rebuda": "Pagament rebut · ja la tenim en marxa",
+      "descarregaTiquet": "Descarrega el tiquet",
+      "tiquet": {
+        "titol": "Tiquet · comanda",
+        "subtitol": "Cuina catalana per emportar",
+        "recollida": "Recollida: {data} a les {hora}",
+        "estat": "Estat: pagada",
+        "gracies": "Gràcies! Fins a la propera carmanyola.",
+        "noFiscal": "Document sense validesa fiscal"
+      }
     },
     "feste": {
       "subtitol": "Un principal, una base i tres complements. La picada, inclosa.",

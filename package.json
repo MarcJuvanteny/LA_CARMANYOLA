@@ -17,7 +17,8 @@
     "sim:report": "tsx --env-file=.env.local scripts/sim-report.ts",
     "sim:reset-demo": "tsx --env-file=.env.local scripts/sim-reset-demo.ts",
     "db:seed:nuvol": "tsx --env-file=.env.local scripts/base-seed.ts --nuvol",
-    "amo": "tsx --env-file=.env.local scripts/amo.ts"
+    "amo": "tsx --env-file=.env.local scripts/amo.ts",
+    "stripe:setup": "tsx scripts/stripe-setup.ts"
   },
   "dependencies": {
     "@google/genai": "^2.32.0",
@@ -28,6 +29,7 @@
     "next": "^16.4.0",
     "next-intl": "^4.14.9",
     "passkit-generator": "^3.5.1",
+    "pdf-lib": "^1.17.1",
     "qrcode": "^1.5.4",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",

@@ -216,3 +216,16 @@
     }
   }
 }
+
+/* Comanda confirmada: el senyal verd apareix amb un petit rebot. */
+@keyframes web-ok {
+  0% { transform: scale(0.4); opacity: 0; }
+  70% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.web-ok {
+  animation: web-ok 0.45s cubic-bezier(0.2, 0.8, 0.3, 1.2) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .web-ok { animation: none; }
+}

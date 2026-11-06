@@ -166,7 +166,7 @@
       "sumada": "+1 palabra en el carnet de {nom}: <s>{de}</s> <b>{a}</b> · {n} de 8",
       "sumadaSenseParaula": "+1 palabra en el carnet de {nom} · {n} de 8",
       "complet": "¡Carnet completo: el postre corre de nuestra cuenta!",
-      "noCarnet": "No encontramos ningún carnet con el {mobil}. El pedido, eso sí, ya está hecho.",
+      "noCarnet": "El {mobil} no coincide con ningún carnet. Lo guardamos por si hay algún problema con el pedido. <a>¿Quieres hacerte el carnet de desbowlitzador?</a>",
       "noTrobada": "No encontramos este pedido.",
       "tornaInici": "Volver al inicio",
       "paga": "Pagar · {total}",
@@ -180,7 +180,17 @@
       "adreca": "[ADREÇA], Poblenou",
       "faixa": "Si tienes el carnet, escanea el QR de la faja al recogerlo y le sumaremos la palabra.",
       "esperant": "Confirmando el pago…",
-      "cancellada": "Este pedido no se llegó a pagar."
+      "cancellada": "Este pedido no se llegó a pagar.",
+      "rebuda": "Pago recibido · ya estamos en marcha",
+      "descarregaTiquet": "Descarga el tique",
+      "tiquet": {
+        "titol": "Tique · pedido",
+        "subtitol": "Cocina catalana para llevar",
+        "recollida": "Recogida: {data} a las {hora}",
+        "estat": "Estado: pagado",
+        "gracies": "¡Gracias! Hasta la próxima carmanyola.",
+        "noFiscal": "Documento sin validez fiscal"
+      }
     },
     "carnet": {
       "eyebrow": "Operació Desbowlitzar",

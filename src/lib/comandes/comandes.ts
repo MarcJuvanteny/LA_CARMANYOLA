@@ -126,6 +126,7 @@ export async function comandaPublica(id: string) {
     nom: (o.customer_name as string) ?? "",
     mobil: (o.phone as string | null) ?? null,
     hora: o.pickup_at ? formatInTimeZone(new Date(o.pickup_at), ZONA, "HH:mm") : "",
+    data: o.pickup_at ? formatInTimeZone(new Date(o.pickup_at), ZONA, "dd/MM/yyyy") : "",
     total: o.total_cents as number,
     linies: (o.cart ?? []) as LiniaValidada[],
     sessio: (o.stripe_session_id as string | null) ?? null,

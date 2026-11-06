@@ -166,7 +166,7 @@
       "sumada": "+1 word on {nom}'s card: <s>{de}</s> <b>{a}</b> · {n} of 8",
       "sumadaSenseParaula": "+1 word on {nom}'s card · {n} of 8",
       "complet": "Card complete: dessert is on us!",
-      "noCarnet": "We can't find a card for {mobil}. Your order is placed, though.",
+      "noCarnet": "{mobil} doesn't match any card. We'll keep it in case there's a problem with your order. <a>Fancy getting your desbowlitzador card?</a>",
       "noTrobada": "We can't find this order.",
       "tornaInici": "Back to home",
       "paga": "Pay · {total}",
@@ -180,7 +180,17 @@
       "adreca": "[ADREÇA], Poblenou",
       "faixa": "If you have the card, scan the QR on the band when you collect it and we'll add the word.",
       "esperant": "Confirming payment…",
-      "cancellada": "This order was never paid."
+      "cancellada": "This order was never paid.",
+      "rebuda": "Payment received · we're on it",
+      "descarregaTiquet": "Download receipt",
+      "tiquet": {
+        "titol": "Receipt · order",
+        "subtitol": "Catalan food to take away",
+        "recollida": "Pick-up: {data} at {hora}",
+        "estat": "Status: paid",
+        "gracies": "Thank you! See you at the next carmanyola.",
+        "noFiscal": "Not a tax invoice"
+      }
     },
     "carnet": {
       "eyebrow": "Operació Desbowlitzar",

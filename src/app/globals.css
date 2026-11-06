@@ -13,6 +13,8 @@
   --color-rosa-clar: #f5e8e4;
   --color-terra: #a8463d;
   --color-crema: #f3ece2;
+  --color-verd: #2e7d4f;
+  --color-verd-clar: #dcefe2;
 
   --font-titol: var(--font-redgato), system-ui, sans-serif;
   --font-cos: "Acumin Variable Concept", var(--font-archivo), system-ui, sans-serif;
