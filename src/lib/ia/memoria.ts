@@ -13,8 +13,21 @@ import { iaDisponible, type Redaccio } from "./gemini";
 const VERSIO = "1";
 /** Si les dades canvien molt sovint (vendes d'avui), no es torna a redactar més d'un cop cada… */
 const ESPERA_MS = 15 * 60_000;
+/** Temps que una instància es reserva una clau mentre redacta (2 models × 45 s, i marge). */
+const RESERVA_S = 120;
 
+// Primer filtre dins del mateix procés; la reserva a la base de dades cobreix les altres instàncies.
 const enCurs = new Set<string>();
+
+/** Reserva `clau` a totes les instàncies. Si la migració no hi és o falla, deixa passar (com abans). */
+async function reserva(db: ReturnType<typeof serviceClient>, clau: string): Promise<boolean> {
+  const { data, error } = await db.rpc("ia_reserva", { p_clau: clau, p_segons: RESERVA_S });
+  if (error) {
+    console.warn("[ia] sense reserva:", error.message.slice(0, 120));
+    return true;
+  }
+  return data === true;
+}
 
 const resum = (x: unknown) => createHash("sha256").update(VERSIO + JSON.stringify(x)).digest("hex").slice(0, 32);
 
@@ -35,6 +48,7 @@ export async function ambIA<T>(clau: string, entrada: unknown, plantilla: T, gen
     enCurs.add(clau);
     after(async () => {
       try {
+        if (!(await reserva(db, clau))) return;
         const r = await genera();
         if (r) {
           await db.from("ai_texts").upsert({ key: clau, input_hash: hash, content: r.valor, model: r.model, created_at: new Date().toISOString() });

@@ -5,9 +5,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { euros } from "@/lib/format";
-import { sumaParaula } from "@/app/(web)/comanda/actions";
-import { desaCarnetComanda, mobilCarnet, preuLinia, recordaMobilCarnet, useCistella, type Comanda } from "./Cistella";
-import { ResumConfirmada } from "./ResumConfirmada";
+import { paga } from "@/app/(web)/comanda/actions";
+import { mobilCarnet, preuLinia, useCistella } from "./Cistella";
 
 /** Les properes franges de 15 minuts, a partir de d'aquí a 10 minuts. */
 function franges(n = 8): string[] {
@@ -20,29 +19,15 @@ function franges(n = 8): string[] {
   });
 }
 
-/** La comanda en un calaix lateral: cistella, recollida i confirmació, sense sortir de la pàgina. */
-export function CalaixComanda() {
+/**
+ * La comanda en un calaix lateral: cistella, recollida i pagament, sense sortir de la pàgina.
+ * Amb Stripe, el pagament es fa a Stripe Checkout i es torna a /comanda/[id]; sense, es confirma directament.
+ */
+export function CalaixComanda({ pagamentEnLinia }: { pagamentEnLinia: boolean }) {
   const t = useTranslations("web.comanda");
   const { obert, tanca } = useCistella();
   const dialeg = useRef<HTMLDialogElement>(null);
-  const [confirmada, setConfirmada] = useState<Comanda | null>(null);
-  const [sumant, setSumant] = useState(false);
   const pathname = usePathname();
-
-  // La comanda es confirma a l'instant; la paraula del carnet arriba quan respon el servidor.
-  const enConfirmar = (c: Comanda, mobil: string) => {
-    setConfirmada(c);
-    if (!mobil) return;
-    setSumant(true);
-    sumaParaula({ mobil, linies: c.linies, total: c.total, hora: c.hora })
-      .then((carnet) => {
-        if (carnet.trobat) recordaMobilCarnet(mobil);
-        desaCarnetComanda(c.id, carnet);
-        setConfirmada((x) => (x?.id === c.id ? { ...x, carnet } : x));
-      })
-      .catch(() => {})
-      .finally(() => setSumant(false));
-  };
 
   // <dialog> en mode modal: atrapa el focus, tanca amb Esc i bloqueja la pàgina de sota.
   useEffect(() => {
@@ -60,10 +45,7 @@ export function CalaixComanda() {
     <dialog
       ref={dialeg}
       aria-labelledby="calaix-titol"
-      onClose={() => {
-        tanca();
-        setConfirmada(null);
-      }}
+      onClose={tanca}
       onClick={(e) => e.target === e.currentTarget && tanca()}
       className="calaix fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-none w-[min(460px,100vw)] max-w-none border-0 bg-paper p-0 text-tinta backdrop:bg-tinta/40"
     >
@@ -82,22 +64,18 @@ export function CalaixComanda() {
           </button>
         </div>
         <div className="flex-1 overflow-y-auto px-4 pt-5 pb-8">
-          {confirmada ? (
-            <div className="flex flex-col gap-4">
-              <ResumConfirmada comanda={confirmada} sumant={sumant} />
-            </div>
-          ) : (
-            <FormComanda onConfirmada={enConfirmar} />
-          )}
+          <FormComanda pagamentEnLinia={pagamentEnLinia} />
         </div>
       </div>
     </dialog>
   );
 }
 
-function FormComanda({ onConfirmada }: { onConfirmada: (c: Comanda, mobil: string) => void }) {
+function FormComanda({ pagamentEnLinia }: { pagamentEnLinia: boolean }) {
   const t = useTranslations("web.comanda");
-  const { llesta, linies, total, canvia, confirma, tanca } = useCistella();
+  const { llesta, linies, total, canvia, tanca } = useCistella();
+  const [enviant, setEnviant] = useState(false);
+  const [error, setError] = useState<"cistella" | "limit" | "servidor" | null>(null);
   const [hores, setHores] = useState<string[]>([]);
   const [hora, setHora] = useState("");
   const [nom, setNom] = useState("");
@@ -137,9 +115,23 @@ function FormComanda({ onConfirmada }: { onConfirmada: (c: Comanda, mobil: strin
   return (
     <form
       className="flex flex-col gap-4"
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        onConfirmada(confirma({ hora, nom: nom.trim() }), mobil.trim());
+        setEnviant(true);
+        setError(null);
+        const r = await paga({
+          linies: linies.map((l) => ({ slug: l.slug, quantitat: l.quantitat, dinar: l.dinar?.slug, opcions: l.opcions })),
+          hora,
+          nom: nom.trim(),
+          mobil: mobil.trim(),
+        }).catch(() => ({ ok: false as const, error: "servidor" as const }));
+        if (r.ok) {
+          // A Stripe (fora de l'app) o a la confirmació. La cistella es buida quan la comanda és pagada.
+          location.assign(r.url);
+          return;
+        }
+        setError(r.error);
+        setEnviant(false);
       }}
     >
       <section className="flex flex-col gap-1 rounded-[22px] bg-white p-5">
@@ -226,10 +218,19 @@ function FormComanda({ onConfirmada }: { onConfirmada: (c: Comanda, mobil: strin
         </div>
       </section>
 
-      <button type="submit" disabled={!hora} className="cursor-pointer rounded-full border-0 bg-granat p-[17px] text-[13px] font-medium tracking-[.06em] text-paper uppercase disabled:opacity-60">
-        {t("confirma", { total: euros(total) })}
+      {error && (
+        <p role="alert" className="m-0 rounded-[18px] border border-granat bg-white px-5 py-4 text-[15px] leading-[1.5] text-granat">
+          {t(`error.${error}`)}
+        </p>
+      )}
+      <button
+        type="submit"
+        disabled={!hora || enviant}
+        className="cursor-pointer rounded-full border-0 bg-granat p-[17px] text-[13px] font-medium tracking-[.06em] text-paper uppercase disabled:opacity-60"
+      >
+        {enviant ? t("pagant") : pagamentEnLinia ? t("paga", { total: euros(total) }) : t("confirma", { total: euros(total) })}
       </button>
-      <p className="m-0 px-1 text-xs leading-[1.6] text-suau">{t("nota")}</p>
+      <p className="m-0 px-1 text-xs leading-[1.6] text-suau">{pagamentEnLinia ? t("notaStripe") : t("nota")}</p>
     </form>
   );
 }

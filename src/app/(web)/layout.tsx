@@ -3,6 +3,7 @@ import { CalaixComanda } from "@/components/web/CalaixComanda";
 import { Capcalera } from "@/components/web/Capcalera";
 import { CistellaProvider } from "@/components/web/Cistella";
 import { Peu } from "@/components/web/Peu";
+import { stripeConfigurat } from "@/lib/pagaments/stripe";
 import "./web.css";
 
 export const metadata: Metadata = {
@@ -17,7 +18,7 @@ export default function WebLayout({ children }: { children: React.ReactNode }) {
         <Capcalera />
         {children}
         <Peu />
-        <CalaixComanda />
+        <CalaixComanda pagamentEnLinia={stripeConfigurat()} />
       </div>
     </CistellaProvider>
   );

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { getTranslations } from "next-intl/server";
-import { plats as cartaLocal } from "@/lib/data/carta";
+import { getLocale, getTranslations } from "next-intl/server";
+import { plats as cartaLocal, type Idioma } from "@/lib/data/carta";
 import { cartaPublica } from "@/lib/db/web";
 import { euros } from "@/lib/format";
-import { fitxes, opcionsDinar, platWeb } from "@/lib/web/contingut";
+import { fitxa, opcionsDinar, platWeb } from "@/lib/web/contingut";
 import { Afegeix } from "./Afegeix";
 
 export const revalidate = 300;
@@ -22,7 +22,8 @@ async function busca(slug: string) {
 
 export async function generateMetadata({ params }: PageProps<"/carta/[slug]">): Promise<Metadata> {
   const r = await busca((await params).slug);
-  return r ? { title: r.plat.nom, description: fitxes[r.plat.slug]?.descripcio ?? r.plat.descripcio.ca } : {};
+  const idioma = (await getLocale()) as Idioma;
+  return r ? { title: r.plat.nom, description: fitxa(r.plat.slug, idioma)?.descripcio ?? (r.plat.descripcio[idioma] || r.plat.descripcio.ca) } : {};
 }
 
 export default async function FitxaPage({ params }: PageProps<"/carta/[slug]">) {
@@ -30,8 +31,9 @@ export default async function FitxaPage({ params }: PageProps<"/carta/[slug]">) 
   if (!r) notFound();
   const { plat, carta } = r;
   const t = await getTranslations("web.fitxa");
-  const f = fitxes[plat.slug];
-  const web = platWeb(plat);
+  const idioma = (await getLocale()) as Idioma;
+  const f = fitxa(plat.slug, idioma);
+  const web = platWeb(plat, idioma);
   const ambDinar = plat.seccio === "casa" || plat.seccio === "fes";
   const dinar = ambDinar ? carta.filter((p) => opcionsDinar.includes(p.slug) && p.disponible).map((p) => ({ slug: p.slug, nom: p.nom })) : [];
   // El Fes-te'l tu es tria en un popup, des de la carta.
@@ -59,7 +61,7 @@ export default async function FitxaPage({ params }: PageProps<"/carta/[slug]">) 
               <h1 className="m-0 text-[clamp(30px,4vw,56px)] leading-[1.05] tracking-[-.02em]">{plat.nom}</h1>
               <span className="font-titol text-[clamp(20px,2vw,28px)] whitespace-nowrap">{euros(plat.preu)}</span>
             </div>
-            <p className="m-0 text-[15px] leading-[1.6] md:text-[17px]">{f?.descripcio ?? plat.descripcio.ca}</p>
+            <p className="m-0 text-[15px] leading-[1.6] md:text-[17px]">{f?.descripcio ?? (plat.descripcio[idioma] || plat.descripcio.ca)}</p>
           </div>
 
           {f && (

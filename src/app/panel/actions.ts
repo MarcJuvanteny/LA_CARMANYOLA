@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+import { enviaCampanya, enviaQueQueda } from "@/lib/enviaments/enviaments";
 import { supabaseServidor } from "@/lib/supabase/server";
 import type { Idioma } from "@/lib/data/carta";
 import { local } from "@/lib/dates";
@@ -9,6 +11,14 @@ import { simulateUntil } from "@/lib/sim/catchup";
 import { serviceClient } from "@/lib/sim/db";
 
 // Accions del panell. Totes passen per l'RLS amb la sessió de l'amo (CONTEXT.md §11).
+
+/** Marge per desfer: l'enviament real surt uns segons després d'aprovar, i només si encara està aprovat. */
+const MARGE_DESFER_MS = 15_000;
+const enviaDespres = (envia: () => Promise<unknown>) =>
+  after(async () => {
+    await new Promise((r) => setTimeout(r, MARGE_DESFER_MS));
+    await envia().catch((e) => console.error("[enviament]", e));
+  });
 
 type Resolucio = "aprovada" | "descartada" | "esborrany" | "ara-no";
 
@@ -62,6 +72,7 @@ export async function resolProposta(id: string, r: Resolucio, payload: PayloadPr
       })
       .eq("slug", clau);
     comprova(error);
+    if (r === "aprovada") enviaDespres(() => enviaCampanya(clau));
   }
 
   if (tipus === "padro") {
@@ -99,6 +110,7 @@ export async function resolProposta(id: string, r: Resolucio, payload: PayloadPr
       .from("que_queda_alerts")
       .upsert({ day: dia, service: servei, message: payload.missatge ?? "", activated_at: new Date().toISOString() });
     comprova(error);
+    enviaDespres(() => enviaQueQueda(dia, servei));
   }
 
   if (tipus === "vendes") {

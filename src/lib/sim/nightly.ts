@@ -5,6 +5,7 @@ import { NIGHTLY_NEW_CUSTOMERS } from "./config";
 import { addDays, diaLocal, horaLocal, momentLocal } from "./calendar";
 import { nouClient } from "./customers";
 import { carregaContext } from "./db";
+import { preparaPeticionsPendents } from "@/lib/ia/peticions";
 import { resetDemo } from "./demo";
 import { desaTemps, tempsRecent } from "./externs";
 import { Rng } from "./rng";
@@ -14,9 +15,18 @@ async function ok(p: PromiseLike<{ error: { message: string } | null }>) {
   if (error) throw new Error(error.message);
 }
 
-/** Punt preparat per als detectors (clients en risc, franges fluixes, padró…) i la IA. Encara no fan res. */
-async function detectorsIIA(_db: SupabaseClient, _dia: string) {
-  return { pendent: true };
+/**
+ * IA de la nit. Els detectors (clients en risc, franges fluixes, padró) ja són SQL i les targetes
+ * es redacten quan l'amo obre el panell; aquí es preparen les campanyes que la IA no va poder fer al moment.
+ * Un error de la IA no ha de tombar la tasca nocturna.
+ */
+async function detectorsIIA(db: SupabaseClient) {
+  try {
+    return await preparaPeticionsPendents(db);
+  } catch (e) {
+    console.warn("[nit] IA:", e instanceof Error ? e.message : e);
+    return { error: true };
+  }
 }
 
 export async function nightly(db: SupabaseClient, ara = new Date(), forca = false) {
@@ -53,9 +63,9 @@ export async function nightly(db: SupabaseClient, ara = new Date(), forca = fals
   // 3. La demo torna al punt de partida
   await resetDemo(db);
 
-  // 4. Detectors i IA (pendent)
-  await detectorsIIA(db, dia);
+  // 4. IA: les peticions de campanya pendents (després del reinici, perquè els esborranys d'aquesta nit es quedin)
+  const ia = await detectorsIIA(db);
 
   await ok(db.from("sim_nights").upsert({ day: dia }));
-  return { fet: true, dia, tempsDies: dies, clientsNous: n };
+  return { fet: true, dia, tempsDies: dies, clientsNous: n, ia };
 }

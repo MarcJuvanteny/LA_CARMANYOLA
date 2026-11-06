@@ -47,7 +47,7 @@ export function TriaFeste({ obert, tanca, plat }: { obert: boolean; tanca: () =>
         onSubmit={(e) => {
           e.preventDefault();
           if (falta) return;
-          afegeix({ slug: plat.slug, nom: plat.nom, preu, detall: detallFeste(ids) });
+          afegeix({ slug: plat.slug, nom: plat.nom, preu, detall: detallFeste(ids), opcions: [...ids].sort() });
           setIds([]);
           tanca();
         }}

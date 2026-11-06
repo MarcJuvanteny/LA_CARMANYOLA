@@ -48,3 +48,35 @@ export const cartaPublica = cache(async (): Promise<Plat[]> => {
     return cartaLocal;
   }
 });
+
+export interface IngredientPublic {
+  slug: string;
+  nom: string;
+  comarca: string | null;
+  temporada: string;
+  estat: "empadronat" | "alta-proposada" | "baixa-proposada" | "ve-aviat" | "de-baixa";
+  alta: string | null;
+  baixa: string | null;
+}
+
+/** El padró d'ingredients tal com el deixa l'amo (taula `ingredients`, lectura pública). */
+export const padroPublic = cache(async (): Promise<IngredientPublic[]> => {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const clau = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !clau) return [];
+  try {
+    const supabase = createClient(url, clau, { auth: { persistSession: false } });
+    const { data } = await supabase.from("ingredients").select("slug, name, comarca, season, status, alta_on, baixa_on, alta_label, baixa_label").order("id");
+    return (data ?? []).map((i) => ({
+      slug: i.slug,
+      nom: i.name,
+      comarca: i.comarca,
+      temporada: i.season,
+      estat: i.status,
+      alta: i.alta_label ?? i.alta_on,
+      baixa: i.baixa_label ?? i.baixa_on,
+    }));
+  } catch {
+    return [];
+  }
+});

@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { SUPLEMENT_DINAR } from "@/lib/data/carta";
 
-/* La cistella viu al navegador (localStorage). Quan arribi Stripe, la comanda es crearà al servidor. */
+/* La cistella viu al navegador (localStorage). En pagar, el servidor crea la comanda i en posa els preus. */
 
 export interface Linia {
   /** slug, o slug+dinar quan és El Dinar */
@@ -13,28 +13,13 @@ export interface Linia {
   preu: number;
   quantitat: number;
   dinar?: { slug: string; nom: string };
-  /** El que porta un Fes-te'l tu */
+  /** El que porta un Fes-te'l tu (per llegir) */
   detall?: string;
-}
-
-/** El que ha passat en sumar la paraula al carnet del client. */
-export type ParaulaSumada =
-  | { trobat: false; mobil: string }
-  | { trobat: true; nom: string; de: string | null; a: string | null; paraules: number; complet: boolean };
-
-export interface Comanda {
-  id: string;
-  numero: string;
-  linies: Linia[];
-  total: number;
-  hora: string;
-  nom: string;
-  creada: string;
-  carnet?: ParaulaSumada;
+  /** Fes-te'l tu: els ids dels ingredients, per al servidor */
+  opcions?: string[];
 }
 
 const CLAU = "carmanyola:cistella";
-const CLAU_COMANDES = "carmanyola:comandes";
 const CLAU_CARNET = "carmanyola:carnet-mobil";
 
 export const preuLinia = (l: Linia) => (l.preu + (l.dinar ? SUPLEMENT_DINAR : 0)) * l.quantitat;
@@ -66,7 +51,8 @@ interface Estat {
   bot: number;
   afegeix: (l: Omit<Linia, "id" | "quantitat">, quantitat?: number) => void;
   canvia: (id: string, quantitat: number) => void;
-  confirma: (dades: { hora: string; nom: string }) => Comanda;
+  /** Buida la cistella (quan la comanda ja és pagada) */
+  buida: () => void;
   /** El calaix lateral de la comanda: s'obre a sobre de la pàgina, sense canviar-ne. */
   obert: boolean;
   obre: () => void;
@@ -107,25 +93,7 @@ export function CistellaProvider({ children }: { children: React.ReactNode }) {
     setLinies((ls) => (quantitat <= 0 ? ls.filter((x) => x.id !== id) : ls.map((x) => (x.id === id ? { ...x, quantitat } : x))));
   }, []);
 
-  const confirma = useCallback<Estat["confirma"]>(
-    ({ hora, nom }) => {
-      const comandes = llegeix<Record<string, Comanda>>(CLAU_COMANDES, {});
-      const id = crypto.randomUUID().slice(0, 8);
-      const comanda: Comanda = {
-        id,
-        numero: String(Object.keys(comandes).length + 427).padStart(4, "0"),
-        linies,
-        total: linies.reduce((s, l) => s + preuLinia(l), 0),
-        hora,
-        nom,
-        creada: new Date().toISOString(),
-      };
-      escriu(CLAU_COMANDES, { ...comandes, [id]: comanda });
-      setLinies([]);
-      return comanda;
-    },
-    [linies],
-  );
+  const buida = useCallback(() => setLinies([]), []);
 
   const valor = useMemo<Estat>(
     () => ({
@@ -136,12 +104,12 @@ export function CistellaProvider({ children }: { children: React.ReactNode }) {
       bot,
       afegeix,
       canvia,
-      confirma,
+      buida,
       obert,
       obre,
       tanca,
     }),
-    [llesta, linies, bot, afegeix, canvia, confirma, obert, obre, tanca],
+    [llesta, linies, bot, afegeix, canvia, buida, obert, obre, tanca],
   );
 
   return <Context.Provider value={valor}>{children}</Context.Provider>;
@@ -151,15 +119,6 @@ export function useCistella() {
   const c = useContext(Context);
   if (!c) throw new Error("useCistella fora de CistellaProvider");
   return c;
-}
-
-export function llegeixComanda(id: string): Comanda | null {
-  return llegeix<Record<string, Comanda>>(CLAU_COMANDES, {})[id] ?? null;
-}
-
-export function desaCarnetComanda(id: string, carnet: ParaulaSumada) {
-  const comandes = llegeix<Record<string, Comanda>>(CLAU_COMANDES, {});
-  if (comandes[id]) escriu(CLAU_COMANDES, { ...comandes, [id]: { ...comandes[id], carnet } });
 }
 
 /** El mòbil del carnet d'aquest dispositiu: es recorda per sumar paraules sense tornar-lo a escriure. */

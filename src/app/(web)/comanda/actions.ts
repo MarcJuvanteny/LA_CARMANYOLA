@@ -1,51 +1,47 @@
 "use server";
 
-import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
+import { getLocale } from "next-intl/server";
+import { CistellaNoValida, type LiniaEntrada } from "@/lib/comandes/cistella";
+import { confirmaComanda, creaComanda, guardaSessio } from "@/lib/comandes/comandes";
+import { ipClient, origen } from "@/lib/origen";
+import { creaSessio, stripeConfigurat } from "@/lib/pagaments/stripe";
 import { serviceClient } from "@/lib/sim/db";
-import type { Linia, ParaulaSumada } from "@/components/web/Cistella";
-import { normalitzaMobil } from "@/lib/web/mobil";
 
-// Suma la paraula de la comanda al carnet que el client ja té, a partir del mòbil.
-// La comanda es desa a Supabase perquè el segell va lligat a una comanda (màxim un per comanda).
+// La comanda es crea al servidor (preus de la base de dades) i es paga amb Stripe Checkout.
+// Sense STRIPE_SECRET_KEY (mode demo), es confirma directament sense cobrar.
 
-const ZONA = "Europe/Madrid";
+export type ResultatPagament = { ok: true; url: string } | { ok: false; error: "cistella" | "limit" | "servidor" };
 
-export async function sumaParaula(dades: { mobil: string; linies: Linia[]; total: number; hora: string }): Promise<ParaulaSumada> {
-  const mobil = normalitzaMobil(dades.mobil);
-  if (!mobil) return { trobat: false, mobil: dades.mobil };
-  const db = serviceClient();
+export async function paga(dades: { linies: LiniaEntrada[]; hora: string; nom: string; mobil: string }): Promise<ResultatPagament> {
+  try {
+    const db = serviceClient();
+    const { data: dinsLimit } = await db.rpc("limita", { p_clau: `paga:${await ipClient()}`, p_max: 15, p_segons: 600 });
+    if (dinsLimit === false) return { ok: false, error: "limit" };
 
-  const { data: client } = await db.from("customers").select("id, first_name").eq("phone", mobil).eq("simulated", false).limit(1).maybeSingle();
-  if (!client) return { trobat: false, mobil: dades.mobil };
+    const locale = (await getLocale()) as "ca" | "es" | "en";
+    const { id, cistella } = await creaComanda({ ...dades, locale });
+    const o = await origen();
 
-  const avui = formatInTimeZone(new Date(), ZONA, "yyyy-MM-dd");
-  const { data: comanda, error } = await db
-    .from("orders")
-    .insert({
-      customer_id: client.id,
-      channel: "web",
-      pickup_at: /^\d{2}:\d{2}$/.test(dades.hora) ? fromZonedTime(`${avui}T${dades.hora}:00`, ZONA).toISOString() : null,
-      total_cents: Math.round(dades.total),
-      dinar: dades.linies.some((l) => l.dinar),
-    })
-    .select("id")
-    .single();
-  if (error) throw new Error(error.message);
-
-  const { data: plats } = await db
-    .from("dishes")
-    .select("id, slug")
-    .in(
-      "slug",
-      dades.linies.map((l) => l.slug),
-    );
-  const idDe = new Map((plats ?? []).map((p) => [p.slug, p.id]));
-  const items = dades.linies.filter((l) => idDe.has(l.slug)).map((l) => ({ order_id: comanda.id, dish_id: idDe.get(l.slug), qty: l.quantitat, unit_price_cents: Math.round(l.preu) }));
-  if (items.length) await db.from("order_items").insert(items);
-
-  const { data: segell, error: e } = await db.rpc("registra_segell", { p_order_id: comanda.id });
-  if (e) throw new Error(e.message);
-  const { data: paraula } = await db.from("words").select("from_word, to_word").eq("id", segell.paraula).single();
-
-  return { trobat: true, nom: client.first_name, de: paraula?.from_word ?? null, a: paraula?.to_word ?? null, paraules: segell.paraules, complet: segell.carnet_complet };
+    if (!stripeConfigurat()) {
+      await confirmaComanda(id);
+      return { ok: true, url: `/comanda/${id}` };
+    }
+    const sessio = await creaSessio({
+      comanda: id,
+      origen: o,
+      locale,
+      linies: cistella.linies.map((l) => ({
+        nom: l.dinar ? `${l.nom} · El Dinar (${l.dinar.nom})` : l.nom,
+        detall: l.detall,
+        unitat: l.preu,
+        quantitat: l.quantitat,
+      })),
+    });
+    await guardaSessio(id, sessio.id);
+    return { ok: true, url: sessio.url! };
+  } catch (e) {
+    if (e instanceof CistellaNoValida) return { ok: false, error: "cistella" };
+    console.error("[comanda]", e);
+    return { ok: false, error: "servidor" };
+  }
 }

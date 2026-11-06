@@ -19,7 +19,9 @@ export default async function PanelLayout({ children }: { children: React.ReactN
     <PanelStateProvider inicial={inicial}>
       <EnDirecte />
       <div className="min-h-dvh bg-paper lg:flex">
-        <Sidebar />
+        <div className="contents print:hidden">
+          <Sidebar />
+        </div>
         <main className="min-w-0 flex-1 px-4 pt-6 pb-16 sm:px-8 lg:px-11 lg:pt-9">
           <div className="mx-auto max-w-[1120px]">{children}</div>
         </main>

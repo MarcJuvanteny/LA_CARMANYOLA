@@ -2,7 +2,7 @@
 
 import { Fragment, useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { demanaCampanya, reescriuCampanya } from "@/app/panel/accions-ia";
+import { demanaCampanya, reescriuCampanya, reintentaPeticio } from "@/app/panel/accions-ia";
 import { useTranslations } from "next-intl";
 import { Isotip } from "@/components/brand/Isotip";
 import { usePanelState, type Resolucio } from "@/components/panel/PanelState";
@@ -49,6 +49,7 @@ export function CampanyesView({ campanyes, peticions, inicial, exemple }: Props)
   const [enviant, startTransition] = useTransition();
   const [reescrivint, startReescriu] = useTransition();
   const [errorIA, setErrorIA] = useState<string | null>(null);
+  const [reintentant, setReintentant] = useState<number | null>(null);
 
   const perRevisar = campanyes.filter((c) => c.estat === "esborrany");
   const enviades = campanyes.filter((c) => c.estat === "enviada");
@@ -77,6 +78,18 @@ export function CampanyesView({ campanyes, peticions, inicial, exemple }: Props)
     startTransition(async () => {
       const slug = await demanaCampanya(objectiu);
       setDemanant(false);
+      if (slug) setSeleccio(slug);
+      else setErrorIA(t("iaNoRespon"));
+      router.refresh();
+    });
+  };
+
+  const reintenta = (id: number) => {
+    setErrorIA(null);
+    setReintentant(id);
+    startTransition(async () => {
+      const slug = await reintentaPeticio(id);
+      setReintentant(null);
       if (slug) setSeleccio(slug);
       else setErrorIA(t("iaNoRespon"));
       router.refresh();
@@ -153,6 +166,9 @@ export function CampanyesView({ campanyes, peticions, inicial, exemple }: Props)
                   <p className="eyebrow text-granat">{t("enPreparacio")}</p>
                   <p className="mt-1 line-clamp-2 text-[0.9rem]">{d}</p>
                   <p className="mt-1 text-[0.78rem] text-suau">{t("aquestaNit")}</p>
+                  <Button variant="ghost" className="mt-2" onClick={() => reintenta(id)} disabled={enviant}>
+                    {reintentant === id ? t("iaPreparant") : t("reintenta")}
+                  </Button>
                 </li>
               ))}
               {perRevisar.map((c) => (

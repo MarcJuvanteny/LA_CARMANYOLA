@@ -1,0 +1,356 @@
+{
+  "web": {
+    "nav": {
+      "principal": "Principal",
+      "carta": "La carta",
+      "padro": "El padró",
+      "carnet": "El carnet",
+      "on": "Dónde estamos",
+      "inici": "La Carmanyola, inicio",
+      "idiomes": "CA · ES · EN",
+      "idioma": "Idioma",
+      "cistella": "Cesta, {n, plural, one {# carmanyola} other {# carmanyoles}}",
+      "demana": "Haz tu pedido",
+      "torna": "Volver"
+    },
+    "peu": {
+      "label": "Pie",
+      "alergens": "Alérgenos",
+      "privacitat": "Privacidad",
+      "avisLegal": "Aviso legal",
+      "cookies": "Cookies",
+      "lema": "Hecho a fuego lento"
+    },
+    "inici": {
+      "eyebrow": "Cocina catalana para llevar · Poblenou",
+      "titol": "Si quitamos el <x>bowl</x>,<br></br>¿qué queda?",
+      "recull": "Recógela en 10 minutos",
+      "demanaEyebrow": "Pide ahora · otoño",
+      "demanaTitol": "Hoy en la carmanyola",
+      "totaCarta": "Toda la carta",
+      "anterior": "Plato anterior",
+      "seguent": "Plato siguiente",
+      "afegeix": "Añadir {plat}",
+      "dinar": "Añade bebida o postre por <b>+2 €</b> y es El Dinar.",
+      "desbEyebrow": "Operació Desbowlitzar",
+      "desbText": "Dejemos de importar palabras, y platos. Esto ya lo teníamos aquí, y está buenísimo.",
+      "quedaTitol": "Lo que queda<br></br>es de aquí.",
+      "puntsEyebrow": "Cómo trabajamos",
+      "puntsTitol": "Así se hace<br></br>una carmanyola.",
+      "punts": [
+        {
+          "titol": "A fuego lento",
+          "text": "Los platos de toda la vida, hechos cada mañana. Tres horas de fuego para el fricandó."
+        },
+        {
+          "titol": "Salsa aparte",
+          "text": "Romesco, allioli, salsa verde. Que el plato llegue como ha salido de la cocina."
+        },
+        {
+          "titol": "Producto de aquí",
+          "text": "Cada ingrediente de temporada, con el nombre de quien lo cultiva."
+        }
+      ],
+      "padroEyebrow": "El padró de otoño",
+      "padroTitol": "Quién hay detrás de cada plato",
+      "padroBaixa": "Baja para conocerlos →",
+      "ingredient": "Ingrediente",
+      "properament": "Próximamente",
+      "calcots": "En enero, los calçots.",
+      "avisarem": "Te avisaremos cuando se empadronen.",
+      "carnetEyebrow": "El carnet de desbowlitzador",
+      "carnetTitol": "Ocho palabras.<br></br>Un postre.",
+      "carnetText": "Cada pedido directo recupera una palabra de aquí. Con ocho, el postre corre de nuestra cuenta. Y si tienes el carnet, en la última media hora de cada servicio te avisamos de lo que ha quedado en la cocina: es la hora del Què Queda.",
+      "carnetCta": "Hazte el carnet",
+      "carnetNota": "En el wallet del móvil. Sin apps.",
+      "carnetQr": "Más rápido: escanea este QR con el móvil, pon tu nombre y tu número y el carnet va directo a tu wallet.",
+      "cremaRegal": "Crema catalana de regalo",
+      "onEyebrow": "Dónde estamos",
+      "onTitol": "Un mostrador pequeño en el Poblenou.",
+      "adreca": "Dirección",
+      "adrecaValor": "[ADREÇA], Poblenou",
+      "horari": "Horario",
+      "horariValor": "De lunes a sábado, mediodía y noche",
+      "recollida": "Recogida",
+      "recollidaValor": "En 10 minutos, sin cola",
+      "comArribar": "Cómo llegar",
+      "mapa": "Mapa ilustrado del Poblenou con la ubicación del local",
+      "mar": "Mar",
+      "barri": "Poblenou"
+    },
+    "carta": {
+      "titol": "La carta",
+      "subtitol": "Otoño · recogida en 10 minutos",
+      "filtres": "Filtros",
+      "tot": "Todo",
+      "vega": "Vegano",
+      "vegetaria": "Vegetariano",
+      "senseGluten": "Sin gluten",
+      "seccions": {
+        "casa": "Carmanyoles de la casa",
+        "fes": "Fes-te'l tu",
+        "acompanyar": "Para acompañar",
+        "postres": "Postres",
+        "begudes": "Bebidas"
+      },
+      "buit": "Ningún plato de esta sección cumple el filtro.",
+      "afegeix": "Añadir {plat}",
+      "afegit": "Añadido",
+      "nota": "Todas las salsas van aparte. Cocina compartida: no podemos garantizar la ausencia de trazas.",
+      "noDisponible": "Hoy no queda"
+    },
+    "fitxa": {
+      "tornaCarta": "Volver a la carta",
+      "dins": "Dentro de la carmanyola",
+      "zonaGran": "Zona grande · el plato",
+      "zonaPetita": "Zona pequeña · la guarnición",
+      "envas": "Carmanyola redonda con separador: el plato en la zona grande y la guarnición en la pequeña",
+      "empadronats": "Empadronados",
+      "alergens": "Alérgenos",
+      "senseAlergens": "Sin alérgenos declarados",
+      "traces": "Cocina compartida: no podemos garantizar la ausencia de trazas.",
+      "dinar": "Hazlo El Dinar",
+      "nomesCarmanyola": "Solo la carmanyola",
+      "amb": "Con {nom}",
+      "treu": "Quitar una",
+      "posa": "Añadir una",
+      "afegeix": "Añadir · {preu}",
+      "afegit": "Añadido al pedido",
+      "veureComanda": "Ver pedido"
+    },
+    "barra": {
+      "resum": "{n, plural, one {# carmanyola} other {# carmanyoles}} · {total}",
+      "veure": "Ver pedido"
+    },
+    "feste": {
+      "subtitol": "Un principal, una base y tres complementos. La picada, incluida.",
+      "tanca": "Cerrar",
+      "grups": {
+        "principal": "El principal",
+        "base": "La base",
+        "complement": "Tres complementos"
+      },
+      "compte": "{n} de {de}",
+      "tardor": "Otoño",
+      "alergens": "Alérgenos: {llista}.",
+      "confirma": "Confirmar · {preu}",
+      "falta": {
+        "principal": "Elige el principal",
+        "base": "Elige la base",
+        "complement": "Elige tres complementos"
+      }
+    },
+    "comanda": {
+      "titol": "Tu pedido",
+      "tanca": "Cerrar el pedido",
+      "buida": "Todavía no hay nada en la carmanyola.",
+      "anaCarta": "Mira la carta",
+      "dinar": "El Dinar · {nom}",
+      "treu": "Quitar una de {plat}",
+      "posa": "Añadir una de {plat}",
+      "hora": "Hora de recogida",
+      "nom": "Nombre para el pedido",
+      "nomPlaceholder": "Laia",
+      "total": "Total",
+      "confirma": "Confirmar el pedido · {total}",
+      "nota": "Recógelo en el mostrador. Paga al recogerlo: con tarjeta o cheque comida.",
+      "confirmada": "Pedido confirmado",
+      "recull": "Pasa a recogerlo a las <b>{hora}</b>",
+      "numero": "Pedido {n}",
+      "estat": "Confirmado",
+      "mobilCarnet": "¿Tienes el carnet? Tu móvil",
+      "opcional": "(opcional)",
+      "mobilPlaceholder": "600 000 000",
+      "mobilCarnetNota": "Le sumamos la palabra de este pedido.",
+      "sumant": "Sumando la palabra al carnet…",
+      "sumada": "+1 palabra en el carnet de {nom}: <s>{de}</s> <b>{a}</b> · {n} de 8",
+      "sumadaSenseParaula": "+1 palabra en el carnet de {nom} · {n} de 8",
+      "complet": "¡Carnet completo: el postre corre de nuestra cuenta!",
+      "noCarnet": "No encontramos ningún carnet con el {mobil}. El pedido, eso sí, ya está hecho.",
+      "noTrobada": "No encontramos este pedido.",
+      "tornaInici": "Volver al inicio",
+      "paga": "Pagar · {total}",
+      "pagant": "Un momento…",
+      "notaStripe": "Pagas con tarjeta en Stripe, en modo de prueba: usa la tarjeta 4242 4242 4242 4242, una fecha futura y cualquier CVC. Recógelo en el mostrador.",
+      "error": {
+        "cistella": "Algo de la cesta ya no está en la carta. Revísala y vuelve a intentarlo.",
+        "limit": "Demasiados intentos seguidos. Espera unos minutos y vuelve a intentarlo.",
+        "servidor": "No hemos podido hacer el pedido. Vuelve a intentarlo dentro de un rato."
+      },
+      "adreca": "[ADREÇA], Poblenou",
+      "faixa": "Si tienes el carnet, escanea el QR de la faja al recogerlo y le sumaremos la palabra.",
+      "esperant": "Confirmando el pago…",
+      "cancellada": "Este pedido no se llegó a pagar."
+    },
+    "carnet": {
+      "eyebrow": "Operació Desbowlitzar",
+      "titol": "Tu carnet de desbowlitzador",
+      "text": "Cada pedido recupera una palabra de aquí. Con ocho, el postre de la casa corre de nuestra cuenta.",
+      "nivell": "Desbowlitzador",
+      "elTeuNom": "[Tu nombre]",
+      "comptador": "{n} de 8",
+      "recuperada": "Recuperada: <b>{paraula}</b>",
+      "nom": "Nombre",
+      "nomPlaceholder": "Laia",
+      "correu": {
+        "assumpte": "Tu carnet de desbowlitzador",
+        "titol": "Ya tienes el carnet, {nom}",
+        "cos": "Ya tienes la primera palabra: carmanyola. Cada pedido directo recupera otra y, con ocho, el postre corre de nuestra cuenta.\n\nGuarda el carnet en el wallet desde el móvil:\n{enllac}"
+      },
+      "correuPlaceholder": "laia@ejemplo.com",
+      "mobil": "Móvil",
+      "mobilPlaceholder": "600 000 000",
+      "mobilNota": "Es el que nos dirás al hacer el pedido para sumarle la palabra.",
+      "opcional": "(opcional, para los avisos)",
+      "consentiment": "Quiero recibir avisos del padró, de la hora del Què Queda y de mis recompensas. Puedo darme de baja cuando quiera.",
+      "desa": "Guarda el carnet en el móvil",
+      "nota": "Se guarda en Apple Wallet o Google Wallet. Solo suman los pedidos hechos directamente en La Carmanyola.",
+      "privacitat": "Privacidad",
+      "privacitatText": "Solo usamos tu nombre, el móvil y el correo para el carnet. Si no marcas la casilla, no te enviaremos ningún aviso.",
+      "fet": "¡Hecho, {nom}! El carnet ya es tuyo.",
+      "fetText": "Pronto podrás guardarlo en Apple Wallet y Google Wallet desde aquí mismo.",
+      "desant": "Haciéndote el carnet…",
+      "error": "No hemos podido hacerte el carnet. Vuelve a intentarlo dentro de un rato.",
+      "escaneja": "Escanea el QR con la cámara del móvil y el carnet irá directo a tu wallet.",
+      "desaMobil": "Guárdalo en el wallet",
+      "qrTitol": "Háztelo en el móvil",
+      "qrText": "Escanea el QR con la cámara, pon tu nombre y tu móvil y el carnet va directo a tu wallet.",
+      "oAqui": "o háztelo desde aquí",
+      "elTeu": "El carnet de {nom}",
+      "aviat": "Todavía no podemos ponerlo en el wallet. Guarda esta página: aquí tienes el carnet hasta que llegue."
+    },
+    "faixa": {
+      "eyebrow": "Desbowlitza aquí",
+      "titol": "Un pedido, una palabra",
+      "text": "Escribe el móvil de tu carnet y le sumamos la palabra de este pedido.",
+      "mobil": "El móvil del carnet",
+      "suma": "Sumar la palabra",
+      "sumant": "Sumando…",
+      "sumada": "+1 palabra en el carnet de {nom}: <s>{de}</s> <b>{a}</b> · {n} de 8",
+      "sumadaSenseParaula": "+1 palabra en el carnet de {nom} · {n} de 8",
+      "complet": "¡Carnet completo: el postre corre de nuestra cuenta!",
+      "jaSumada": "Esta faja ya ha sumado su palabra.",
+      "noTrobada": "Este código no es de ningún pedido. ¿Quizás el QR se ha leído mal?",
+      "plataforma": "Los pedidos de las plataformas no suman palabras. <a>Pide directo</a> y el próximo sí.",
+      "senseCarnet": "No encontramos ningún carnet con este móvil. <a>Háztelo</a> y el próximo pedido ya suma.",
+      "limit": "Demasiados intentos seguidos. Vuelve a intentarlo dentro de unos minutos.",
+      "error": "No hemos podido sumar la palabra. Vuelve a intentarlo."
+    },
+    "baixa": {
+      "titol": "Avisos",
+      "text": "Si lo confirmas, no te enviaremos más avisos, ni por correo ni al wallet. El carnet sigue siendo tuyo y las palabras se siguen sumando.",
+      "boto": "No quiero recibir más avisos",
+      "fet": "Hecho. No te enviaremos ningún aviso más.",
+      "error": "No hemos podido darte de baja. Vuelve a intentarlo.",
+      "noValid": "Este enlace no es válido."
+    },
+    "padro": {
+      "eyebrow": "El padró de ingredientes",
+      "titol": "Quién es del barrio esta temporada",
+      "text": "Los ingredientes de temporada se empadronan cuando llegan y se dan de baja cuando se acaban. Aquí tienes quién los cultiva y hasta cuándo los tendremos.",
+      "qui": "Quién hay detrás",
+      "empadronats": "Empadronados ahora",
+      "venen": "Llegan pronto",
+      "baixes": "De baja",
+      "fins": "Hasta: {quan}",
+      "desDe": "A partir de: {quan}",
+      "tornara": "Volverá la temporada que viene.",
+      "carnet": "Con el <a>carnet</a>, te avisamos de cada alta."
+    },
+    "legal": {
+      "actualitzat": "Última actualización: 6 de noviembre de 2026",
+      "avisLegal": {
+        "titol": "Aviso legal",
+        "seccions": [
+          {
+            "titol": "Quiénes somos",
+            "text": [
+              "Esta web es de [RAÓ SOCIAL], con NIF [NIF] y domicilio en [ADREÇA], 08005 Barcelona. Correo de contacto: [CORREU].",
+              "La Carmanyola es un proyecto de portfolio: el restaurante es ficticio, pero la web, los pagos (en modo de prueba), el carnet y los correos funcionan de verdad."
+            ]
+          },
+          {
+            "titol": "Uso de la web",
+            "text": [
+              "Puedes usar la web para consultar la carta, hacer pedidos para recoger y hacerte el carnet de desbowlitzador. No la uses para nada que vaya contra la ley o que pueda impedir su funcionamiento."
+            ]
+          },
+          {
+            "titol": "Precios y pedidos",
+            "text": [
+              "Los precios incluyen el IVA. Los pagos se hacen con Stripe; mientras la web esté en modo de prueba, no se cobra nada de verdad.",
+              "La información de alérgenos es la de cada ficha. Trabajamos en una cocina compartida: no podemos garantizar la ausencia de trazas."
+            ]
+          },
+          {
+            "titol": "Propiedad intelectual",
+            "text": [
+              "Los textos, el logotipo, las fotos y el diseño son de [RAÓ SOCIAL] o de sus autores. No los reproduzcas sin permiso."
+            ]
+          },
+          {
+            "titol": "Ley aplicable",
+            "text": [
+              "Se aplica la ley española. Para cualquier conflicto, los juzgados de Barcelona, sin perjuicio de los derechos que tengas como consumidor."
+            ]
+          }
+        ]
+      },
+      "privacitat": {
+        "titol": "Privacidad",
+        "seccions": [
+          {
+            "titol": "Quién es responsable",
+            "text": [
+              "[RAÓ SOCIAL], NIF [NIF], [ADREÇA], 08005 Barcelona. Para cualquier cosa sobre tus datos: [CORREU]."
+            ]
+          },
+          {
+            "titol": "Qué datos usamos y para qué",
+            "text": [
+              "Pedidos: el nombre para llamarte, la hora de recogida y, si lo escribes, el móvil del carnet. Los necesitamos para preparar y entregar el pedido (ejecución de un contrato).",
+              "Carnet de desbowlitzador: el nombre, el móvil y, si quieres, el correo. Sirven para sumar las palabras y darte el postre (ejecución de un contrato).",
+              "Avisos (padró, la hora del Què Queda, campañas): solo si has marcado la casilla, y con la fecha en que lo hiciste (consentimiento). Puedes darte de baja con un clic desde cualquier correo."
+            ]
+          },
+          {
+            "titol": "Quién más los ve",
+            "text": [
+              "Proveedores que nos dan el servicio y que solo los tratan por encargo nuestro: Supabase (base de datos, UE), Vercel (alojamiento), Stripe (pagos), Resend (correo), Apple y Google (el carnet en el wallet, si lo guardas) y Google (redacción de textos con IA, sin datos personales)."
+            ]
+          },
+          {
+            "titol": "Cuánto tiempo",
+            "text": [
+              "Los pedidos, el tiempo que exige la ley fiscal. El carnet, mientras lo tengas activo. Los avisos, hasta que te des de baja."
+            ]
+          },
+          {
+            "titol": "Tus derechos",
+            "text": [
+              "Puedes pedir ver, corregir o borrar tus datos, limitar u oponerte a su uso y llevártelos, escribiendo a [CORREU]. Si crees que no los tratamos bien, puedes reclamar a la Autoritat Catalana de Protecció de Dades (apdcat.gencat.cat)."
+            ]
+          }
+        ]
+      },
+      "cookies": {
+        "titol": "Cookies",
+        "seccions": [
+          {
+            "titol": "Las que usamos",
+            "text": [
+              "Solo usamos las imprescindibles para que la web funcione: la cesta y el móvil del carnet se guardan en tu navegador (localStorage), el idioma que eliges se guarda en una cookie (NEXT_LOCALE) y el panel del dueño usa la cookie de sesión de Supabase.",
+              "No usamos cookies de analítica ni de publicidad. Por eso no te pedimos permiso con ningún banner."
+            ]
+          },
+          {
+            "titol": "Pagos",
+            "text": [
+              "Cuando pagas, lo haces en la página de Stripe, que usa sus propias cookies para evitar fraudes. Las explica en stripe.com/cookie-settings."
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

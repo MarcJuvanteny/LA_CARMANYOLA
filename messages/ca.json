@@ -21,7 +21,8 @@
       "ultima": "última {hora}",
       "simula": "Posa al dia",
       "simulant": "Simulant…",
-      "surt": "Surt"
+      "surt": "Surt",
+      "comandes": "Comandes"
     },
     "resum": {
       "titol": "Resum",
@@ -192,7 +193,8 @@
       "iaNoRespon": "La IA no ha respost (saturada o sense quota). Torna-ho a provar d'aquí a una estona.",
       "cancel": "Cancel·la",
       "enPreparacio": "En preparació",
-      "aquestaNit": "La IA no ha pogut preparar-la. Torna-la a demanar.",
+      "aquestaNit": "La IA no ha pogut preparar-la. Ho tornarà a provar aquesta nit.",
+      "reintenta": "Torna-ho a provar",
       "perRevisar": "Per revisar",
       "enviades": "Enviades",
       "proposta": "Proposta de la IA",
@@ -384,6 +386,31 @@
       "revisa": "Revisa un text teu",
       "revisaNota": "Enganxa un text i et marquem les paraules que no fem servir.",
       "revisaPlaceholder": "Escriu o enganxa aquí un text…"
+    },
+    "comandes": {
+      "titol": "Comandes",
+      "subtitol": "Les comandes reals de les últimes 24 hores, amb la faixa per imprimir.",
+      "local": "Comanda al local",
+      "nom": "Nom (opcional)",
+      "creaFaixa": "Imprimeix la faixa",
+      "localNota": "Per a les comandes pagades al taulell: la faixa porta el QR que suma la paraula al carnet.",
+      "buit": "Encara no hi ha cap comanda real.",
+      "numero": "Comanda {n}",
+      "senseNumero": "Al local",
+      "canal": {
+        "web": "Web",
+        "local": "Local",
+        "plataforma": "Plataforma"
+      },
+      "estat": {
+        "pendent": "Pendent de pagament",
+        "confirmada": "Pagada",
+        "cancellada": "Cancel·lada"
+      },
+      "sumada": "Paraula sumada",
+      "perSumar": "Paraula per sumar",
+      "imprimeix": "Imprimeix la faixa",
+      "faixa": "Desbowlitza aquí"
     }
   },
   "entra": {
@@ -406,13 +433,16 @@
       "idiomes": "CA · ES · EN",
       "cistella": "Cistella, {n, plural, one {# carmanyola} other {# carmanyoles}}",
       "demana": "Fes la comanda",
-      "torna": "Torna"
+      "torna": "Torna",
+      "idioma": "Idioma"
     },
     "peu": {
       "label": "Peu",
       "alergens": "Al·lèrgens",
       "privacitat": "Privacitat",
-      "lema": "Fet a xup-xup"
+      "lema": "Fet a xup-xup",
+      "avisLegal": "Avís legal",
+      "cookies": "Galetes"
     },
     "inici": {
       "eyebrow": "Cuina catalana per emportar · Poblenou",
@@ -542,8 +572,20 @@
       "sumadaSenseParaula": "+1 paraula al carnet de {nom} · {n} de 8",
       "complet": "Carnet complet: les postres són nostres!",
       "noCarnet": "No trobem cap carnet amb el {mobil}. La comanda, però, ja és feta.",
-      "noTrobada": "No trobem aquesta comanda en aquest dispositiu.",
-      "tornaInici": "Torna a l'inici"
+      "noTrobada": "No trobem aquesta comanda.",
+      "tornaInici": "Torna a l'inici",
+      "paga": "Paga · {total}",
+      "pagant": "Un moment…",
+      "notaStripe": "Pagues amb targeta a Stripe, en mode de prova: fes servir la targeta 4242 4242 4242 4242, una data futura i qualsevol CVC. Recull-la al taulell.",
+      "error": {
+        "cistella": "Alguna cosa de la cistella ja no és a la carta. Revisa-la i torna-ho a provar.",
+        "limit": "Massa intents seguits. Espera uns minuts i torna-ho a provar.",
+        "servidor": "No hem pogut fer la comanda. Torna-ho a provar d'aquí a una estona."
+      },
+      "adreca": "[ADREÇA], Poblenou",
+      "faixa": "Si tens el carnet, escaneja el QR de la faixa en recollir-la i hi sumarem la paraula.",
+      "esperant": "Confirmant el pagament…",
+      "cancellada": "Aquesta comanda no s'ha arribat a pagar."
     },
     "feste": {
       "subtitol": "Un principal, una base i tres complements. La picada, inclosa.",
@@ -567,13 +609,17 @@
       "eyebrow": "Operació Desbowlitzar",
       "titol": "El teu carnet de desbowlitzador",
       "text": "Cada comanda recupera una paraula d'aquí. Amb vuit, el postre de la casa és nostre.",
-      "nivell": "Aprenent",
+      "nivell": "Desbowlitzador",
       "elTeuNom": "[El teu nom]",
       "comptador": "{n} de 8",
       "recuperada": "Recuperada: <b>{paraula}</b>",
       "nom": "Nom",
       "nomPlaceholder": "Laia",
-      "correu": "Correu electrònic",
+      "correu": {
+        "assumpte": "El teu carnet de desbowlitzador",
+        "titol": "Ja tens el carnet, {nom}",
+        "cos": "Ja tens la primera paraula: carmanyola. Cada comanda directa en recupera una altra i, amb vuit, les postres són nostres.\n\nDesa el carnet al wallet des del mòbil:\n{enllac}"
+      },
       "correuPlaceholder": "laia@exemple.cat",
       "mobil": "Mòbil",
       "mobilPlaceholder": "600 000 000",
@@ -595,6 +641,139 @@
       "oAqui": "o fes-te'l des d'aquí",
       "elTeu": "El carnet de {nom}",
       "aviat": "Encara no el podem posar al wallet. Desa aquesta pàgina: aquí hi tens el carnet fins que arribi."
+    },
+    "faixa": {
+      "eyebrow": "Desbowlitza aquí",
+      "titol": "Una comanda, una paraula",
+      "text": "Escriu el mòbil del teu carnet i hi sumem la paraula d'aquesta comanda.",
+      "mobil": "El mòbil del carnet",
+      "suma": "Suma la paraula",
+      "sumant": "Sumant…",
+      "sumada": "+1 paraula al carnet de {nom}: <s>{de}</s> <b>{a}</b> · {n} de 8",
+      "sumadaSenseParaula": "+1 paraula al carnet de {nom} · {n} de 8",
+      "complet": "Carnet complet: les postres són nostres!",
+      "jaSumada": "Aquesta faixa ja ha sumat la seva paraula.",
+      "noTrobada": "Aquest codi no és de cap comanda. Potser el QR s'ha llegit malament?",
+      "plataforma": "Les comandes de les plataformes no sumen paraules. <a>Demana directe</a> i la propera sí.",
+      "senseCarnet": "No trobem cap carnet amb aquest mòbil. <a>Fes-te'l</a> i la propera comanda ja suma.",
+      "limit": "Massa intents seguits. Torna-ho a provar d'aquí a uns minuts.",
+      "error": "No hem pogut sumar la paraula. Torna-ho a provar."
+    },
+    "baixa": {
+      "titol": "Avisos",
+      "text": "Si ho confirmes, no t'enviarem més avisos, ni per correu ni al wallet. El carnet continua sent teu i les paraules es continuen sumant.",
+      "boto": "No vull rebre més avisos",
+      "fet": "Fet. No t'enviarem cap més avís.",
+      "error": "No hem pogut fer la baixa. Torna-ho a provar.",
+      "noValid": "Aquest enllaç no és vàlid."
+    },
+    "padro": {
+      "eyebrow": "El padró d'ingredients",
+      "titol": "Qui és del barri aquesta temporada",
+      "text": "Els ingredients de temporada s'empadronen quan arriben i es donen de baixa quan s'acaben. Aquí tens qui els cultiva i fins quan els tindrem.",
+      "qui": "Qui hi ha darrere",
+      "empadronats": "Empadronats ara",
+      "venen": "Arriben aviat",
+      "baixes": "De baixa",
+      "fins": "Fins: {quan}",
+      "desDe": "A partir de: {quan}",
+      "tornara": "Tornarà la temporada que ve.",
+      "carnet": "Amb el <a>carnet</a>, t'avisem de cada alta."
+    },
+    "legal": {
+      "actualitzat": "Última actualització: 6 de novembre de 2026",
+      "avisLegal": {
+        "titol": "Avís legal",
+        "seccions": [
+          {
+            "titol": "Qui som",
+            "text": [
+              "Aquesta web és de [RAÓ SOCIAL], amb NIF [NIF] i domicili a [ADREÇA], 08005 Barcelona. Correu de contacte: [CORREU].",
+              "La Carmanyola és un projecte de portfolio: el restaurant és fictici, però la web, els pagaments (en mode de prova), el carnet i els correus funcionen de veritat."
+            ]
+          },
+          {
+            "titol": "Ús de la web",
+            "text": [
+              "Pots fer servir la web per consultar la carta, fer comandes per recollir i fer-te el carnet de desbowlitzador. No la facis servir per a res que vagi contra la llei o que en pugui impedir el funcionament."
+            ]
+          },
+          {
+            "titol": "Preus i comandes",
+            "text": [
+              "Els preus inclouen l'IVA. Els pagaments es fan amb Stripe; mentre la web estigui en mode de prova, no es cobra res de veritat.",
+              "La informació d'al·lèrgens és la de cada fitxa. Treballem en una cuina compartida: no podem garantir l'absència de traces."
+            ]
+          },
+          {
+            "titol": "Propietat intel·lectual",
+            "text": [
+              "Els textos, el logotip, les fotos i el disseny són de [RAÓ SOCIAL] o dels seus autors. No els reprodueixis sense permís."
+            ]
+          },
+          {
+            "titol": "Llei aplicable",
+            "text": [
+              "S'aplica la llei espanyola. Per a qualsevol conflicte, els jutjats de Barcelona, sense perjudici dels drets que tinguis com a consumidor."
+            ]
+          }
+        ]
+      },
+      "privacitat": {
+        "titol": "Privacitat",
+        "seccions": [
+          {
+            "titol": "Qui en és responsable",
+            "text": [
+              "[RAÓ SOCIAL], NIF [NIF], [ADREÇA], 08005 Barcelona. Per a qualsevol cosa sobre les teves dades: [CORREU]."
+            ]
+          },
+          {
+            "titol": "Quines dades fem servir i per a què",
+            "text": [
+              "Comandes: el nom per cridar-te, l'hora de recollida i, si l'escrius, el mòbil del carnet. Les necessitem per preparar i lliurar la comanda (execució d'un contracte).",
+              "Carnet de desbowlitzador: el nom, el mòbil i, si vols, el correu. Serveixen per sumar les paraules i donar-te les postres (execució d'un contracte).",
+              "Avisos (padró, l'hora del Què Queda, campanyes): només si has marcat la casella, i amb la data en què ho vas fer (consentiment). Te'n pots donar de baixa amb un clic des de qualsevol correu."
+            ]
+          },
+          {
+            "titol": "Qui més les veu",
+            "text": [
+              "Proveïdors que ens donen el servei i que només les tracten per encàrrec nostre: Supabase (base de dades, UE), Vercel (allotjament), Stripe (pagaments), Resend (correu), Apple i Google (el carnet al wallet, si l'hi deses) i Google (redacció de textos amb IA, sense dades personals)."
+            ]
+          },
+          {
+            "titol": "Quant de temps",
+            "text": [
+              "Les comandes, el temps que demana la llei fiscal. El carnet, mentre el tinguis actiu. Els avisos, fins que te'n donis de baixa."
+            ]
+          },
+          {
+            "titol": "Els teus drets",
+            "text": [
+              "Pots demanar veure, corregir o esborrar les teves dades, limitar-ne o oposar-te'n a l'ús i endur-te-les, escrivint a [CORREU]. Si creus que no les tractem bé, pots reclamar a l'Autoritat Catalana de Protecció de Dades (apdcat.gencat.cat)."
+            ]
+          }
+        ]
+      },
+      "cookies": {
+        "titol": "Galetes",
+        "seccions": [
+          {
+            "titol": "Les que fem servir",
+            "text": [
+              "Només fem servir les imprescindibles perquè la web funcioni: la cistella i el mòbil del carnet es guarden al teu navegador (localStorage), l'idioma que tries es guarda en una galeta (NEXT_LOCALE) i el panell de l'amo fa servir la galeta de sessió de Supabase.",
+              "No fem servir galetes d'analítica ni de publicitat. Per això no et demanem permís amb cap bàner."
+            ]
+          },
+          {
+            "titol": "Pagaments",
+            "text": [
+              "Quan pagues, ho fas a la pàgina de Stripe, que fa servir les seves pròpies galetes per evitar fraus. Les explica a stripe.com/cookie-settings."
+            ]
+          }
+        ]
+      }
     }
   }
 }

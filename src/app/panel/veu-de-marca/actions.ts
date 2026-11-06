@@ -3,6 +3,7 @@
 import type { Idioma } from "@/lib/data/carta";
 import { encarrecsVeu, provesVeu, situacions, type Situacio } from "@/lib/data/veu";
 import { netejaText, redacta } from "@/lib/ia/gemini";
+import { gastaQuota } from "@/lib/ia/quota";
 import { supabaseServidor } from "@/lib/supabase/server";
 
 const nomIdioma: Record<Idioma, string> = { ca: "català", es: "castellà", en: "anglès" };
@@ -22,6 +23,7 @@ export async function provaVeu(situacio: Situacio, idioma: Idioma, veu: string):
   const supabase = await supabaseServidor();
   const { data: esAmo } = await supabase.rpc("is_owner");
   if (!esAmo) throw new Error("Només l'amo");
+  if (!(await gastaQuota("veu"))) return { text: provesVeu[situacio][idioma], font: "exemple" };
 
   const sistema = [
     "Escrius els avisos de La Carmanyola als seus clients (wallet i correu). Aquesta és la veu de marca i l'has de seguir al peu de la lletra:",

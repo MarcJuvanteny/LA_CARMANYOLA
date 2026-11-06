@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import type { Idioma } from "@/lib/data/carta";
 import { useCistella } from "@/components/web/Cistella";
 import { QrCarnet } from "@/components/web/QrCarnet";
 import { TriaFeste } from "@/components/web/TriaFeste";
 import { euros } from "@/lib/format";
-import { desbowlitza, padroTardor, type PlatWeb } from "@/lib/web/contingut";
+import { desbowlitza, padro, type padroTardor, type PlatWeb } from "@/lib/web/contingut";
 
 /** Alçada de la capçalera quan es fa petita (en baixar) */
 const CAP_PETITA = 72;
@@ -184,6 +185,7 @@ function useDesfila() {
 export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: number }) {
   const t = useTranslations("web.inici");
   const tn = useTranslations("web.nav");
+  const locale = useLocale();
   const { afegeix } = useCistella();
   const { s, recorregut, pista } = useScrollInici();
   const galeria = useDesfila();
@@ -421,7 +423,7 @@ export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: numbe
               transform: `translateX(${-s.pr * recorregut}px)`,
             }}
           >
-            {padroTardor.map((p) => (
+            {padro(locale as Idioma).map((p) => (
               <PadroParella key={p.ingredient} p={p} etiqueta={t("ingredient")} />
             ))}
             <article className={`${targeta} border-2 border-dashed border-groc/60 text-groc`}>

@@ -1,11 +1,9 @@
-"use client";
-
 import { useTranslations } from "next-intl";
+import type { ComandaPublica } from "@/lib/comandes/comandes";
 import { euros } from "@/lib/format";
-import { preuLinia, type Comanda } from "./Cistella";
 
-/** El resum d'una comanda confirmada: al calaix, just en confirmar-la, i a /comanda/[id]. */
-export function ResumConfirmada({ comanda, sumant = false }: { comanda: Comanda; sumant?: boolean }) {
+/** El resum d'una comanda pagada, a /comanda/[id]. Les dades surten de la base de dades. */
+export function ResumConfirmada({ comanda }: { comanda: ComandaPublica }) {
   const carnet = comanda.carnet;
   const t = useTranslations("web.comanda");
   return (
@@ -15,16 +13,16 @@ export function ResumConfirmada({ comanda, sumant = false }: { comanda: Comanda;
         <img src="/brand/isotip-granat.svg" alt="" className="size-14" />
         <h1 className="m-0 text-[30px] tracking-[-.02em]">{t("confirmada")}</h1>
         <p className="m-0 text-[15px] leading-[1.6]">
-          {t.rich("recull", { hora: comanda.hora, b: (c) => <strong className="font-semibold">{c}</strong> })}
+          {comanda.hora && t.rich("recull", { hora: comanda.hora, b: (c) => <strong className="font-semibold">{c}</strong> })}
           <br />
-          [ADREÇA], Poblenou
+          {t("adreca")}
         </p>
       </header>
 
       <section className="flex flex-col gap-2.5 rounded-[22px] bg-white p-5">
         <div className="flex items-baseline justify-between">
-          <h2 className="web-eb m-0 font-cos text-xs tracking-[.1em] text-granat">{t("numero", { n: comanda.numero })}</h2>
-          <span className="text-[13px]">{t("estat")}</span>
+          <h2 className="web-eb m-0 font-cos text-xs tracking-[.1em] text-granat">{t("numero", { n: comanda.numero ?? "—" })}</h2>
+          <span className="text-[13px]">{comanda.nom}</span>
         </div>
         {comanda.linies.map((l) => (
           <div key={l.id} className="flex justify-between gap-3 text-[15px]">
@@ -33,7 +31,7 @@ export function ResumConfirmada({ comanda, sumant = false }: { comanda: Comanda;
               {l.detall && <span className="block text-xs text-suau">{l.detall}</span>}
               {l.dinar && <span className="block text-xs text-suau">{t("dinar", { nom: l.dinar.nom.toLowerCase() })}</span>}
             </span>
-            <span>{euros(preuLinia(l))}</span>
+            <span>{euros(l.preu * l.quantitat)}</span>
           </div>
         ))}
         <div className="flex justify-between border-t border-linia pt-3 text-base font-semibold">
@@ -42,26 +40,24 @@ export function ResumConfirmada({ comanda, sumant = false }: { comanda: Comanda;
         </div>
       </section>
 
-      {/* Només si s'ha escrit el mòbil del carnet: una línia, sense desviar la comanda. */}
-      {(sumant || carnet) && (
-        <p role="status" className="m-0 rounded-[18px] bg-groc px-5 py-4 text-center text-[15px] leading-[1.5] text-granat">
-          {sumant
-            ? t("sumant")
-            : carnet?.trobat
-              ? carnet.a
-                ? t.rich("sumada", {
-                    nom: carnet.nom,
-                    de: carnet.de ?? "",
-                    a: carnet.a,
-                    n: carnet.paraules,
-                    s: (c) => <span className="line-through opacity-60">{c}</span>,
-                    b: (c) => <strong className="font-semibold">{c}</strong>,
-                  })
-                : t("sumadaSenseParaula", { nom: carnet.nom, n: carnet.paraules })
-              : t("noCarnet", { mobil: carnet?.mobil ?? "" })}
-          {carnet?.trobat && carnet.complet && <span className="mt-1 block font-semibold">{t("complet")}</span>}
-        </p>
-      )}
+      {/* La paraula del carnet: si ha escrit el mòbil, ja s'ha sumat; si no, la sumarà el QR de la faixa. */}
+      <p role="status" className="m-0 rounded-[18px] bg-groc px-5 py-4 text-center text-[15px] leading-[1.5] text-granat">
+        {carnet
+          ? carnet.a
+            ? t.rich("sumada", {
+                nom: carnet.nom,
+                de: carnet.de ?? "",
+                a: carnet.a,
+                n: carnet.paraules,
+                s: (c) => <span className="line-through opacity-60">{c}</span>,
+                b: (c) => <strong className="font-semibold">{c}</strong>,
+              })
+            : t("sumadaSenseParaula", { nom: carnet.nom, n: carnet.paraules })
+          : comanda.mobil && !comanda.teCarnet
+            ? t("noCarnet", { mobil: comanda.mobil })
+            : t("faixa")}
+        {carnet?.complet && <span className="mt-1 block font-semibold">{t("complet")}</span>}
+      </p>
     </>
   );
 }

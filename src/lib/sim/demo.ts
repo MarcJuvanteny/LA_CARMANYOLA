@@ -1,6 +1,6 @@
 /**
  * Reinicia el que hagi canviat el compte de demo (l'amo) sense tocar l'històric:
- * propostes en esborrany, peticions de campanya, carta, veu de marca, padró, Què Queda i producció.
+ * propostes en esborrany, peticions de campanya velles, carta, veu de marca, padró, Què Queda i producció.
  * Els valors de referència són els de les dades base (src/lib/data).
  */
 
@@ -22,9 +22,13 @@ export async function resetDemo(db: SupabaseClient) {
     ["carxofa", "carxofa"],
   ];
   for (const [slug, font] of esborranys) {
-    await ok(db.from("campaigns").update({ status: "esborrany", saved_at: null, messages: missatges(font) }).eq("slug", slug).is("sent_at", null));
+    // Les propostes de demo tornen a ser esborrany encara que des del panell s'hagin enviat de veritat.
+    const { data: c } = await db.from("campaigns").select("id").eq("slug", slug).eq("simulated", false).maybeSingle();
+    if (c) await ok(db.from("campaign_recipients").delete().eq("campaign_id", c.id));
+    await ok(db.from("campaigns").update({ status: "esborrany", saved_at: null, sent_at: null, messages: missatges(font) }).eq("slug", slug));
   }
-  await ok(db.from("campaign_requests").delete().gte("id", 0));
+  // Les peticions pendents es queden: la tasca nocturna les reintenta. Només marxen les velles.
+  await ok(db.from("campaign_requests").delete().lt("created_at", new Date(Date.now() - 7 * 86_400_000).toISOString()));
   // Les campanyes que ha preparat la IA a petició de l'amo (i no s'han enviat) també marxen.
   await ok(db.from("campaigns").delete().like("slug", "ia-%").is("sent_at", null));
 

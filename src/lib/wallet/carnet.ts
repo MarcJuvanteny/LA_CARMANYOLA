@@ -8,6 +8,10 @@ export interface Carnet {
   paraules: number;
   falta: string | null;
   complets: number;
+  /** L'últim avís (campanya o Què Queda): la targeta el mostra i el wallet en fa notificació. */
+  avis: string | null;
+  /** Quan ha canviat per últim cop (servei web d'Apple Wallet). */
+  actualitzat: Date;
 }
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -16,7 +20,7 @@ export async function carnet(id: string): Promise<Carnet | null> {
   if (!UUID.test(id)) return null;
   const db = serviceClient();
   const [client, segells, premis, paraules] = await Promise.all([
-    db.from("customers").select("first_name").eq("id", id).eq("simulated", false).maybeSingle(),
+    db.from("customers").select("first_name, wallet_message, wallet_updated_at").eq("id", id).eq("simulated", false).maybeSingle(),
     db.from("stamps").select("word_id, card_number").eq("customer_id", id),
     db.from("rewards").select("id", { count: "exact", head: true }).eq("customer_id", id),
     db.from("words").select("id, from_word, to_word").order("id"),
@@ -34,5 +38,7 @@ export async function carnet(id: string): Promise<Carnet | null> {
     paraules: fetes.size === 8 ? 0 : fetes.size,
     falta: falta ? `${falta.from_word} → ${falta.to_word}` : null,
     complets: premis.count ?? 0,
+    avis: client.data.wallet_message ?? null,
+    actualitzat: new Date(client.data.wallet_updated_at ?? Date.now()),
   };
 }

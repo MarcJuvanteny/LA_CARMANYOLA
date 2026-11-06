@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useCistella } from "./Cistella";
+import { TriaIdioma } from "./TriaIdioma";
 
 export function IconaCistella({ className = "" }: { className?: string }) {
   return (
@@ -53,7 +54,7 @@ export function Capcalera() {
             <Link href="/carta" className="px-1 py-2.5 whitespace-nowrap text-groc no-underline hover:text-paper">
               {t("carta")}
             </Link>
-            <Link href="/#padro" className="px-1 py-2.5 whitespace-nowrap text-groc no-underline hover:text-paper">
+            <Link href="/padro" className="px-1 py-2.5 whitespace-nowrap text-groc no-underline hover:text-paper">
               {t("padro")}
             </Link>
             <Link href="/#carnet" className="px-1 py-2.5 whitespace-nowrap text-groc no-underline hover:text-paper">
@@ -70,7 +71,7 @@ export function Capcalera() {
           </Link>
 
           <div className="flex items-center gap-3.5 justify-self-end">
-            <span className="hidden text-xs tracking-[.08em] whitespace-nowrap opacity-60 lg:inline">{t("idiomes")}</span>
+            <TriaIdioma className="hidden sm:flex" />
             <button key={bot} type="button" onClick={obre} aria-haspopup="dialog" aria-label={t("cistella", { n: unitats })} className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-groc ${bot ? "bota" : ""}`}>
               <IconaCistella />
               {unitats > 0 && (

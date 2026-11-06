@@ -1,0 +1,356 @@
+{
+  "web": {
+    "nav": {
+      "principal": "Main",
+      "carta": "The menu",
+      "padro": "The padró",
+      "carnet": "The card",
+      "on": "Find us",
+      "inici": "La Carmanyola, home",
+      "idiomes": "CA · ES · EN",
+      "idioma": "Language",
+      "cistella": "Basket, {n, plural, one {# carmanyola} other {# carmanyoles}}",
+      "demana": "Order now",
+      "torna": "Back"
+    },
+    "peu": {
+      "label": "Footer",
+      "alergens": "Allergens",
+      "privacitat": "Privacy",
+      "avisLegal": "Legal notice",
+      "cookies": "Cookies",
+      "lema": "Slow-cooked"
+    },
+    "inici": {
+      "eyebrow": "Catalan food to take away · Poblenou",
+      "titol": "Take away the <x>bowl</x>,<br></br>and what's left?",
+      "recull": "Ready in 10 minutes",
+      "demanaEyebrow": "Order now · autumn",
+      "demanaTitol": "In the carmanyola today",
+      "totaCarta": "Full menu",
+      "anterior": "Previous dish",
+      "seguent": "Next dish",
+      "afegeix": "Add {plat}",
+      "dinar": "Add a drink or dessert for <b>+€2</b> and it's El Dinar.",
+      "desbEyebrow": "Operació Desbowlitzar",
+      "desbText": "Let's stop importing words, and dishes. We already had all this here, and it's delicious.",
+      "quedaTitol": "What's left<br></br>is from here.",
+      "puntsEyebrow": "How we work",
+      "puntsTitol": "This is how<br></br>a carmanyola is made.",
+      "punts": [
+        {
+          "titol": "Slow-cooked",
+          "text": "Lifelong classics, made every morning. Three hours on the stove for the fricandó."
+        },
+        {
+          "titol": "Sauce on the side",
+          "text": "Romesco, allioli, salsa verda. So the dish arrives just as it left the kitchen."
+        },
+        {
+          "titol": "Local produce",
+          "text": "Every seasonal ingredient, with the name of whoever grows it."
+        }
+      ],
+      "padroEyebrow": "The autumn padró",
+      "padroTitol": "Who's behind every dish",
+      "padroBaixa": "Scroll down to meet them →",
+      "ingredient": "Ingredient",
+      "properament": "Coming soon",
+      "calcots": "In January, calçots.",
+      "avisarem": "We'll let you know when they're registered.",
+      "carnetEyebrow": "The desbowlitzador card",
+      "carnetTitol": "Eight words.<br></br>One dessert.",
+      "carnetText": "Every direct order wins back a word from here. With eight, dessert is on us. And if you have the card, in the last half hour of each service we tell you what's left in the kitchen: it's Què Queda hour.",
+      "carnetCta": "Get the card",
+      "carnetNota": "In your phone's wallet. No apps.",
+      "carnetQr": "Quicker: scan this QR with your phone, add your name and number and the card goes straight to your wallet.",
+      "cremaRegal": "Free crema catalana",
+      "onEyebrow": "Find us",
+      "onTitol": "A small counter in Poblenou.",
+      "adreca": "Address",
+      "adrecaValor": "[ADREÇA], Poblenou",
+      "horari": "Opening hours",
+      "horariValor": "Monday to Saturday, lunch and dinner",
+      "recollida": "Pick-up",
+      "recollidaValor": "In 10 minutes, no queue",
+      "comArribar": "How to get here",
+      "mapa": "Illustrated map of Poblenou showing where we are",
+      "mar": "Sea",
+      "barri": "Poblenou"
+    },
+    "carta": {
+      "titol": "The menu",
+      "subtitol": "Autumn · ready in 10 minutes",
+      "filtres": "Filters",
+      "tot": "All",
+      "vega": "Vegan",
+      "vegetaria": "Vegetarian",
+      "senseGluten": "Gluten-free",
+      "seccions": {
+        "casa": "House carmanyoles",
+        "fes": "Fes-te'l tu",
+        "acompanyar": "On the side",
+        "postres": "Desserts",
+        "begudes": "Drinks"
+      },
+      "buit": "Nothing in this section matches the filter.",
+      "afegeix": "Add {plat}",
+      "afegit": "Added",
+      "nota": "All sauces come on the side. Shared kitchen: we can't guarantee the absence of traces.",
+      "noDisponible": "Sold out today"
+    },
+    "fitxa": {
+      "tornaCarta": "Back to the menu",
+      "dins": "Inside the carmanyola",
+      "zonaGran": "Large side · the dish",
+      "zonaPetita": "Small side · the garnish",
+      "envas": "Round carmanyola with a divider: the dish on the large side, the garnish on the small one",
+      "empadronats": "Registered",
+      "alergens": "Allergens",
+      "senseAlergens": "No declared allergens",
+      "traces": "Shared kitchen: we can't guarantee the absence of traces.",
+      "dinar": "Make it El Dinar",
+      "nomesCarmanyola": "Just the carmanyola",
+      "amb": "With {nom}",
+      "treu": "Remove one",
+      "posa": "Add one",
+      "afegeix": "Add · {preu}",
+      "afegit": "Added to your order",
+      "veureComanda": "View order"
+    },
+    "barra": {
+      "resum": "{n, plural, one {# carmanyola} other {# carmanyoles}} · {total}",
+      "veure": "View order"
+    },
+    "feste": {
+      "subtitol": "One main, one base and three extras. Picada included.",
+      "tanca": "Close",
+      "grups": {
+        "principal": "The main",
+        "base": "The base",
+        "complement": "Three extras"
+      },
+      "compte": "{n} of {de}",
+      "tardor": "Autumn",
+      "alergens": "Allergens: {llista}.",
+      "confirma": "Confirm · {preu}",
+      "falta": {
+        "principal": "Pick the main",
+        "base": "Pick the base",
+        "complement": "Pick three extras"
+      }
+    },
+    "comanda": {
+      "titol": "Your order",
+      "tanca": "Close the order",
+      "buida": "There's nothing in the carmanyola yet.",
+      "anaCarta": "See the menu",
+      "dinar": "El Dinar · {nom}",
+      "treu": "Remove one {plat}",
+      "posa": "Add one {plat}",
+      "hora": "Pick-up time",
+      "nom": "Name for the order",
+      "nomPlaceholder": "Laia",
+      "total": "Total",
+      "confirma": "Confirm order · {total}",
+      "nota": "Collect it at the counter. Pay when you pick it up: card or meal voucher.",
+      "confirmada": "Order confirmed",
+      "recull": "Come and collect it at <b>{hora}</b>",
+      "numero": "Order {n}",
+      "estat": "Confirmed",
+      "mobilCarnet": "Got the card? Your mobile",
+      "opcional": "(optional)",
+      "mobilPlaceholder": "600 000 000",
+      "mobilCarnetNota": "We'll add this order's word to it.",
+      "sumant": "Adding the word to your card…",
+      "sumada": "+1 word on {nom}'s card: <s>{de}</s> <b>{a}</b> · {n} of 8",
+      "sumadaSenseParaula": "+1 word on {nom}'s card · {n} of 8",
+      "complet": "Card complete: dessert is on us!",
+      "noCarnet": "We can't find a card for {mobil}. Your order is placed, though.",
+      "noTrobada": "We can't find this order.",
+      "tornaInici": "Back to home",
+      "paga": "Pay · {total}",
+      "pagant": "One moment…",
+      "notaStripe": "You pay by card on Stripe, in test mode: use card 4242 4242 4242 4242, any future date and any CVC. Collect it at the counter.",
+      "error": {
+        "cistella": "Something in your basket is no longer on the menu. Check it and try again.",
+        "limit": "Too many attempts in a row. Wait a few minutes and try again.",
+        "servidor": "We couldn't place the order. Please try again in a while."
+      },
+      "adreca": "[ADREÇA], Poblenou",
+      "faixa": "If you have the card, scan the QR on the band when you collect it and we'll add the word.",
+      "esperant": "Confirming payment…",
+      "cancellada": "This order was never paid."
+    },
+    "carnet": {
+      "eyebrow": "Operació Desbowlitzar",
+      "titol": "Your desbowlitzador card",
+      "text": "Every order wins back a word from here. With eight, the house dessert is on us.",
+      "nivell": "Desbowlitzador",
+      "elTeuNom": "[Your name]",
+      "comptador": "{n} of 8",
+      "recuperada": "Won back: <b>{paraula}</b>",
+      "nom": "Name",
+      "nomPlaceholder": "Laia",
+      "correu": {
+        "assumpte": "Your desbowlitzador card",
+        "titol": "Your card is ready, {nom}",
+        "cos": "You've already got the first word: carmanyola. Every direct order wins back another and, with eight, dessert is on us.\n\nSave the card to your wallet from your phone:\n{enllac}"
+      },
+      "correuPlaceholder": "laia@example.com",
+      "mobil": "Mobile",
+      "mobilPlaceholder": "600 000 000",
+      "mobilNota": "It's what you'll give us when you order, so we can add the word.",
+      "opcional": "(optional, for updates)",
+      "consentiment": "I'd like to hear about the padró, Què Queda hour and my rewards. I can unsubscribe whenever I want.",
+      "desa": "Save the card to your phone",
+      "nota": "It's saved in Apple Wallet or Google Wallet. Only orders placed directly with La Carmanyola count.",
+      "privacitat": "Privacy",
+      "privacitatText": "We only use your name, mobile and email for the card. If you don't tick the box, we won't send you anything.",
+      "fet": "Done, {nom}! The card is yours.",
+      "fetText": "Soon you'll be able to save it to Apple Wallet and Google Wallet right here.",
+      "desant": "Making your card…",
+      "error": "We couldn't make your card. Please try again in a while.",
+      "escaneja": "Scan the QR with your phone's camera and the card will go straight to your wallet.",
+      "desaMobil": "Save it to your wallet",
+      "qrTitol": "Get it on your phone",
+      "qrText": "Scan the QR with your camera, add your name and mobile and the card goes straight to your wallet.",
+      "oAqui": "or get it here",
+      "elTeu": "{nom}'s card",
+      "aviat": "We can't put it in your wallet just yet. Save this page: your card lives here until then."
+    },
+    "faixa": {
+      "eyebrow": "Desbowlitza aquí",
+      "titol": "One order, one word",
+      "text": "Type your card's mobile number and we'll add this order's word.",
+      "mobil": "Your card's mobile",
+      "suma": "Add the word",
+      "sumant": "Adding…",
+      "sumada": "+1 word on {nom}'s card: <s>{de}</s> <b>{a}</b> · {n} of 8",
+      "sumadaSenseParaula": "+1 word on {nom}'s card · {n} of 8",
+      "complet": "Card complete: dessert is on us!",
+      "jaSumada": "This band has already added its word.",
+      "noTrobada": "This code doesn't belong to any order. Maybe the QR didn't scan properly?",
+      "plataforma": "Orders from delivery platforms don't add words. <a>Order direct</a> and the next one will.",
+      "senseCarnet": "We can't find a card with this mobile. <a>Get one</a> and your next order will count.",
+      "limit": "Too many attempts in a row. Try again in a few minutes.",
+      "error": "We couldn't add the word. Please try again."
+    },
+    "baixa": {
+      "titol": "Updates",
+      "text": "If you confirm, we won't send you any more updates, by email or to your wallet. The card is still yours and words keep adding up.",
+      "boto": "Stop sending me updates",
+      "fet": "Done. We won't send you any more updates.",
+      "error": "We couldn't unsubscribe you. Please try again.",
+      "noValid": "This link isn't valid."
+    },
+    "padro": {
+      "eyebrow": "The ingredient padró",
+      "titol": "Who's in the neighbourhood this season",
+      "text": "Seasonal ingredients get registered when they arrive and struck off when they run out. Here's who grows them and how long we'll have them.",
+      "qui": "Who's behind them",
+      "empadronats": "Registered now",
+      "venen": "Coming soon",
+      "baixes": "Struck off",
+      "fins": "Until: {quan}",
+      "desDe": "From: {quan}",
+      "tornara": "Back next season.",
+      "carnet": "With the <a>card</a>, we'll tell you about every new arrival."
+    },
+    "legal": {
+      "actualitzat": "Last updated: 6 November 2026",
+      "avisLegal": {
+        "titol": "Legal notice",
+        "seccions": [
+          {
+            "titol": "Who we are",
+            "text": [
+              "This website belongs to [RAÓ SOCIAL], tax ID [NIF], registered at [ADREÇA], 08005 Barcelona. Contact: [CORREU].",
+              "La Carmanyola is a portfolio project: the restaurant is fictional, but the website, payments (in test mode), the card and the emails really work."
+            ]
+          },
+          {
+            "titol": "Using the website",
+            "text": [
+              "You can use the website to browse the menu, place orders for pick-up and get the desbowlitzador card. Don't use it for anything unlawful or that could stop it working."
+            ]
+          },
+          {
+            "titol": "Prices and orders",
+            "text": [
+              "Prices include VAT. Payments are handled by Stripe; while the website is in test mode, nothing is actually charged.",
+              "Allergen information is on each dish page. We work in a shared kitchen: we can't guarantee the absence of traces."
+            ]
+          },
+          {
+            "titol": "Intellectual property",
+            "text": [
+              "The texts, logo, photos and design belong to [RAÓ SOCIAL] or their authors. Please don't reproduce them without permission."
+            ]
+          },
+          {
+            "titol": "Governing law",
+            "text": [
+              "Spanish law applies. Any dispute goes to the courts of Barcelona, without prejudice to your rights as a consumer."
+            ]
+          }
+        ]
+      },
+      "privacitat": {
+        "titol": "Privacy",
+        "seccions": [
+          {
+            "titol": "Who is responsible",
+            "text": [
+              "[RAÓ SOCIAL], tax ID [NIF], [ADREÇA], 08005 Barcelona. For anything about your data: [CORREU]."
+            ]
+          },
+          {
+            "titol": "What data we use and why",
+            "text": [
+              "Orders: your name to call you, the pick-up time and, if you give it, your card's mobile number. We need them to prepare and hand over your order (performance of a contract).",
+              "Desbowlitzador card: your name, mobile and, if you like, email. They're used to add words and give you your dessert (performance of a contract).",
+              "Updates (padró, Què Queda hour, campaigns): only if you ticked the box, along with the date you did so (consent). You can unsubscribe with one click from any email."
+            ]
+          },
+          {
+            "titol": "Who else sees it",
+            "text": [
+              "Providers who run the service and only process data on our behalf: Supabase (database, EU), Vercel (hosting), Stripe (payments), Resend (email), Apple and Google (the card in your wallet, if you save it) and Google (AI text drafting, with no personal data)."
+            ]
+          },
+          {
+            "titol": "How long",
+            "text": [
+              "Orders, for as long as tax law requires. The card, while you keep it active. Updates, until you unsubscribe."
+            ]
+          },
+          {
+            "titol": "Your rights",
+            "text": [
+              "You can ask to see, correct or delete your data, restrict or object to its use and take it with you, by writing to [CORREU]. If you think we're not handling it properly, you can complain to the Catalan Data Protection Authority (apdcat.gencat.cat)."
+            ]
+          }
+        ]
+      },
+      "cookies": {
+        "titol": "Cookies",
+        "seccions": [
+          {
+            "titol": "The ones we use",
+            "text": [
+              "We only use what the website needs to work: your basket and card mobile are stored in your browser (localStorage), the language you choose is stored in a cookie (NEXT_LOCALE) and the owner's panel uses Supabase's session cookie.",
+              "We don't use analytics or advertising cookies. That's why there's no consent banner."
+            ]
+          },
+          {
+            "titol": "Payments",
+            "text": [
+              "When you pay, you do it on Stripe's page, which uses its own cookies to prevent fraud. They explain them at stripe.com/cookie-settings."
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -15,6 +15,7 @@ import { Badge, Pill, cx } from "./ui";
 
 const items = [
   { href: "/panel", key: "resum" },
+  { href: "/panel/comandes", key: "comandes" },
   { href: "/panel/vendes", key: "vendes" },
   { href: "/panel/clients", key: "clients" },
   { href: "/panel/franges", key: "franges" },

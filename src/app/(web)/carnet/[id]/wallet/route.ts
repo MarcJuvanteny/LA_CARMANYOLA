@@ -1,4 +1,5 @@
 import { userAgent, type NextRequest } from "next/server";
+import { origen } from "@/lib/origen";
 import { carnet } from "@/lib/wallet/carnet";
 import { appleConfigurat, passApple } from "@/lib/wallet/apple";
 import { enllacGoogle, googleConfigurat } from "@/lib/wallet/google";
@@ -16,7 +17,7 @@ export async function GET(request: NextRequest, ctx: RouteContext<"/carnet/[id]/
   const quin = request.nextUrl.searchParams.get("a") ?? (/ios/i.test(so) ? "apple" : /android/i.test(so) ? "google" : "");
 
   if (quin === "apple" && appleConfigurat()) {
-    return new Response(new Uint8Array(await passApple(c)), {
+    return new Response(new Uint8Array(await passApple(c, await origen())), {
       headers: {
         "Content-Type": "application/vnd.apple.pkpass",
         "Content-Disposition": `attachment; filename="carnet-carmanyola.pkpass"`,
@@ -25,7 +26,7 @@ export async function GET(request: NextRequest, ctx: RouteContext<"/carnet/[id]/
     });
   }
   if (quin === "google" && googleConfigurat()) {
-    return Response.redirect(enllacGoogle(c, request.nextUrl.origin), 302);
+    return Response.redirect(enllacGoogle(c, await origen()), 302);
   }
   return Response.redirect(new URL(`/carnet/${id}`, request.url), 302);
 }

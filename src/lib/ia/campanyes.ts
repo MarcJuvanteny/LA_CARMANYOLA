@@ -1,7 +1,6 @@
 import "server-only";
 import type { Campanya, TipusCampanya, To } from "@/lib/data/campanyes";
 import type { Idioma, Plat } from "@/lib/data/carta";
-import type { ClientPanell } from "@/lib/db/panel";
 import { diesSetmana } from "@/lib/dates";
 import { percent } from "@/lib/format";
 import { netejaText, redactaJson, type Redaccio } from "./gemini";
@@ -33,14 +32,14 @@ const esquemaMissatges = {
 
 type Missatges = Campanya["missatges"];
 
-const esMissatges = (x: unknown): x is Missatges =>
+export const esMissatges = (x: unknown): x is Missatges =>
   typeof x === "object" && x !== null && TONS.every((t) => IDIOMES.every((i) => typeof (x as Missatges)[t]?.[i] === "string"));
 
 /**
  * Les variables no es poden perdre ni inventar: només {nom} i {paraula}. Si el missatge de partida
  * duia {nom}, l'han de dur tots els tons; si duia {paraula}, almenys la versió principal.
  */
-function conservaVariables(nous: Missatges, model: Missatges | null): boolean {
+export function conservaVariables(nous: Missatges, model: Missatges | null): boolean {
   const textos = TONS.flatMap((t) => IDIOMES.map((i) => nous[t][i]));
   if (textos.some((x) => (x.match(/\{[^}]*\}/g) ?? []).some((v) => v !== "{nom}" && v !== "{paraula}"))) return false;
   const teNom = !model || IDIOMES.some((i) => model.original[i].includes("{nom}"));
@@ -102,7 +101,7 @@ const esquemaCampanya = {
   additionalProperties: false,
 };
 
-const esCampanya = (x: unknown): x is CampanyaIA => {
+export const esCampanya = (x: unknown): x is CampanyaIA => {
   const c = x as CampanyaIA;
   return (
     typeof c === "object" &&
@@ -117,8 +116,20 @@ const esCampanya = (x: unknown): x is CampanyaIA => {
   );
 };
 
-export function fetsNegoci(clients: ClientPanell[], franges: { fluixes: [number, number][]; mitjanaFluixes: number; mitjanaMigdia: number }, carta: Plat[]): string[] {
-  const risc = clients.filter((c) => c.segments.includes("risc"));
+/** El mínim de cada client que cal per als fets del negoci (cap nom ni dada personal). */
+export interface ClientFets {
+  risc: boolean;
+  wallet: boolean;
+  consentiment: boolean;
+  paraules: number;
+}
+
+export function fetsNegoci(
+  clients: ClientFets[],
+  franges: { mitjanaFluixes: number; mitjanaMigdia: number },
+  carta: Pick<Plat, "nom" | "disponible" | "seccio">[],
+): string[] {
+  const risc = clients.filter((c) => c.risc);
   return [
     `Clients amb carnet: ${clients.length}. Amb el carnet al wallet: ${clients.filter((c) => c.wallet).length}. Accepten correu: ${clients.filter((c) => c.consentiment).length}.`,
     `Clients en risc: ${risc.length} (${percent(clients.length ? risc.length / clients.length : 0)} dels clients). ${risc.filter((c) => 8 - c.paraules <= 3).length} estan a 3 paraules o menys de completar el carnet.`,

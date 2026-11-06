@@ -1,36 +1,30 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
-import { llegeixComanda, type Comanda } from "@/components/web/Cistella";
-import { ResumConfirmada } from "@/components/web/ResumConfirmada";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { recordaMobilCarnet, useCistella } from "@/components/web/Cistella";
 
-export function Confirmada({ id }: { id: string }) {
-  const t = useTranslations("web.comanda");
-  const [comanda, setComanda] = useState<Comanda | null | undefined>(undefined);
-
+/** Comanda pagada: la cistella es buida i, si el mòbil és d'un carnet, el dispositiu el recorda. */
+export function BuidaCistella({ mobil }: { mobil: string | null }) {
+  const { llesta, buida } = useCistella();
   useEffect(() => {
-    // La comanda es desa al navegador on s'ha fet.
-    setComanda(llegeixComanda(id));
-  }, [id]);
+    if (!llesta) return;
+    buida();
+    if (mobil) recordaMobilCarnet(mobil);
+  }, [llesta, buida, mobil]);
+  return null;
+}
 
-  if (comanda === undefined) return <main className="min-h-[60vh]" />;
-
-  if (!comanda) {
-    return (
-      <main className="mx-auto flex min-h-[50vh] max-w-[480px] flex-col items-center justify-center gap-5 px-5 py-16 text-center">
-        <p className="m-0 text-[15px]">{t("noTrobada")}</p>
-        <Link href="/" className="web-btn bg-granat text-groc">
-          {t("tornaInici")}
-        </Link>
-      </main>
-    );
-  }
-
-  return (
-    <main className="mx-auto flex w-full max-w-[480px] flex-col gap-4 px-4 pt-7 pb-16">
-      <ResumConfirmada comanda={comanda} />
-    </main>
-  );
+/** El webhook de Stripe pot trigar uns segons: es torna a mirar cada 2 s durant un minut. */
+export function EsperaPagament() {
+  const router = useRouter();
+  useEffect(() => {
+    let n = 0;
+    const id = setInterval(() => {
+      if (++n > 30) clearInterval(id);
+      router.refresh();
+    }, 2000);
+    return () => clearInterval(id);
+  }, [router]);
+  return null;
 }

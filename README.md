@@ -55,6 +55,9 @@ La IA redacta; els números els calcula SQL (CONTEXT.md §9). Tot passa per `src
 - **Models:** `GEMINI_MODELS` (opcional, per ordre de preferència). Per defecte `gemini-3.5-flash,gemini-flash-lite-latest`.
 - **Targetes** (Vendes, Franges, Clients, Padró): es mostra la plantilla i la IA la redacta en segon pla; el text es desa a `ai_texts` i només es torna a redactar quan canvien les dades.
 - **Sota demanda:** Veu de marca (prova), Què Queda (reescriu l'avís), Campanyes (reescriu i demana una campanya nova).
+- **Quota:** les accions sota demanda comparteixen un límit per hora (`IA_QUOTA_HORA`, per defecte 30; taula `ai_usage`). Si s'exhaureix, el panell es comporta com si la IA no respongués.
+- **Reserves:** `ai_locks` evita que dues instàncies redactin la mateixa targeta alhora.
+- **Peticions pendents:** si la IA no pot preparar una campanya demanada, queda "en preparació"; l'amo la pot reintentar i la tasca nocturna ho prova fins a 3 vegades (funcions `ia_panel_*`, només service role). Les de més de 7 dies s'esborren.
 
 ### Producció (Vercel + Supabase)
 

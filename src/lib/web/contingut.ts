@@ -1,7 +1,8 @@
 // Contingut de la web pública que no és a la base de dades: fotos, textos llargs de les fitxes i el padró il·lustrat.
 // Els preus, la disponibilitat i els al·lèrgens surten de la carta (taula `dishes`).
 
-import type { Plat } from "@/lib/data/carta";
+import type { Idioma, Plat } from "@/lib/data/carta";
+import { fitxesIdiomes, padroIdiomes } from "./contingut-idiomes";
 
 /** El que la web necessita d'un plat: la carta més la foto i els textos. Serialitzable per als components de client. */
 export interface PlatWeb {
@@ -17,8 +18,8 @@ export interface PlatWeb {
   resum: string;
 }
 
-export function platWeb(p: Plat): PlatWeb {
-  const f = fitxes[p.slug];
+export function platWeb(p: Plat, idioma: Idioma = "ca"): PlatWeb {
+  const f = fitxa(p.slug, idioma);
   return {
     slug: p.slug,
     nom: p.nom,
@@ -29,16 +30,16 @@ export function platWeb(p: Plat): PlatWeb {
     alergens: p.alergens,
     imatge: f?.imatge,
     lema: f?.lema,
-    resum: f?.resum ?? p.descripcio.ca,
+    resum: f?.resum ?? (p.descripcio[idioma] || p.descripcio.ca),
   };
 }
 
 /** Les carmanyoles de la casa, primer les de temporada. */
-export function carmanyoles(carta: Plat[]): PlatWeb[] {
+export function carmanyoles(carta: Plat[], idioma: Idioma = "ca"): PlatWeb[] {
   return carta
     .filter((p) => p.seccio === "casa")
     .sort((a, b) => Number(b.temporada !== "tot l'any") - Number(a.temporada !== "tot l'any"))
-    .map(platWeb);
+    .map((p) => platWeb(p, idioma));
 }
 
 export interface FitxaWeb {
@@ -205,3 +206,23 @@ export const desbowlitza: [string, string][] = [
   ["takeaway", "per emportar"],
   ["brunch", "esmorzar de forquilla"],
 ];
+
+/** La fitxa en l'idioma de la visita (el que no està traduït, en català). */
+export function fitxa(slug: string, idioma: Idioma = "ca"): FitxaWeb | undefined {
+  const f = fitxes[slug];
+  if (!f || idioma === "ca") return f;
+  const tr = fitxesIdiomes[idioma][slug];
+  if (!tr) return f;
+  const { empadronats, ...textos } = tr;
+  return {
+    ...f,
+    ...textos,
+    empadronats: f.empadronats.map((e, i) => ({ ...e, nom: empadronats?.[i] ?? e.nom })),
+  };
+}
+
+/** El padró il·lustrat en l'idioma de la visita. */
+export function padro(idioma: Idioma = "ca"): CartaPadro[] {
+  if (idioma === "ca") return padroTardor;
+  return padroTardor.map((p, i) => ({ ...p, ...padroIdiomes[idioma][i] }));
+}

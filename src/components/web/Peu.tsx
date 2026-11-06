@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { Imagotip } from "@/components/brand/Imagotip";
+import { TriaIdioma } from "./TriaIdioma";
 
 export async function Peu() {
   const t = await getTranslations("web");
@@ -19,11 +20,24 @@ export async function Peu() {
           <Link href="/carta#alergens" className="text-paper underline">
             {t("peu.alergens")}
           </Link>
-          <Link href="/carnet#privacitat" className="text-paper underline">
+          <Link href="/padro" className="text-paper underline">
+            {t("nav.padro")}
+          </Link>
+          <Link href="/legal/privacitat" className="text-paper underline">
             {t("peu.privacitat")}
           </Link>
+          <Link href="/legal/avis-legal" className="text-paper underline">
+            {t("peu.avisLegal")}
+          </Link>
+          <Link href="/legal/cookies" className="text-paper underline">
+            {t("peu.cookies")}
+          </Link>
         </nav>
-        <span className="text-sm text-groc">{t("peu.lema")}</span>
+        <div className="flex flex-col items-start gap-1">
+          {/* Al mòbil la capçalera no hi té lloc: el selector és aquí. */}
+          <TriaIdioma className="flex sm:hidden" />
+          <span className="text-sm text-groc">{t("peu.lema")}</span>
+        </div>
       </div>
       <div aria-hidden className="franja-granat" />
     </footer>

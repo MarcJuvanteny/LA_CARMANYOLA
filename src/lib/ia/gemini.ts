@@ -72,4 +72,5 @@ export async function redactaJson<T>(sistema: string, peticio: string, esquema: 
 }
 
 /** Treu el markdown que el panell no fa servir (deixa les **negretes**, que sí es mostren). */
-export const netejaText = (s: string) => s.replace(/__/g, "").replace(/^\s*[-*•]\s+/gm, "").replace(/^["«“]|["»”]$/g, "").trim();
+export const netejaText = (s: string) =>
+  s.trim().replace(/^["«“]|["»”]$/g, "").replace(/__/g, "").replace(/^\s*[-*•]\s+/gm, "").trim();
