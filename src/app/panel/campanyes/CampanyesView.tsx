@@ -1,22 +1,12 @@
 "use client";
 
-import { Fragment, useState, useTransition, type FormEvent } from "react";
+import { Fragment, type ComponentProps, useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { demanaCampanya, reescriuCampanya, reintentaPeticio } from "@/app/panel/accions-ia";
 import { useTranslations } from "next-intl";
 import { Isotip } from "@/components/brand/Isotip";
 import { usePanelState, type Resolucio } from "@/components/panel/PanelState";
-import {
-  AiCard,
-  AiEyebrow,
-  Button,
-  Card,
-  CardTitle,
-  NumberedList,
-  PageHeader,
-  Segmented,
-  cx,
-} from "@/components/panel/ui";
+import { AiCard, AiEyebrow, Button, Card, NumberedList, PageHeader, cx } from "@/components/panel/ui";
 import type { Campanya, To } from "@/lib/data/campanyes";
 import type { Idioma } from "@/lib/data/carta";
 import { percent } from "@/lib/format";
@@ -153,22 +143,21 @@ export function CampanyesView({ campanyes, peticions, inicial, exemple }: Props)
         </p>
       )}
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[280px_1fr]">
-        {/* Llista */}
-        <div className="space-y-6">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[260px_1fr]">
+        {/* Llista: una línia per campanya, sense caixes. */}
+        <nav aria-label={t("titol")} className="space-y-7">
           <section>
-            <h2 className="eyebrow mb-3 font-cos text-tinta">
+            <h2 className="eyebrow mb-2 px-3 font-cos text-suau">
               {t("perRevisar")} · {pendents(perRevisar.map((c) => clau(c.id)))}
             </h2>
-            <ul className="space-y-2.5">
+            <ul className="space-y-1">
               {peticions.map(({ id, goal: d }) => (
-                <li key={id} className="rounded-2xl border border-dashed border-granat/40 bg-white/60 p-4">
-                  <p className="eyebrow text-granat">{t("enPreparacio")}</p>
-                  <p className="mt-1 line-clamp-2 text-[0.9rem]">{d}</p>
-                  <p className="mt-1 text-[0.78rem] text-suau">{t("aquestaNit")}</p>
-                  <Button variant="ghost" className="mt-2" onClick={() => reintenta(id)} disabled={enviant}>
+                <li key={id} className="rounded-xl border border-dashed border-granat/30 px-3 py-2.5">
+                  <p className="line-clamp-2 text-[0.92rem]">{d}</p>
+                  <p className="mt-0.5 text-[0.78rem] text-suau">{t("enPreparacio")}</p>
+                  <button type="button" className="mt-1 min-h-9 text-[0.82rem] font-medium text-granat underline underline-offset-2" onClick={() => reintenta(id)} disabled={enviant}>
                     {reintentant === id ? t("iaPreparant") : t("reintenta")}
-                  </Button>
+                  </button>
                 </li>
               ))}
               {perRevisar.map((c) => (
@@ -177,161 +166,157 @@ export function CampanyesView({ campanyes, peticions, inicial, exemple }: Props)
             </ul>
           </section>
           <section>
-            <h2 className="eyebrow mb-3 font-cos text-tinta">{t("enviades")}</h2>
-            <ul className="space-y-2.5">
+            <h2 className="eyebrow mb-2 px-3 font-cos text-suau">{t("enviades")}</h2>
+            <ul className="space-y-1">
               {enviades.map((c) => (
                 <ItemLlista key={c.id} c={c} actiu={c.id === actual.id} estat="enviada" onClick={() => setSeleccio(c.id)} />
               ))}
             </ul>
           </section>
-        </div>
+        </nav>
 
         {/* Detall */}
         {actual.estat === "enviada" ? (
           <Resultat c={actual} />
         ) : (
-          <div className="min-w-0 space-y-5">
-            <AiCard>
-              <div className="flex flex-wrap items-start justify-between gap-2">
-                <AiEyebrow>
-                  {t("proposta")} · {t(`tipus.${actual.tipus}`)}
-                </AiEyebrow>
-                <span className="text-[0.82rem]">{t(`estat.${estatDe(actual)}`)}</span>
-              </div>
-              <h2 className="mt-3 text-[1.9rem]">{actual.titol}</h2>
-              <ul className="mt-4 flex flex-wrap gap-2">
-                {actual.xips.map((x) => (
-                  <li key={x} className="rounded-full bg-white/70 px-3.5 py-1.5 text-[0.82rem]">
-                    {x}
-                  </li>
-                ))}
-              </ul>
-              <p className="eyebrow mt-5 mb-3 text-granat">{t("perQue")}</p>
-              <NumberedList items={actual.perQue} />
-            </AiCard>
+          <Card className="min-w-0 self-start">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <AiEyebrow>{t(`tipus.${actual.tipus}`)}</AiEyebrow>
+              <span className="text-[0.82rem] text-suau">{t(`estat.${estatDe(actual)}`)}</span>
+            </div>
+            <h2 className="mt-2 text-[1.6rem] leading-tight">{actual.titol}</h2>
+            <p className="mt-1.5 text-[0.88rem] text-suau">{actual.xips.join(" · ")}</p>
 
-            <Card>
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-3">
-                  <CardTitle>{t("missatge")}</CardTitle>
-                  {estatDe(actual) === "esborrany" && (
-                    <Button variant="ghost" onClick={reescriu} disabled={reescrivint}>
-                      <Isotip className="size-4" />
-                      {reescrivint ? t("iaEscrivint") : t("iaReescriu")}
-                    </Button>
-                  )}
-                </div>
-                <Segmented<Idioma>
-                  label={t("idioma")}
-                  value={m.idioma}
-                  onChange={(idioma) => setM({ idioma })}
-                  options={[
-                    { value: "ca", label: "Català" },
-                    { value: "es", label: "Castellano" },
-                    { value: "en", label: "English" },
-                  ]}
-                />
-              </div>
+            {/* El "per què" de la IA hi és sempre, però plegat: el protagonista és el missatge. */}
+            <details className="group mt-4 rounded-2xl bg-groc px-4 py-3">
+              <summary className="flex min-h-8 cursor-pointer list-none items-center gap-2 text-[0.88rem] font-medium text-granat [&::-webkit-details-marker]:hidden">
+                <Isotip className="size-4 shrink-0" />
+                {t("perQue")}
+                <span aria-hidden className="ml-auto transition-transform group-open:rotate-180">
+                  ⌄
+                </span>
+              </summary>
+              <NumberedList items={actual.perQue} className="mt-3" />
+            </details>
 
-              <div className="mt-5 grid grid-cols-1 gap-6 xl:grid-cols-[1fr_250px]">
-                <div className="min-w-0">
-                  {m.editant ? (
-                    <>
-                      <label htmlFor="missatge" className="sr-only">
-                        {t("missatge")}
-                      </label>
-                      <textarea
-                        id="missatge"
-                        value={text}
-                        onChange={(e) => setM({ editat: { ...m.editat, [m.idioma]: e.target.value } })}
-                        rows={6}
-                        className="w-full rounded-2xl border border-linia bg-paper p-4 text-[0.98rem] leading-relaxed outline-none focus:border-granat"
-                      />
-                      <p className="mt-1 text-[0.78rem] text-suau">{t("variables")}</p>
-                    </>
-                  ) : (
-                    <p className="min-h-36 rounded-2xl bg-paper p-4 text-[0.98rem] leading-relaxed">
-                      <Variables text={text} />
-                    </p>
-                  )}
-
-                  <div className="mt-3 flex flex-wrap items-center gap-2 text-[0.82rem]">
-                    <span className="text-suau">{t("demanali")}</span>
-                    {(["curt", "calid", "senseExtra"] as To[]).map((to) => (
+            <div className="mt-6 grid grid-cols-1 gap-8 border-t border-linia pt-6 xl:grid-cols-[1fr_220px]">
+              <div className="min-w-0">
+                <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                  <p className="eyebrow text-tinta">{t("missatge")}</p>
+                  <div role="group" aria-label={t("idioma")} className="flex gap-1 text-[0.82rem]">
+                    {(["ca", "es", "en"] as Idioma[]).map((idioma) => (
                       <button
-                        key={to}
+                        key={idioma}
                         type="button"
-                        aria-pressed={m.to === to}
-                        onClick={() => setM({ to: m.to === to ? "original" : to, editat: {} })}
+                        aria-pressed={m.idioma === idioma}
+                        onClick={() => setM({ idioma })}
                         className={cx(
-                          "min-h-9 rounded-full border px-3 font-medium",
-                          m.to === to ? "border-tinta bg-tinta text-white" : "border-linia hover:border-tinta/40",
+                          "min-h-9 rounded-full px-3 font-medium uppercase",
+                          m.idioma === idioma ? "bg-tinta text-white" : "text-suau hover:text-tinta",
                         )}
                       >
-                        {to === "senseExtra" ? (actual.senseExtra ?? t("to.senseExtra")) : t(`to.${to}`)}
+                        {idioma}
                       </button>
                     ))}
-                    <button
-                      type="button"
-                      aria-pressed={m.editant}
-                      onClick={() => setM({ editant: !m.editant })}
-                      className={cx(
-                        "min-h-9 rounded-full border px-3 font-medium",
-                        m.editant ? "border-tinta bg-tinta text-white" : "border-linia hover:border-tinta/40",
-                      )}
-                    >
-                      ✎ {m.editant ? t("fetEdicio") : t("editaMa")}
-                    </button>
-                  </div>
-
-                  <fieldset className="mt-5 border-t border-linia pt-4">
-                    <legend className="sr-only">{t("perOn")}</legend>
-                    <p aria-hidden className="eyebrow mb-2 text-tinta">
-                      {t("perOn")}
-                    </p>
-                    <Check checked={m.wallet} onChange={(wallet) => setM({ wallet })} label={t("wallet")} />
-                    <Check
-                      checked={m.correu}
-                      onChange={(correu) => setM({ correu })}
-                      label={t("correu", { n: actual.canals.correuAcceptat })}
-                    />
-                  </fieldset>
-
-                  <div className="mt-4 border-t border-linia pt-4">
-                    <p className="eyebrow mb-2 text-tinta">{t("quan")}</p>
-                    <p className="flex items-start gap-2 text-[0.92rem]">
-                      <Isotip className="mt-0.5 size-4 shrink-0" />
-                      <span>
-                        {actual.quan.text} <span className="text-suau">{actual.quan.motiu}</span>
-                      </span>
-                    </p>
                   </div>
                 </div>
 
-                <Telefon
-                  data={actual.previsualitzacio.data}
-                  hora={actual.previsualitzacio.hora}
-                  text={omple(text, exemple)}
-                  etiqueta={t("previsualitzacio")}
-                  ara={t("ara")}
-                />
+                {m.editant ? (
+                  <>
+                    <label htmlFor="missatge" className="sr-only">
+                      {t("missatge")}
+                    </label>
+                    <textarea
+                      id="missatge"
+                      value={text}
+                      onChange={(e) => setM({ editat: { ...m.editat, [m.idioma]: e.target.value } })}
+                      rows={5}
+                      className="w-full rounded-2xl border border-linia bg-paper p-4 text-[0.98rem] leading-relaxed outline-none focus:border-granat"
+                    />
+                    <p className="mt-1 text-[0.78rem] text-suau">{t("variables")}</p>
+                  </>
+                ) : (
+                  <p className="min-h-32 rounded-2xl bg-paper p-4 text-[0.98rem] leading-relaxed">
+                    <Variables text={text} />
+                  </p>
+                )}
+
+                {/* Eines del missatge: discretes, sota el text. */}
+                <div className="mt-2 flex flex-wrap items-center gap-1 text-[0.82rem]">
+                  {(["curt", "calid", "senseExtra"] as To[]).map((to) => (
+                    <Eina key={to} actiu={m.to === to} onClick={() => setM({ to: m.to === to ? "original" : to, editat: {} })}>
+                      {to === "senseExtra" ? (actual.senseExtra ?? t("to.senseExtra")) : t(`to.${to}`)}
+                    </Eina>
+                  ))}
+                  <span aria-hidden className="mx-1 h-4 w-px bg-linia" />
+                  <Eina actiu={m.editant} onClick={() => setM({ editant: !m.editant })}>
+                    {m.editant ? t("fetEdicio") : t("editaMa")}
+                  </Eina>
+                  {estatDe(actual) === "esborrany" && (
+                    <Eina onClick={reescriu} disabled={reescrivint}>
+                      <Isotip className="size-3.5" />
+                      {reescrivint ? t("iaEscrivint") : t("iaReescriu")}
+                    </Eina>
+                  )}
+                </div>
+
+                <dl className="mt-6 space-y-3 border-t border-linia pt-5 text-[0.9rem]">
+                  <div className="flex flex-col gap-1 sm:flex-row sm:gap-4">
+                    <dt className="eyebrow w-16 shrink-0 pt-2.5 text-suau">{t("perOn")}</dt>
+                    <dd className="flex flex-wrap gap-x-5">
+                      <Check checked={m.wallet} onChange={(wallet) => setM({ wallet })} label={t("walletCurt")} />
+                      <Check checked={m.correu} onChange={(correu) => setM({ correu })} label={t("correuCurt", { n: actual.canals.correuAcceptat })} />
+                    </dd>
+                  </div>
+                  <div className="flex flex-col gap-1 sm:flex-row sm:gap-4">
+                    <dt className="eyebrow w-16 shrink-0 pt-0.5 text-suau">{t("quan")}</dt>
+                    <dd>
+                      {actual.quan.text} <span className="text-suau">{actual.quan.motiu}</span>
+                    </dd>
+                  </div>
+                </dl>
               </div>
 
-              <div className="mt-6 flex flex-wrap items-center justify-end gap-2 border-t border-linia pt-5">
-                <Accions
-                  estat={estatDe(actual)}
-                  quan={actual.quan.text}
-                  senseCanal={!m.wallet && !m.correu}
-                  desat={resolts[clau(actual.id)] === "esborrany"}
-                  onResol={(r) => resol(clau(actual.id), r, { editat: m.editat, wallet: m.wallet, correu: m.correu })}
-                  onDesfes={() => desfes(clau(actual.id))}
-                />
-              </div>
-            </Card>
-          </div>
+              <Telefon
+                data={actual.previsualitzacio.data}
+                hora={actual.previsualitzacio.hora}
+                text={omple(text, exemple)}
+                etiqueta={t("previsualitzacio")}
+                ara={t("ara")}
+              />
+            </div>
+
+            <div className="mt-6 flex flex-wrap items-center justify-end gap-2 border-t border-linia pt-5">
+              <Accions
+                estat={estatDe(actual)}
+                quan={actual.quan.text}
+                senseCanal={!m.wallet && !m.correu}
+                desat={resolts[clau(actual.id)] === "esborrany"}
+                onResol={(r) => resol(clau(actual.id), r, { editat: m.editat, wallet: m.wallet, correu: m.correu })}
+                onDesfes={() => desfes(clau(actual.id))}
+              />
+            </div>
+          </Card>
         )}
       </div>
     </>
+  );
+}
+
+function Eina({ actiu, className, children, ...rest }: ComponentProps<"button"> & { actiu?: boolean }) {
+  return (
+    <button
+      type="button"
+      aria-pressed={actiu}
+      className={cx(
+        "inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 font-medium transition-colors disabled:opacity-50",
+        actiu ? "bg-tinta text-white" : "text-suau hover:bg-paper hover:text-tinta",
+        className,
+      )}
+      {...rest}
+    >
+      {children}
+    </button>
   );
 }
 
@@ -348,6 +333,11 @@ function ItemLlista({
 }) {
   const t = useTranslations("panel.campanyes");
   const ia = c.estat === "esborrany";
+  const detall = c.resultat
+    ? t("resum", { clients: c.resultat.clients, tornat: percent(c.resultat.tornat) })
+    : estat === "esborrany"
+      ? c.proposada
+      : t(`estat.${estat}`);
   return (
     <li>
       <button
@@ -355,21 +345,16 @@ function ItemLlista({
         onClick={onClick}
         aria-current={actiu ? "true" : undefined}
         className={cx(
-          "w-full rounded-2xl border p-4 text-left transition-colors",
-          actiu && ia && "border-groc-intens bg-groc",
-          actiu && !ia && "border-tinta/40 bg-white",
-          !actiu && "border-linia bg-white hover:border-tinta/30",
-          (estat === "descartada" || estat === "ara-no") && "opacity-60",
+          "w-full rounded-xl px-3 py-2.5 text-left transition-colors",
+          actiu && ia && "bg-groc",
+          actiu && !ia && "bg-white",
+          !actiu && "hover:bg-white/70",
+          (estat === "descartada" || estat === "ara-no") && "opacity-55",
         )}
       >
-        <p className="eyebrow text-granat">{t(`tipus.${c.tipus}`)}</p>
-        <p className="font-titol mt-1 text-[1.02rem]">{c.titol}</p>
-        <p className="mt-1 text-[0.78rem] text-suau">
-          {c.resultat
-            ? t("resum", { clients: c.resultat.clients, tornat: percent(c.resultat.tornat) })
-            : estat === "esborrany"
-              ? c.proposada
-              : t(`estat.${estat}`)}
+        <p className="line-clamp-2 text-[0.94rem] leading-snug font-medium">{c.titol}</p>
+        <p className="mt-0.5 text-[0.78rem] text-suau">
+          {t(`tipus.${c.tipus}`)} · {detall}
         </p>
       </button>
     </li>
@@ -426,10 +411,10 @@ function Resultat({ c }: { c: Campanya }) {
   const t = useTranslations("panel.campanyes");
   const r = c.resultat!;
   return (
-    <Card className="self-start">
+    <Card className="min-w-0 self-start">
       <p className="eyebrow text-granat">{t(`tipus.${c.tipus}`)}</p>
-      <h2 className="mt-2 text-[1.9rem]">{c.titol}</h2>
-      <p className="mt-1 text-suau">{c.proposada}</p>
+      <h2 className="mt-2 text-[1.6rem] leading-tight">{c.titol}</h2>
+      <p className="mt-1.5 text-[0.88rem] text-suau">{c.proposada}</p>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Xifra label={t("destinataris")} valor={String(r.clients)} />
@@ -437,14 +422,10 @@ function Resultat({ c }: { c: Campanya }) {
         <Xifra label={t("control")} valor={percent(r.control)} />
       </div>
 
-      <div className="mt-6 space-y-3" aria-hidden>
-        <BarraResultat label={t("ambAvis")} valor={r.tornat} fort />
-        <BarraResultat label={t("senseAvis")} valor={r.control} />
-      </div>
-      <p className="mt-4 text-[0.85rem] text-suau">{t("atribucio")}</p>
+      <p className="mt-3 text-[0.8rem] text-suau">{t("atribucio")}</p>
 
       <div className="mt-6 border-t border-linia pt-5">
-        <p className="eyebrow mb-2 text-tinta">{t("enviat")}</p>
+        <p className="eyebrow mb-2 text-suau">{t("enviat")}</p>
         <p className="rounded-2xl bg-paper p-4 leading-relaxed">
           <Variables text={c.missatges.original.ca} />
         </p>
@@ -456,27 +437,15 @@ function Resultat({ c }: { c: Campanya }) {
 function Xifra({ label, valor }: { label: string; valor: string }) {
   return (
     <div className="rounded-2xl bg-paper p-4">
-      <p className="eyebrow text-tinta">{label}</p>
+      <p className="eyebrow text-suau">{label}</p>
       <p className="font-titol mt-1 text-[1.8rem] leading-none">{valor}</p>
-    </div>
-  );
-}
-
-function BarraResultat({ label, valor, fort }: { label: string; valor: number; fort?: boolean }) {
-  return (
-    <div className="flex items-center gap-3 text-[0.85rem]">
-      <span className="w-24 shrink-0 text-suau">{label}</span>
-      <span className="h-3 flex-1 overflow-hidden rounded-full bg-crema">
-        <span className={cx("block h-full rounded-full", fort ? "bg-granat" : "bg-rosa")} style={{ width: `${valor * 100}%` }} />
-      </span>
-      <span className="w-10 text-right">{percent(valor)}</span>
     </div>
   );
 }
 
 function Check({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
-    <label className="flex min-h-10 cursor-pointer items-center gap-3 text-[0.92rem]">
+    <label className="flex min-h-10 cursor-pointer items-center gap-2.5">
       <input
         type="checkbox"
         checked={checked}
@@ -512,7 +481,7 @@ const omple = (text: string, e: { nom: string; paraula: string }) =>
 
 function Telefon({ data, hora, text, etiqueta, ara }: { data: string; hora: string; text: string; etiqueta: string; ara: string }) {
   return (
-    <figure className="mx-auto w-full max-w-[250px]">
+    <figure className="mx-auto w-full max-w-[220px]">
       <figcaption className="sr-only">{etiqueta}</figcaption>
       <div className="textura-granat rounded-[2.2rem] border-[6px] border-tinta px-4 pt-9 pb-10 text-center">
         <p className="text-[0.8rem] text-groc">{data}</p>

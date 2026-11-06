@@ -245,7 +245,9 @@
       "ambAvis": "Amb avís",
       "senseAvis": "Sense avís",
       "atribucio": "Un client torna gràcies a la campanya si demana dins dels 14 dies següents a l'enviament. Es compara amb un grup de control que no va rebre l'avís.",
-      "enviat": "El missatge enviat"
+      "enviat": "El missatge enviat",
+      "walletCurt": "Wallet",
+      "correuCurt": "Correu ({n})"
     },
     "queQueda": {
       "titol": "L'hora del Què Queda",

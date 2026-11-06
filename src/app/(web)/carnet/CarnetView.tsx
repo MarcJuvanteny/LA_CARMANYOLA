@@ -22,7 +22,7 @@ export function CarnetView() {
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
           <span className="web-eb text-xs tracking-[.1em] text-granat">{t("eyebrow")}</span>
-          <h1 className="m-0 text-[clamp(30px,4.4vw,64px)] leading-[1.08] tracking-[-.02em]">{t("titol")}</h1>
+          <h1 className="m-0 text-[clamp(28px,3.2vw,46px)] leading-[1.1] text-balance tracking-[-.02em]">{t("titol")}</h1>
           <p className="m-0 text-[15px] leading-[1.6] md:text-[17px]">{t("text")}</p>
         </div>
 
