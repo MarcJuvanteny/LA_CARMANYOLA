@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { SUPLEMENT_DINAR, seccions } from "@/lib/data/carta";
-import { carta } from "@/lib/db/panel";
+import { carta, queQueda } from "@/lib/db/panel";
 import { CartaView } from "./CartaView";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -10,5 +10,13 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function CartaPage() {
-  return <CartaView plats={await carta()} seccions={seccions} suplementDinar={SUPLEMENT_DINAR} />;
+  const [plats, qq] = await Promise.all([carta(), queQueda()]);
+  return (
+    <CartaView
+      plats={plats}
+      seccions={seccions}
+      suplementDinar={SUPLEMENT_DINAR}
+      queQueda={{ ara: qq.ara, plats: qq.plats, proposta: qq.proposta, avis: qq.avis }}
+    />
+  );
 }

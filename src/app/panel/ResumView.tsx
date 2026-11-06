@@ -89,11 +89,11 @@ export function ResumView({ avui, setmana, ara, queden, empadronats, carnet: cb,
               {queden.map((f) => (
                 <li key={f.nom} className="flex justify-between gap-3">
                   <span>{f.nom}</span>
-                  <span className="font-titol text-granat">{f.previsio}</span>
+                  <span className="font-cos font-semibold tabular-nums text-granat">{f.previsio}</span>
                 </li>
               ))}
             </ul>
-            <ButtonLink href="/panel/que-queda" variant="outline" className="mt-4">
+            <ButtonLink href="/panel/carta#que-queda" variant="outline" className="mt-4">
               {resolts["quequeda:avis"] === "aprovada" ? t("avisActiu") : t("preparaAvis")}
             </ButtonLink>
           </Card>
@@ -161,11 +161,11 @@ export function ResumView({ avui, setmana, ara, queden, empadronats, carnet: cb,
           <dl className="mt-5 grid grid-cols-2 gap-3 border-t border-linia pt-4 text-[0.82rem]">
             <div>
               <dt className="text-suau">{t("paraulesSetmana")}</dt>
-              <dd className="font-titol text-[1.4rem]">{cb.paraules_setmana}</dd>
+              <dd className="font-cos text-[1.4rem] font-semibold tabular-nums">{cb.paraules_setmana}</dd>
             </div>
             <div>
               <dt className="text-suau">{t("complets")}</dt>
-              <dd className="font-titol text-[1.4rem]">{cb.carnets_completats}</dd>
+              <dd className="font-cos text-[1.4rem] font-semibold tabular-nums">{cb.carnets_completats}</dd>
             </div>
           </dl>
           <p className="mt-3 text-[0.8rem] text-suau">

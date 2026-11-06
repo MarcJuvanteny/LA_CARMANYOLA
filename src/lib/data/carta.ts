@@ -3,7 +3,26 @@
 
 export type Idioma = "ca" | "es" | "en";
 export type Seccio = "casa" | "fes" | "acompanyar" | "postres" | "begudes";
-export type Temporada = "tot l'any" | "tardor";
+export type Temporada = "tot l'any" | "tardor" | "hivern" | "primavera" | "estiu";
+export const temporades: Temporada[] = ["tot l'any", "tardor", "hivern", "primavera", "estiu"];
+
+/** Els 14 al·lèrgens de declaració obligatòria a la UE, amb els noms que fa servir la carta. */
+export const ALERGENS = [
+  "gluten",
+  "crustacis",
+  "ou",
+  "peix",
+  "cacauets",
+  "soja",
+  "llet",
+  "fruits de closca",
+  "api",
+  "mostassa",
+  "sèsam",
+  "sulfits",
+  "tramussos",
+  "mol·luscs",
+] as const;
 
 export interface Plat {
   slug: string;
@@ -15,6 +34,8 @@ export interface Plat {
   alergens: string[];
   queQuedaOk: boolean;
   disponible: boolean;
+  /** Tret de la carta: no surt a la web ni es pot demanar, però les vendes antigues el troben. */
+  arxivat?: boolean;
   descripcio: Record<Idioma, string>;
   suplement?: { nom: string; preu: number };
 }

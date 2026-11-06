@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { vendes } from "@/lib/db/panel";
+import { DIES, FRANGES, franges, vendes } from "@/lib/db/panel";
 import { VendesView } from "./VendesView";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -9,6 +9,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function VendesPage() {
-  const [avui, setmana, mes] = await Promise.all([vendes("avui"), vendes("setmana"), vendes("mes")]);
-  return <VendesView dades={{ avui, setmana, mes }} />;
+  const [avui, setmana, mes, f] = await Promise.all([vendes("avui"), vendes("setmana"), vendes("mes"), franges()]);
+  return (
+    <VendesView
+      dades={{ avui, setmana, mes }}
+      franges={{ dies: [...DIES], franges: [...FRANGES], comandes: f.matriu, fluixes: f.fluixes, previsio: f.previsio, proposta: f.proposta }}
+    />
+  );
 }

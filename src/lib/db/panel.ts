@@ -476,10 +476,11 @@ export const carta = cache(async (): Promise<Plat[]> => {
       allergens: string[];
       que_queda_ok: boolean;
       available: boolean;
+      archived: boolean;
       description: Record<Idioma, string>;
       supplement: { name: string; price_cents: number } | null;
     }[]
-  >((s) => s.from("dishes").select("slug, name, section, price_cents, season, tags, allergens, que_queda_ok, available, description, supplement").order("sort"));
+  >((s) => s.from("dishes").select("slug, name, section, price_cents, season, tags, allergens, que_queda_ok, available, archived, description, supplement").order("sort"));
   return (files ?? []).map((d) => ({
     slug: d.slug,
     nom: d.name,
@@ -490,6 +491,7 @@ export const carta = cache(async (): Promise<Plat[]> => {
     alergens: d.allergens,
     queQuedaOk: d.que_queda_ok,
     disponible: d.available,
+    arxivat: d.archived,
     descripcio: d.description,
     suplement: d.supplement ? { nom: d.supplement.name, preu: d.supplement.price_cents } : undefined,
   }));

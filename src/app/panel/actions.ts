@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { enviaCampanya, enviaQueQueda } from "@/lib/enviaments/enviaments";
 import { supabaseServidor } from "@/lib/supabase/server";
-import type { Idioma } from "@/lib/data/carta";
+import { ALERGENS, seccions, temporades, type Idioma, type Seccio, type Temporada } from "@/lib/data/carta";
 import { local } from "@/lib/dates";
 import { queQueda } from "@/lib/db/panel";
 import { simulateUntil } from "@/lib/sim/catchup";
@@ -156,16 +156,73 @@ export async function desfesProposta(id: string) {
   revalidatePath("/panel", "layout");
 }
 
-export async function actualitzaPlat(
-  slug: string,
-  canvis: Partial<{ available: boolean; que_queda_ok: boolean; price_cents: number; description: Record<Idioma, string> }>,
-) {
+export interface CanvisPlat {
+  name: string;
+  section: Seccio;
+  season: Temporada;
+  allergens: string[];
+  available: boolean;
+  que_queda_ok: boolean;
+  price_cents: number;
+  description: Record<Idioma, string>;
+  archived: boolean;
+}
+
+/** Valida al servidor el que arriba del panell: el client no és de fiar. */
+function validaPlat(c: Partial<CanvisPlat>) {
+  if (c.price_cents !== undefined && (!Number.isInteger(c.price_cents) || c.price_cents < 0 || c.price_cents > 100_000)) throw new Error("Preu no vàlid");
+  if (c.name !== undefined && (!c.name.trim() || c.name.length > 60)) throw new Error("Nom no vàlid");
+  if (c.section !== undefined && !seccions.includes(c.section)) throw new Error("Secció no vàlida");
+  if (c.season !== undefined && !temporades.includes(c.season)) throw new Error("Temporada no vàlida");
+  if (c.allergens !== undefined && !c.allergens.every((x) => (ALERGENS as readonly string[]).includes(x))) throw new Error("Al·lèrgen no vàlid");
+  return c.name !== undefined ? { ...c, name: c.name.trim() } : c;
+}
+
+export async function actualitzaPlat(slug: string, canvis: Partial<CanvisPlat>) {
   const supabase = await client();
-  if (canvis.price_cents !== undefined && (!Number.isInteger(canvis.price_cents) || canvis.price_cents < 0)) {
-    throw new Error("Preu no vàlid");
-  }
-  comprova((await supabase.from("dishes").update({ ...canvis, updated_at: new Date().toISOString() }).eq("slug", slug)).error);
+  const net = validaPlat(canvis);
+  // Arxivar treu el plat de la venda; recuperar-lo no el torna a posar a la venda sol.
+  const extra = canvis.archived ? { available: false } : {};
+  comprova((await supabase.from("dishes").update({ ...net, ...extra, updated_at: new Date().toISOString() }).eq("slug", slug)).error);
   revalidatePath("/panel", "layout");
+  revalidatePath("/", "layout");
+}
+
+const slugDe = (nom: string) =>
+  nom
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/l·l/g, "ll")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 50) || "plat";
+
+/** Plat nou: comença fora de la venda perquè l'amo el pugui acabar d'omplir abans que surti a la web. */
+export async function creaPlat(nom: string, seccio: Seccio): Promise<string> {
+  const supabase = await client();
+  const { name } = validaPlat({ name: nom, section: seccio }) as { name: string };
+  const { data: existents } = await supabase.from("dishes").select("slug, sort");
+  const slugs = new Set((existents ?? []).map((d) => d.slug as string));
+  const base = slugDe(name);
+  let slug = base;
+  for (let i = 2; slugs.has(slug); i++) slug = `${base}-${i}`;
+  const sort = Math.max(0, ...(existents ?? []).map((d) => d.sort as number)) + 1;
+  comprova(
+    (
+      await supabase.from("dishes").insert({
+        slug,
+        name,
+        section: seccio,
+        price_cents: 0,
+        available: false,
+        que_queda_ok: seccio === "casa",
+        sort,
+      })
+    ).error,
+  );
+  revalidatePath("/panel", "layout");
+  return slug;
 }
 
 export async function desaVeu(seccions: { id: string; text: string }[]) {

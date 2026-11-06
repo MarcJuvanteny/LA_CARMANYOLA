@@ -64,7 +64,7 @@ async function dadesNegoci(db: SupabaseClient): Promise<DadesNegoci> {
   const [cl, fr, plats] = await Promise.all([
     db.rpc("ia_panel_clients"),
     db.rpc("ia_panel_franges"),
-    db.from("dishes").select("name, section, available").order("sort"),
+    db.from("dishes").select("name, section, available").eq("archived", false).order("sort"),
   ]);
   const error = cl.error ?? fr.error ?? plats.error;
   if (error) throw new Error(error.message);

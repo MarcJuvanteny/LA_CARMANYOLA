@@ -145,34 +145,26 @@ export function CampanyesView({ campanyes, peticions, inicial, exemple }: Props)
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[260px_1fr]">
         {/* Llista: una línia per campanya, sense caixes. */}
-        <nav aria-label={t("titol")} className="space-y-7">
-          <section>
-            <h2 className="eyebrow mb-2 px-3 font-cos text-suau">
-              {t("perRevisar")} · {pendents(perRevisar.map((c) => clau(c.id)))}
-            </h2>
-            <ul className="space-y-1">
-              {peticions.map(({ id, goal: d }) => (
-                <li key={id} className="rounded-xl border border-dashed border-granat/30 px-3 py-2.5">
-                  <p className="line-clamp-2 text-[0.92rem]">{d}</p>
-                  <p className="mt-0.5 text-[0.78rem] text-suau">{t("enPreparacio")}</p>
-                  <button type="button" className="mt-1 min-h-9 text-[0.82rem] font-medium text-granat underline underline-offset-2" onClick={() => reintenta(id)} disabled={enviant}>
-                    {reintentant === id ? t("iaPreparant") : t("reintenta")}
-                  </button>
-                </li>
-              ))}
-              {perRevisar.map((c) => (
-                <ItemLlista key={c.id} c={c} actiu={c.id === actual.id} estat={estatDe(c)} onClick={() => setSeleccio(c.id)} />
-              ))}
-            </ul>
-          </section>
-          <section>
-            <h2 className="eyebrow mb-2 px-3 font-cos text-suau">{t("enviades")}</h2>
-            <ul className="space-y-1">
-              {enviades.map((c) => (
-                <ItemLlista key={c.id} c={c} actiu={c.id === actual.id} estat="enviada" onClick={() => setSeleccio(c.id)} />
-              ))}
-            </ul>
-          </section>
+        <nav aria-label={t("titol")} className="space-y-4">
+          <Grup titol={t("perRevisar")} n={pendents(perRevisar.map((c) => clau(c.id)))} alerta obert>
+            {peticions.map(({ id, goal: d }) => (
+              <li key={id} className="rounded-xl border border-dashed border-granat/30 px-3 py-2.5">
+                <p className="line-clamp-2 text-[0.92rem]">{d}</p>
+                <p className="mt-0.5 text-[0.78rem] text-suau">{t("enPreparacio")}</p>
+                <button type="button" className="mt-1 min-h-9 text-[0.82rem] font-medium text-granat underline underline-offset-2" onClick={() => reintenta(id)} disabled={enviant}>
+                  {reintentant === id ? t("iaPreparant") : t("reintenta")}
+                </button>
+              </li>
+            ))}
+            {perRevisar.map((c) => (
+              <ItemLlista key={c.id} c={c} actiu={c.id === actual.id} estat={estatDe(c)} onClick={() => setSeleccio(c.id)} />
+            ))}
+          </Grup>
+          <Grup titol={t("enviades")} n={enviades.length} obert={actual.estat === "enviada"}>
+            {enviades.map((c) => (
+              <ItemLlista key={c.id} c={c} actiu={c.id === actual.id} estat="enviada" onClick={() => setSeleccio(c.id)} />
+            ))}
+          </Grup>
         </nav>
 
         {/* Detall */}
@@ -320,6 +312,31 @@ function Eina({ actiu, className, children, ...rest }: ComponentProps<"button"> 
   );
 }
 
+/** Grup plegable de la llista. `alerta`: el comptador en granat, perquè són coses pendents. */
+function Grup({ titol, n, alerta, obert, children }: { titol: string; n: number; alerta?: boolean; obert?: boolean; children: React.ReactNode }) {
+  return (
+    <details open={obert} className="group/grup">
+      <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-xl px-3 hover:bg-white/70 [&::-webkit-details-marker]:hidden">
+        <h2 className="eyebrow font-cos text-suau">{titol}</h2>
+        {n > 0 && (
+          <span
+            className={cx(
+              "grid h-5 min-w-5 place-items-center rounded-full px-1.5 text-[0.7rem] font-semibold tabular-nums",
+              alerta ? "bg-granat text-white" : "bg-crema text-suau",
+            )}
+          >
+            {n}
+          </span>
+        )}
+        <span aria-hidden className="ml-auto text-suau transition-transform group-open/grup:rotate-180">
+          ⌄
+        </span>
+      </summary>
+      <ul className="mt-1 space-y-1">{children}</ul>
+    </details>
+  );
+}
+
 function ItemLlista({
   c,
   actiu,
@@ -352,8 +369,13 @@ function ItemLlista({
           (estat === "descartada" || estat === "ara-no") && "opacity-55",
         )}
       >
-        <p className="line-clamp-2 text-[0.94rem] leading-snug font-medium">{c.titol}</p>
-        <p className="mt-0.5 text-[0.78rem] text-suau">
+        <p className="flex items-start gap-2 text-[0.94rem] leading-snug font-medium">
+          {/* Punt granat: pendent de revisar. */}
+          {estat === "esborrany" && <span aria-hidden className="mt-[0.4em] size-2 shrink-0 rounded-full bg-granat" />}
+          <span className="line-clamp-2">{c.titol}</span>
+          {estat === "esborrany" && <span className="sr-only"> · {t("estat.esborrany")}</span>}
+        </p>
+        <p className={cx("mt-0.5 text-[0.78rem] text-suau", estat === "esborrany" && "pl-4")}>
           {t(`tipus.${c.tipus}`)} · {detall}
         </p>
       </button>

@@ -29,6 +29,7 @@ export const cartaPublica = cache(async (): Promise<Plat[]> => {
     const { data, error } = await supabase
       .from("dishes")
       .select("slug, name, section, price_cents, season, tags, allergens, que_queda_ok, available, description, supplement")
+      .eq("archived", false)
       .order("sort");
     if (error || !data?.length) return cartaLocal;
     return (data as FilaPlat[]).map((d) => ({

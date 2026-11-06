@@ -21,11 +21,12 @@ import {
 } from "@/components/panel/ui";
 import { euros, nombre, percent } from "@/lib/format";
 import type { DadesVendes, Periode } from "@/lib/data/vendes";
+import { QuanEsVen, type DadesFranges } from "./QuanEsVen";
 
 const PROPOSTA = PROPOSTES.vendes[0];
 const signe = (n: number) => (n > 0 ? `+${n}` : n < 0 ? `−${-n}` : "0");
 
-export function VendesView({ dades }: { dades: Record<Periode, DadesVendes> }) {
+export function VendesView({ dades, franges }: { dades: Record<Periode, DadesVendes>; franges: DadesFranges }) {
   const t = useTranslations("panel.vendes");
   const { resolts, resol, desfes } = usePanelState();
   const [periode, setPeriode] = useState<Periode>("setmana");
@@ -131,7 +132,9 @@ export function VendesView({ dades }: { dades: Record<Periode, DadesVendes> }) {
         </Card>
       </div>
 
-      <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-[1fr_320px]">
+      <QuanEsVen {...franges} />
+
+      <div className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-[1fr_320px]">
         <Card>
           <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
             <CardTitle>{t("perPlat")}</CardTitle>

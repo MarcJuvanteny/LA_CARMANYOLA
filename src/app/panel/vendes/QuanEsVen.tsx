@@ -12,8 +12,6 @@ import {
   Card,
   CardTitle,
   NumberedList,
-  PageHeader,
-  Pill,
   TableWrap,
   cx,
 } from "@/components/panel/ui";
@@ -29,7 +27,7 @@ function escala(v: number, max: number) {
   return "bg-granat text-white";
 }
 
-interface Props {
+export interface DadesFranges {
   dies: string[];
   franges: string[];
   comandes: number[][];
@@ -38,7 +36,8 @@ interface Props {
   proposta: { titol: string; punts: string[]; nota: string };
 }
 
-export function FrangesView({ dies, franges, comandes: comandesPerFranja, fluixes: frangesFluixes, previsio, proposta: propostaFranja }: Props) {
+/** Secció "Quan es ven" de Vendes: mapa de franges, proposta de la IA i previsió. Sempre les últimes 8 setmanes. */
+export function QuanEsVen({ dies, franges, comandes: comandesPerFranja, fluixes: frangesFluixes, previsio, proposta: propostaFranja }: DadesFranges) {
   const t = useTranslations("panel.franges");
   const { resolts, resol, desfes } = usePanelState();
   const esFluixa = (d: number, f: number) => frangesFluixes.some(([a, b]) => a === d && b === f);
@@ -47,8 +46,13 @@ export function FrangesView({ dies, franges, comandes: comandesPerFranja, fluixe
   const estat = resolts[PROPOSTA];
 
   return (
-    <>
-      <PageHeader title={t("titol")} subtitle={t("subtitol")} actions={<Pill>{t("ultimes")}</Pill>} />
+    <section id="quan" aria-labelledby="quan-titol" className="mt-10 scroll-mt-6">
+      <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
+        <h2 id="quan-titol" className="text-[1.5rem]">
+          {t("seccio")}
+        </h2>
+        <p className="text-[0.85rem] text-suau">{t("subtitol")}</p>
+      </div>
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_380px]">
         <Card>
@@ -190,6 +194,6 @@ export function FrangesView({ dies, franges, comandes: comandesPerFranja, fluixe
           </tbody>
         </table>
       </Card>
-    </>
+    </section>
   );
 }

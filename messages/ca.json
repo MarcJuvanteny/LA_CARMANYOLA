@@ -142,7 +142,6 @@
       "mes": "Mostra'n més",
       "menys": "Mostra'n menys",
       "iaEyebrow": "Què hi veu la IA",
-      "fitxa": "Fitxa",
       "comandes": "Comandes",
       "comandesMesos": "{n} en {mesos, plural, =0 {menys d'un mes} one {# mes} other {# mesos}}",
       "ultima": "Última",
@@ -153,11 +152,18 @@
         "carnet": "Carnet",
         "correu": "Correu"
       },
-      "complets": "{n, plural, =0 {Cap carnet complet} one {# carnet complet} other {# carnets complets}}"
+      "complets": "{n, plural, =0 {Cap carnet complet} one {# carnet complet} other {# carnets complets}}",
+      "veureFitxa": "Mostra la fitxa de {nom}",
+      "comandesTotal": "Comandes",
+      "plat": "Plat preferit",
+      "venia2": "Venia",
+      "sense": "Sense venir",
+      "riscLabel": "Risc de no tornar",
+      "riscNota": "De 0 a 100, segons quant ha allargat el seu ritme habitual."
     },
     "franges": {
       "titol": "Franges",
-      "subtitol": "Comandes per dia i hora, mitjana de les últimes 8 setmanes",
+      "subtitol": "Comandes per dia i hora · mitjana de les últimes 8 setmanes",
       "ultimes": "Últimes 8 setmanes",
       "perFranja": "Comandes per franja",
       "poques": "Poques",
@@ -177,7 +183,8 @@
       "previsio": "Previsió per a la setmana que ve",
       "previsioIa": "Previsió de la IA",
       "ambSegell": "Amb el segell doble",
-      "tooltipPrevisio": "{dia}: {base} comandes previstes{extra, plural, =0 {} other { + # amb el segell doble}}"
+      "tooltipPrevisio": "{dia}: {base} comandes previstes{extra, plural, =0 {} other { + # amb el segell doble}}",
+      "seccio": "Quan es ven"
     },
     "campanyes": {
       "titol": "Campanyes",
@@ -286,7 +293,15 @@
       "decideixXef": "Ho decideix el xef.",
       "alAvis": "A l'avís",
       "foraAvis": "Fora de l'avís",
-      "senseProduccio": "Avui encara no hi ha producció planificada per a aquest servei."
+      "senseProduccio": "Avui encara no hi ha producció planificada per a aquest servei.",
+      "titolCarta": "L'hora del Què Queda · {hora}",
+      "resumCarta": "{n, plural, =0 {Encara no se'n preveu cap plat sobrant} one {Se'n preveu # plat amb racions sobrants} other {Se'n preveuen # plats amb racions sobrants}} · {temps}",
+      "prepara": "Prepara l'avís",
+      "amaga": "Amaga",
+      "quedaran": "Quedaran",
+      "fetsVenuts": "{fets} fets · {venuts} venuts",
+      "entraPlat": "{plat} entra a l'avís",
+      "elMissatge": "El missatge"
     },
     "padro": {
       "titol": "Padró d'ingredients",
@@ -332,7 +347,7 @@
     },
     "carta": {
       "titol": "Carta",
-      "subtitol": "{n} de {total} productes a la carta avui. Els canvis es veuen a la web al moment.",
+      "subtitol": "{n} de {total} productes a la venda avui. Els canvis es veuen a la web al moment.",
       "dinar": "El Dinar: +{preu}",
       "seccio": {
         "casa": "Carmanyoles de la casa",
@@ -341,13 +356,7 @@
         "postres": "Postres",
         "begudes": "Begudes"
       },
-      "avui": "Avui",
-      "queQueda": "Què Queda",
-      "avuiPlat": "{plat} a la carta avui",
-      "queQuedaPlat": "{plat} pot entrar al Què Queda",
-      "tardor": "tardor",
       "nota": "Les salses sempre van a part. El Dinar: qualsevol carmanyola amb beguda o postre.",
-      "fitxa": "Fitxa",
       "preu": "Preu",
       "descripcio": "Descripció",
       "idioma": "Idioma",
@@ -355,10 +364,31 @@
       "nomCatala": "El nom del plat sempre es mostra en català.",
       "temporada": "Temporada",
       "alergens": "Al·lèrgens",
-      "cap": "Cap",
-      "si": "Sí",
-      "no": "No",
-      "errorDesa": "No s'ha pogut desar l'últim canvi. Torna-ho a provar."
+      "errorDesa": "No s'ha pogut desar l'últim canvi. Torna-ho a provar.",
+      "afegeix": "Afegeix un plat",
+      "nom": "Nom",
+      "nomPlaceholder": "Per exemple: Cap i Pota",
+      "seccioLabel": "Secció",
+      "crea": "Crea el plat",
+      "creant": "Creant…",
+      "cancel": "Cancel·la",
+      "nouNota": "El plat es crea fora de la venda. Posa-hi el preu, la descripció i els al·lèrgens i, quan estigui a punt, activa'l.",
+      "aLaVenda": "A la venda",
+      "aLaVendaPlat": "{plat} a la venda avui",
+      "arxivats": "Plats arxivats ({n})",
+      "recupera": "Recupera'l",
+      "arxiva": "Treu-lo de la carta",
+      "arxivaPregunta": "{plat} deixarà de sortir a la web. Les vendes antigues es mantenen i el pots recuperar quan vulguis.",
+      "arxivaSi": "Sí, treu-lo",
+      "temporades": {
+        "tot l'any": "Tot l'any",
+        "tardor": "Tardor",
+        "hivern": "Hivern",
+        "primavera": "Primavera",
+        "estiu": "Estiu"
+      },
+      "editaPlat": "Edita {plat}",
+      "fet": "Fet"
     },
     "veu": {
       "titol": "Veu de marca",
@@ -413,7 +443,8 @@
       "perSumar": "Paraula per sumar",
       "imprimeix": "Imprimeix la faixa",
       "faixa": "Desbowlitza aquí"
-    }
+    },
+    "tanca": "Tanca"
   },
   "entra": {
     "titol": "Entra al panell",

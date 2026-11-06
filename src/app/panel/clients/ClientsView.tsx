@@ -19,6 +19,7 @@ import {
   td,
   th,
 } from "@/components/panel/ui";
+import { Finestra } from "@/components/panel/Finestra";
 import { PARAULES_CARNET, type Client, type Segment } from "@/lib/data/clients";
 
 const VISIBLES = 8;
@@ -38,16 +39,14 @@ export function ClientsView({ clients, recompte, ia }: Props) {
     () => clients.filter((c) => c.segments.includes(segment)).sort((a, b) => b.risc - a.risc),
     [clients, segment],
   );
-  const [seleccio, setSeleccio] = useState<string>(llista[0]?.id);
-  const actual = llista.find((c) => c.id === seleccio) ?? llista[0];
+  const [obert, setObert] = useState<string | null>(null);
+  const actual = clients.find((c) => c.id === obert);
   const files = llista.slice(0, visibles);
   const proposta = ia[segment];
 
   const canvia = (s: Segment) => {
     setSegment(s);
     setVisibles(VISIBLES);
-    const primer = clients.filter((c) => c.segments.includes(s)).sort((a, b) => b.risc - a.risc)[0];
-    setSeleccio(primer?.id);
   };
 
   const segments: Segment[] = ["tots", "risc", "nous", "adormits"];
@@ -67,8 +66,8 @@ export function ClientsView({ clients, recompte, ia }: Props) {
         }
       />
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_360px]">
-        <Card className="self-start">
+      <div className={cx("grid grid-cols-1 gap-5", proposta && "xl:grid-cols-[1fr_340px]")}>
+        <Card className="min-w-0 self-start">
           <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
             <CardTitle>
               {t(`segment.${segment}`)} · {recompte[segment]}
@@ -89,14 +88,18 @@ export function ClientsView({ clients, recompte, ia }: Props) {
               </thead>
               <tbody>
                 {files.map((c) => {
-                  const sel = c.id === actual?.id;
                   return (
-                    <tr key={c.id} className={cx(sel && "bg-paper/70")}>
+                    // Tota la fila obre la fitxa; el botó del nom és el que hi arriba amb el teclat.
+                    <tr key={c.id} onClick={() => setObert(c.id)} className="cursor-pointer hover:bg-paper">
                       <td className={td}>
                         <button
                           type="button"
-                          onClick={() => setSeleccio(c.id)}
-                          aria-pressed={sel}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setObert(c.id);
+                          }}
+                          aria-haspopup="dialog"
+                          aria-label={t("veureFitxa", { nom: c.nom })}
                           className="min-h-11 text-left font-medium underline-offset-2 hover:underline"
                         >
                           {c.nom}
@@ -142,46 +145,67 @@ export function ClientsView({ clients, recompte, ia }: Props) {
           </div>
         </Card>
 
-        <div className="space-y-5">
-          {proposta && (
-            <AiCard>
-              <AiEyebrow>{t("iaEyebrow")}</AiEyebrow>
-              <h2 className="mt-3 text-[1.35rem]">{proposta.titol}</h2>
-              <NumberedList items={proposta.punts} className="mt-4" />
-              <ButtonLink className="mt-5" href="/panel/campanyes">
-                {proposta.accio}
-              </ButtonLink>
-            </AiCard>
-          )}
-
-          {actual && (
-            <Card aria-live="polite">
-              <p className="eyebrow text-tinta">{t("fitxa")}</p>
-              <div className="mt-3 flex items-center justify-between gap-3">
-                <h2 className="text-[1.35rem]">{actual.nom}</h2>
-                <Pill>{t("complets", { n: actual.carnets })}</Pill>
-              </div>
-              <dl className="mt-4 space-y-2.5 text-[0.9rem]">
-                <Fila label={t("comandes")}>{t("comandesMesos", { n: actual.comandes, mesos: actual.mesos })}</Fila>
-                <Fila label={t("ultima")}>{actual.ultima}</Fila>
-                <Fila label={t("carnet")}>
-                  <span className="flex items-center justify-end gap-2">
-                    <CarnetDots filled={actual.paraules} label={t("paraules", { n: actual.paraules, total: PARAULES_CARNET })} />
-                    <span className="text-suau">
-                      {actual.paraules}/{PARAULES_CARNET}
-                    </span>
-                  </span>
-                </Fila>
-                <Fila label={t("liFalta")}>
-                  <span className="font-semibold text-granat">{actual.liFalta}</span>
-                </Fila>
-                <Fila label={t("avisos")}>{t(`avis.${actual.avisos}`)}</Fila>
-              </dl>
-            </Card>
-          )}
-        </div>
+        {proposta && (
+          <AiCard className="self-start">
+            <AiEyebrow>{t("iaEyebrow")}</AiEyebrow>
+            <h2 className="mt-3 text-[1.35rem]">{proposta.titol}</h2>
+            <NumberedList items={proposta.punts} className="mt-4" />
+            <ButtonLink className="mt-5" href="/panel/campanyes">
+              {proposta.accio}
+            </ButtonLink>
+          </AiCard>
+        )}
       </div>
+
+      <Finestra obert={!!actual} titol={actual?.nom ?? ""} onTanca={() => setObert(null)} accions={actual && <Pill>{t("complets", { n: actual.carnets })}</Pill>}>
+        {actual && (
+          <div className="space-y-6">
+            <dl className="grid grid-cols-2 gap-3">
+              <Xifra label={t("comandesTotal")}>{t("comandesMesos", { n: actual.comandes, mesos: actual.mesos })}</Xifra>
+              <Xifra label={t("ultima")}>{actual.ultima}</Xifra>
+              <Xifra label={t("venia2")}>{actual.venia}</Xifra>
+              <Xifra label={t("sense")} destaca={actual.senseVenir > 0 && actual.risc >= 50}>
+                {t("dies", { n: actual.senseVenir })}
+              </Xifra>
+            </dl>
+
+            <dl className="space-y-3 text-[0.92rem]">
+              <Fila label={t("plat")}>{actual.platPreferit}</Fila>
+              <Fila label={t("carnet")}>
+                <span className="flex items-center justify-end gap-2">
+                  <CarnetDots filled={actual.paraules} label={t("paraules", { n: actual.paraules, total: PARAULES_CARNET })} />
+                  <span className="tabular-nums text-suau">
+                    {actual.paraules}/{PARAULES_CARNET}
+                  </span>
+                </span>
+              </Fila>
+              <Fila label={t("liFalta")}>
+                <span className="font-semibold text-granat">{actual.liFalta}</span>
+              </Fila>
+              <Fila label={t("avisos")}>{t(`avis.${actual.avisos}`)}</Fila>
+            </dl>
+
+            <div className="border-t border-linia pt-4">
+              <div className="flex items-center justify-between gap-3 text-[0.92rem]">
+                <span className="text-suau">{t("riscLabel")}</span>
+                <span className="font-semibold tabular-nums">{actual.risc}</span>
+              </div>
+              <Meter value={actual.risc / 100} className="mt-2" label={t("riscLabel")} />
+              <p className="mt-2 text-[0.78rem] text-suau">{t("riscNota")}</p>
+            </div>
+          </div>
+        )}
+      </Finestra>
     </>
+  );
+}
+
+function Xifra({ label, destaca, children }: { label: string; destaca?: boolean; children: React.ReactNode }) {
+  return (
+    <div className="rounded-2xl bg-paper p-3.5">
+      <dt className="text-[0.78rem] text-suau">{label}</dt>
+      <dd className={cx("mt-0.5 font-semibold", destaca && "text-granat")}>{children}</dd>
+    </div>
   );
 }
 

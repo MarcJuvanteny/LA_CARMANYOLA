@@ -15,12 +15,12 @@ export default async function ResumPage() {
 
   const propostes = [
     { id: "campanya:recupera-habituals", seccio: "campanyes", titol: titol("recupera-habituals"), href: "/panel/campanyes?c=recupera-habituals" },
-    { id: "campanya:segell-doble", seccio: "franges", titol: titol("segell-doble"), href: "/panel/franges" },
+    { id: "campanya:segell-doble", seccio: "vendes", titol: titol("segell-doble"), href: "/panel/vendes#quan" },
     { id: "campanya:carxofa", seccio: "campanyes", titol: titol("carxofa"), href: "/panel/campanyes?c=carxofa" },
     { id: "padro:alta-carxofa", seccio: "padro", titol: avis("alta-carxofa"), href: "/panel/padro" },
     { id: "padro:baixa-tomaquet", seccio: "padro", titol: avis("baixa-tomaquet"), href: "/panel/padro" },
-    { id: "quequeda:avis", seccio: "queQueda", titol: `Obre l'hora del Què Queda a les ${qq.ara.hora}`, href: "/panel/que-queda" },
-    { id: "vendes:produccio", seccio: "vendes", titol: `Ajusta la ${qq.produccio.titol.charAt(0).toLowerCase()}${qq.produccio.titol.slice(1)}`, href: "/panel/que-queda" },
+    { id: "quequeda:avis", seccio: "carta", titol: `Obre l'hora del Què Queda a les ${qq.ara.hora}`, href: "/panel/carta#que-queda" },
+    { id: "vendes:produccio", seccio: "vendes", titol: `Ajusta la ${qq.produccio.titol.charAt(0).toLowerCase()}${qq.produccio.titol.slice(1)}`, href: "/panel/vendes" },
   ];
 
   return (
