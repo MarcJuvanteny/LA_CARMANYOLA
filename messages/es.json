@@ -76,7 +76,9 @@
       "comArribar": "Cómo llegar",
       "mapa": "Mapa ilustrado del Poblenou con la ubicación del local",
       "mar": "Mar",
-      "barri": "Poblenou"
+      "barri": "Poblenou",
+      "carnetParaules": "Las ocho palabras del carnet",
+      "perRecuperar": "por recuperar"
     },
     "carta": {
       "titol": "La carta",

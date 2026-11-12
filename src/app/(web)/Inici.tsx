@@ -370,7 +370,7 @@ export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: numbe
           <div className={`${wrap} flex flex-col gap-[22px]`}>
             <span className="web-eb text-granat">{t("desbEyebrow")}</span>
             <div className="flex flex-col gap-1.5">
-              {desbowlitza.map(([fora, aqui], i) => (
+              {desbowlitza.slice(0, 4).map(([fora, aqui], i) => (
                 <div key={fora} className="font-titol flex flex-wrap items-baseline gap-x-[26px] gap-y-1.5 text-[clamp(30px,4.2vw,60px)]">
                   <span className="ratlla text-[#2EC4B6]">
                     {fora}
@@ -454,21 +454,25 @@ export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: numbe
             </div>
           </div>
           <div className="flex flex-col items-center gap-[clamp(24px,3vw,40px)]">
-            <div className="grid grid-cols-[repeat(4,minmax(0,max-content))] justify-center gap-[clamp(10px,1.4vw,16px)]">
-              {desbowlitza.map(([, aqui]) => (
-                <div key={aqui} className={`${paraula} pop font-titol bg-granat text-groc`}>
+            {/* Un carnet a mig fer: les quatre primeres paraules ja recuperades, les altres quatre per recuperar. Amb vuit, postres. */}
+            <ol aria-label={t("carnetParaules")} className="m-0 grid list-none grid-cols-[repeat(4,minmax(0,max-content))] justify-center gap-[clamp(10px,1.4vw,16px)] p-0">
+              {desbowlitza.map(([, aqui], i) => (
+                <li
+                  key={aqui}
+                  className={`${paraula} pop font-titol ${i < 4 ? "bg-granat text-groc" : "border-2 border-dashed border-granat text-granat"}`}
+                >
                   {aqui}
-                </div>
+                  {i >= 4 && <span className="sr-only"> · {t("perRecuperar")}</span>}
+                </li>
               ))}
-              {[0, 1, 2].map((i) => (
-                <div key={i} className={`${paraula} pop font-titol border-2 border-dashed border-granat text-[26px] text-granat`}>
-                  ?
-                </div>
-              ))}
-              <div className={`${paraula} pop bg-groc !p-1.5`}>
+            </ol>
+            <div className="pop flex items-center gap-3">
+              <span aria-hidden className="font-titol text-[28px] text-granat">=</span>
+              <div className={`${paraula} bg-groc !p-1.5`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/web/plats/crema-catalana.webp" alt={t("cremaRegal")} loading="lazy" decoding="async" className="size-full object-contain" />
+                <img src="/web/plats/crema-catalana.webp" alt="" loading="lazy" decoding="async" className="size-full object-contain" />
               </div>
+              <span className="text-[15px] font-medium">{t("cremaRegal")}</span>
             </div>
             {/* Des de l'ordinador, el camí curt: escanejar i fer-se'l al mòbil */}
             <div className="rv hidden w-full max-w-[496px] items-center gap-5 rounded-[22px] bg-white p-4 pr-6 md:flex">

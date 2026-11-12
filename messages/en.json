@@ -76,7 +76,9 @@
       "comArribar": "How to get here",
       "mapa": "Illustrated map of Poblenou showing where we are",
       "mar": "Sea",
-      "barri": "Poblenou"
+      "barri": "Poblenou",
+      "carnetParaules": "The eight words on the card",
+      "perRecuperar": "still to win back"
     },
     "carta": {
       "titol": "The menu",

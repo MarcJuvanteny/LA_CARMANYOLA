@@ -199,12 +199,16 @@ export const padroTardor: CartaPadro[] = [
   },
 ];
 
-/** Operació Desbowlitzar: la paraula importada i la d'aquí. */
+/** Operació Desbowlitzar: la paraula importada i la d'aquí. Les 8 del carnet, en ordre (vegeu la taula `words`). */
 export const desbowlitza: [string, string][] = [
   ["bowl", "carmanyola"],
   ["topping", "picada"],
   ["takeaway", "per emportar"],
   ["brunch", "esmorzar de forquilla"],
+  ["lunch", "dinar"],
+  ["snack", "berenar"],
+  ["veggie", "de l'hort"],
+  ["foodie", "bona forquilla"],
 ];
 
 /** La fitxa en l'idioma de la visita (el que no està traduït, en català). */
