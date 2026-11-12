@@ -392,7 +392,8 @@
       "simulant": "Simulating…",
       "surt": "Sign out",
       "comandes": "Orders",
-      "idioma": "Dashboard language"
+      "idioma": "Dashboard language",
+      "cuina": "Kitchen"
     },
     "resum": {
       "titol": "Overview",
@@ -485,7 +486,8 @@
       "ajusta": "Adjust production",
       "produccioAjustada": "Production adjusted: the kitchen will see it.",
       "decideixXef": "The chef decides.",
-      "desfes": "Undo"
+      "desfes": "Undo",
+      "veureCuina": "See the kitchen sheet"
     },
     "clients": {
       "titol": "Customers",
@@ -889,6 +891,27 @@
       "creaCampanya": "Create a campaign for them",
       "titolFluixes": "{dies}, {tram}: the slowest slots",
       "perQueFluixes": "The forecast already accounts for it: that's where the least production is needed."
+    },
+    "cuina": {
+      "titol": "Kitchen",
+      "subtitol": "The portions to make, ready to pin on the wall.",
+      "imprimeix": "Print",
+      "dema": "Tomorrow's production · {dia}",
+      "avui": "Today's production",
+      "plat": "Dish",
+      "racions": "Portions",
+      "perQue": "Why",
+      "habitual": "(usually {n})",
+      "senseCanvis": "As usual",
+      "total": "Total",
+      "buit": "No forecast for tomorrow yet.",
+      "estat": {
+        "enviat": "Adjusted by the owner",
+        "xef": "Chef's call",
+        "pendent": "Usual production"
+      },
+      "pendentNota": "The AI suggests adjusting it: to apply it, review it in Sales.",
+      "revisa": "Review the proposal"
     }
   },
   "entra": {

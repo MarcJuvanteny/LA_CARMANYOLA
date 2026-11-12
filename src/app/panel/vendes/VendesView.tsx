@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { BarresComparades, Llegenda } from "@/components/charts/BarresComparades";
 import { PROPOSTES, usePanelState } from "@/components/panel/PanelState";
@@ -187,6 +188,9 @@ export function VendesView({ dades, franges }: { dades: Record<Periode, DadesVen
           {produccio ? (
             <div className="mt-5 flex flex-wrap items-center gap-3 text-sm" role="status">
               <span className="font-semibold">{produccio === "aprovada" ? t("produccioAjustada") : t("decideixXef")}</span>
+              <Link href="/panel/cuina" className="min-h-11 content-center text-granat underline underline-offset-2">
+                {t("veureCuina")}
+              </Link>
               <button type="button" className="min-h-11 underline" onClick={() => desfes(PROPOSTA)}>
                 {t("desfes")}
               </button>

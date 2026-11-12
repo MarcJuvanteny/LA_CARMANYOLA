@@ -19,6 +19,7 @@ const items = [
   { href: "/panel", key: "resum" },
   { href: "/panel/comandes", key: "comandes" },
   { href: "/panel/vendes", key: "vendes" },
+  { href: "/panel/cuina", key: "cuina" },
   { href: "/panel/clients", key: "clients" },
   { href: "/panel/campanyes", key: "campanyes", badge: PROPOSTES.campanyes },
   { href: "/panel/padro", key: "padro", badge: PROPOSTES.padro },

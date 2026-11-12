@@ -392,7 +392,8 @@
       "simulant": "Simulando…",
       "surt": "Salir",
       "comandes": "Pedidos",
-      "idioma": "Idioma del panel"
+      "idioma": "Idioma del panel",
+      "cuina": "Cocina"
     },
     "resum": {
       "titol": "Resumen",
@@ -485,7 +486,8 @@
       "ajusta": "Ajusta la producción",
       "produccioAjustada": "Producción ajustada: lo verás en cocina.",
       "decideixXef": "Lo decide el chef.",
-      "desfes": "Deshacer"
+      "desfes": "Deshacer",
+      "veureCuina": "Mira la hoja de cocina"
     },
     "clients": {
       "titol": "Clientes",
@@ -889,6 +891,27 @@
       "creaCampanya": "Crea una campaña para ellos",
       "titolFluixes": "{dies} {tram}: las franjas más flojas",
       "perQueFluixes": "La previsión ya lo tiene en cuenta: es donde menos producción hace falta."
+    },
+    "cuina": {
+      "titol": "Cocina",
+      "subtitol": "Las raciones que hay que hacer, para colgar en la pared.",
+      "imprimeix": "Imprimir",
+      "dema": "Producción de mañana · {dia}",
+      "avui": "Producción de hoy",
+      "plat": "Plato",
+      "racions": "Raciones",
+      "perQue": "Por qué",
+      "habitual": "(habitual {n})",
+      "senseCanvis": "Como siempre",
+      "total": "Total",
+      "buit": "Aún no hay previsión para mañana.",
+      "estat": {
+        "enviat": "Ajustada por el dueño",
+        "xef": "Lo decide el chef",
+        "pendent": "Producción habitual"
+      },
+      "pendentNota": "La IA propone ajustarla: si quieres aplicarla, revísala en Ventas.",
+      "revisa": "Revisa la propuesta"
     }
   },
   "entra": {
