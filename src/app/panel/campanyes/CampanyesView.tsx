@@ -122,7 +122,7 @@ export function CampanyesView({ campanyes, peticions, inicial, exemple }: Props)
               rows={2}
               required
               placeholder={t("demanaPlaceholder")}
-              className="w-full rounded-2xl border border-granat/20 bg-white/80 p-3.5 text-[0.95rem] outline-none focus:border-granat"
+              className="w-full rounded-2xl border border-linia bg-paper p-3.5 text-[0.95rem] outline-none focus:border-granat"
             />
             <p className="text-[0.82rem]">{t("demanaNota")}</p>
             <div className="flex flex-wrap gap-2">
@@ -180,7 +180,7 @@ export function CampanyesView({ campanyes, peticions, inicial, exemple }: Props)
             <p className="mt-1.5 text-[0.88rem] text-suau">{actual.xips.join(" · ")}</p>
 
             {/* El "per què" de la IA hi és sempre, però plegat: el protagonista és el missatge. */}
-            <details className="group mt-4 rounded-2xl bg-groc px-4 py-3">
+            <details className="group mt-4 rounded-2xl bg-paper px-4 py-3">
               <summary className="flex min-h-8 cursor-pointer list-none items-center gap-2 text-[0.88rem] font-medium text-granat [&::-webkit-details-marker]:hidden">
                 <Isotip className="size-4 shrink-0" />
                 {t("perQue")}
@@ -363,8 +363,7 @@ function ItemLlista({
         aria-current={actiu ? "true" : undefined}
         className={cx(
           "w-full rounded-xl px-3 py-2.5 text-left transition-colors",
-          actiu && ia && "bg-groc",
-          actiu && !ia && "bg-white",
+          actiu && "bg-white ring-1 ring-linia ring-inset",
           !actiu && "hover:bg-white/70",
           (estat === "descartada" || estat === "ara-no") && "opacity-55",
         )}
@@ -460,7 +459,7 @@ function Xifra({ label, valor }: { label: string; valor: string }) {
   return (
     <div className="rounded-2xl bg-paper p-4">
       <p className="eyebrow text-suau">{label}</p>
-      <p className="font-titol mt-1 text-[1.8rem] leading-none">{valor}</p>
+      <p className="xifra mt-1 text-[1.7rem] leading-none">{valor}</p>
     </div>
   );
 }

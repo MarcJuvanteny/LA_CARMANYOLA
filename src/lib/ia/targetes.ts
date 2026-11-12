@@ -1,4 +1,5 @@
 import "server-only";
+import type { Locale } from "@/i18n/idiomes";
 import type { Client, Segment } from "@/lib/data/clients";
 import type { AvisPadro, Ingredient } from "@/lib/data/padro";
 import type { DadesVendes, Periode } from "@/lib/data/vendes";
@@ -18,8 +19,8 @@ const netejaTargeta = (t: Targeta): Targeta => ({
   punts: t.punts.map(netejaText).filter(Boolean),
 });
 
-async function redactaTargeta(encarrec: string, fets: string[]): Promise<Redaccio<Targeta> | null> {
-  const r = await redactaJson(await sistemaAmo(), `${encarrec}\n\nDades:\n${llistaFets(fets)}`, esquemaTargeta, esTargeta);
+async function redactaTargeta(encarrec: string, fets: string[], idioma: Locale): Promise<Redaccio<Targeta> | null> {
+  const r = await redactaJson(await sistemaAmo(idioma), `${encarrec}\n\nDades:\n${llistaFets(fets)}`, esquemaTargeta, esTargeta);
   return r && { ...r, valor: netejaTargeta(r.valor) };
 }
 
@@ -45,10 +46,11 @@ export function fetsVendes(periode: Periode, d: DadesVendes, dinarAnterior: numb
   ];
 }
 
-export const redactaVendes = (fets: string[]) =>
+export const redactaVendes = (fets: string[], idioma: Locale = "ca") =>
   redactaTargeta(
     "Escriu la targeta «Què hi veu la IA» de la pantalla de Vendes: un titular i 2 o 3 punts amb el que més destaca (millor i pitjor moment, el plat que puja o baixa i, si té sentit, què faries).",
     fets,
+    idioma,
   );
 
 /* Franges */
@@ -64,10 +66,11 @@ export function fetsFranges(fluixes: { dow: number; slot: string }[], mitjanaFlu
   ];
 }
 
-export const redactaFranges = (fets: string[]) =>
+export const redactaFranges = (fets: string[], idioma: Locale = "ca") =>
   redactaTargeta(
     "Escriu la proposta de la pantalla de Franges: un titular que digui on posar el segell doble (dies i hores) i 3 punts que l'expliquin amb les dades.",
     fets,
+    idioma,
   );
 
 /* Clients */
@@ -101,10 +104,11 @@ export function fetsClients(segment: Exclude<Segment, "tots">, tots: ClientIA[])
   ];
 }
 
-export const redactaClients = (fets: string[]) =>
+export const redactaClients = (fets: string[], idioma: Locale = "ca") =>
   redactaTargeta(
     "Escriu la targeta de la IA per a aquest grup de clients: un titular que expliqui qui són o què els passa i 3 punts amb les dades que ho justifiquen.",
     fets,
+    idioma,
   );
 
 /* Padró */
@@ -134,8 +138,8 @@ export function fetsPadro(a: AvisPadro, ing: Ingredient | undefined): string[] {
   ].filter(Boolean);
 }
 
-export async function redactaPadro(fets: string[]): Promise<Redaccio<AvisRedactat> | null> {
-  const sistema = `${await sistemaAmo()}\n\nL'«anunci» és diferent: és el text que llegiran els clients. Escriu-lo seguint aquestes normes:\n${await sistemaClients()}`;
+export async function redactaPadro(fets: string[], idioma: Locale = "ca"): Promise<Redaccio<AvisRedactat> | null> {
+  const sistema = `${await sistemaAmo(idioma)}\n\nL'«anunci» és diferent: és el text que llegiran els clients. Escriu-lo sempre en català, seguint aquestes normes:\n${await sistemaClients()}`;
   const r = await redactaJson(
     sistema,
     `Escriu l'avís del padró per a l'amo: un titular, 3 punts que l'expliquin amb les dades i l'anunci per als clients.\n\nDades:\n${llistaFets(fets)}`,

@@ -17,10 +17,10 @@ export function Card({ className, children, ...rest }: ComponentProps<"section">
   );
 }
 
-/** El que proposa o escriu la IA: targeta groga amb l'isotip. */
+/** El que proposa o escriu la IA: targeta blanca amb vora fina; l'isotip (AiEyebrow) diu que és de la IA. */
 export function AiCard({ className, children, ...rest }: ComponentProps<"section">) {
   return (
-    <section className={cx("rounded-targeta bg-groc p-5 sm:p-6", className)} {...rest}>
+    <section className={cx("rounded-targeta bg-white p-5 ring-1 ring-linia ring-inset sm:p-6", className)} {...rest}>
       {children}
     </section>
   );
@@ -29,14 +29,16 @@ export function AiCard({ className, children, ...rest }: ComponentProps<"section
 export function AiEyebrow({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <p className={cx("eyebrow flex items-center gap-2 text-granat", className)}>
-      <Isotip className="size-4 shrink-0" />
+      <span className="grid size-6 shrink-0 place-items-center rounded-full bg-groc" aria-hidden>
+        <Isotip className="size-3.5" />
+      </span>
       <span>{children}</span>
     </p>
   );
 }
 
 export function CardTitle({ children, className, as: Tag = "h2" }: { children: ReactNode; className?: string; as?: "h2" | "h3" }) {
-  return <Tag className={cx("text-xl text-tinta", className)}>{children}</Tag>;
+  return <Tag className={cx("titol-seccio text-xl text-tinta", className)}>{children}</Tag>;
 }
 
 /* ---------- Capçalera de pàgina ---------- */
@@ -145,8 +147,8 @@ export function Pill({ children, className, dashed }: { children: ReactNode; cla
 export function StatCard({ label, value, note }: { label: string; value: string; note: ReactNode }) {
   return (
     <Card className="!p-5">
-      <p className="eyebrow text-tinta">{label}</p>
-      <p className="font-titol mt-1.5 text-[2rem] leading-none text-tinta">{value}</p>
+      <p className="eyebrow text-suau">{label}</p>
+      <p className="xifra mt-1.5 text-[1.9rem] leading-none text-tinta">{value}</p>
       <p className="mt-3 text-[0.82rem] text-suau">{note}</p>
     </Card>
   );

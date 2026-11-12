@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Imagotip } from "@/components/brand/Imagotip";
 import { Isotip } from "@/components/brand/Isotip";
 import { posaAlDia } from "@/app/panel/actions";
 import { surt } from "@/app/entra/actions";
+import { canviaIdiomaPanell } from "@/app/panel/idioma";
+import { IDIOMES } from "@/i18n/idiomes";
 import { hora } from "@/lib/dates";
 import { useEstatEnDirecte } from "./EnDirecte";
 import { PROPOSTES, usePanelState } from "./PanelState";
@@ -31,6 +33,9 @@ export function Sidebar() {
   const [obert, setObert] = useState(false);
   const directe = useEstatEnDirecte();
   const [simulant, startTransition] = useTransition();
+  const [canviant, startCanvi] = useTransition();
+  const idioma = useLocale();
+  const router = useRouter();
 
   useEffect(() => setObert(false), [pathname]);
 
@@ -84,6 +89,27 @@ export function Sidebar() {
           {directe.connectat ? t("enDirecte") : t("desconnectat")}
           {directe.ultima && ` · ${t("ultima", { hora: hora(directe.ultima) })}`}
         </span>
+      </div>
+      <div role="group" aria-label={t("idioma")} className="flex gap-1">
+        {IDIOMES.map((l) => (
+          <button
+            key={l}
+            type="button"
+            lang={l}
+            aria-pressed={idioma === l}
+            disabled={canviant}
+            onClick={() => startCanvi(async () => {
+              await canviaIdiomaPanell(l);
+              router.refresh();
+            })}
+            className={cx(
+              "min-h-9 min-w-10 rounded-full px-2.5 text-[0.75rem] font-semibold uppercase tracking-wide transition-colors",
+              idioma === l ? "bg-tinta text-white" : "text-suau hover:bg-crema hover:text-tinta",
+            )}
+          >
+            {l}
+          </button>
+        ))}
       </div>
       <div className="flex flex-wrap gap-x-4">
         <button

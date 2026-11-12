@@ -19,6 +19,7 @@ import {
   td,
   th,
 } from "@/components/panel/ui";
+import { CalaixIA } from "@/components/panel/CalaixIA";
 import { Finestra } from "@/components/panel/Finestra";
 import { PARAULES_CARNET, type Client, type Segment } from "@/lib/data/clients";
 
@@ -66,8 +67,8 @@ export function ClientsView({ clients, recompte, ia }: Props) {
         }
       />
 
-      <div className={cx("grid grid-cols-1 gap-5", proposta && "xl:grid-cols-[1fr_340px]")}>
-        <Card className="min-w-0 self-start">
+      <div>
+        <Card className="min-w-0">
           <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
             <CardTitle>
               {t(`segment.${segment}`)} · {recompte[segment]}
@@ -145,17 +146,20 @@ export function ClientsView({ clients, recompte, ia }: Props) {
           </div>
         </Card>
 
-        {proposta && (
-          <AiCard className="self-start">
+      </div>
+
+      {proposta && (
+        <CalaixIA n={1}>
+          <AiCard>
             <AiEyebrow>{t("iaEyebrow")}</AiEyebrow>
-            <h2 className="mt-3 text-[1.35rem]">{proposta.titol}</h2>
+            <h2 className="mt-3 text-[1.2rem]">{proposta.titol}</h2>
             <NumberedList items={proposta.punts} className="mt-4" />
             <ButtonLink className="mt-5" href="/panel/campanyes">
               {proposta.accio}
             </ButtonLink>
           </AiCard>
-        )}
-      </div>
+        </CalaixIA>
+      )}
 
       <Finestra obert={!!actual} titol={actual?.nom ?? ""} onTanca={() => setObert(null)} accions={actual && <Pill>{t("complets", { n: actual.carnets })}</Pill>}>
         {actual && (

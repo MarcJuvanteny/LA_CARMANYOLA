@@ -21,7 +21,8 @@ import {
 } from "@/components/panel/ui";
 import { euros, nombre, percent } from "@/lib/format";
 import type { DadesVendes, Periode } from "@/lib/data/vendes";
-import { QuanEsVen, type DadesFranges } from "./QuanEsVen";
+import { CalaixIA } from "@/components/panel/CalaixIA";
+import { PropostaFranja, QuanEsVen, franjaPendent, type DadesFranges } from "./QuanEsVen";
 
 const PROPOSTA = PROPOSTES.vendes[0];
 const signe = (n: number) => (n > 0 ? `+${n}` : n < 0 ? `−${-n}` : "0");
@@ -134,7 +135,7 @@ export function VendesView({ dades, franges }: { dades: Record<Periode, DadesVen
 
       <QuanEsVen {...franges} />
 
-      <div className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-[1fr_320px]">
+      <div className="mt-10">
         <Card>
           <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
             <CardTitle>{t("perPlat")}</CardTitle>
@@ -175,9 +176,13 @@ export function VendesView({ dades, franges }: { dades: Record<Periode, DadesVen
           </TableWrap>
         </Card>
 
-        <AiCard className="self-start">
+      </div>
+
+      <CalaixIA n={(produccio ? 0 : 1) + (franjaPendent(resolts) ? 1 : 0)}>
+        <PropostaFranja proposta={franges.proposta} />
+        <AiCard>
           <AiEyebrow>{t("iaEyebrow")}</AiEyebrow>
-          <h2 className="mt-3 text-[1.35rem]">{d.ia.titol}</h2>
+          <h2 className="mt-3 text-[1.2rem]">{d.ia.titol}</h2>
           <NumberedList items={d.ia.punts} className="mt-4" />
           {produccio ? (
             <div className="mt-5 flex flex-wrap items-center gap-3 text-sm" role="status">
@@ -192,7 +197,7 @@ export function VendesView({ dades, franges }: { dades: Record<Periode, DadesVen
             </Button>
           )}
         </AiCard>
-      </div>
+      </CalaixIA>
     </>
   );
 }

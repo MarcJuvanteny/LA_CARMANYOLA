@@ -1,4 +1,5 @@
 import "server-only";
+import type { Locale } from "@/i18n/idiomes";
 import { serviceClient } from "@/lib/sim/db";
 
 // Instruccions de sistema compartides. La veu de marca (taula brand_voice) és el prompt (CONTEXT.md §9.4).
@@ -11,10 +12,17 @@ export async function veuDeMarca(): Promise<string> {
 const NUMEROS =
   "Els números ja estan calculats: fes servir només els que et dono i copia'ls exactament com te'ls dono (amb el mateix format). No t'inventis cap dada, cap percentatge ni cap causa que no surti de les dades.";
 
-/** Per a les targetes grogues del panell: la IA parla amb l'amo. */
-export async function sistemaAmo() {
+/** Nom de l'idioma per a les instruccions ("en català", "en castellà", "en anglès"). */
+export const NOM_IDIOMA: Record<Locale, string> = { ca: "català", es: "castellà", en: "anglès" };
+
+/** Per a les targetes grogues del panell: la IA parla amb l'amo, en l'idioma del panell. */
+export async function sistemaAmo(idioma: Locale = "ca") {
+  const extra =
+    idioma === "ca"
+      ? ""
+      : ` Les dades te les dono en català, però tu escriu-ho tot en ${NOM_IDIOMA[idioma]}${idioma === "es" ? " (tuteja)" : ""}. Els noms dels plats, «el Dinar», «el Què Queda» i les paraules del carnet es queden en català.`;
   return [
-    "Ets l'analista de La Carmanyola, un restaurant de cuina catalana per emportar al Poblenou. Escrius les targetes del panell per a l'amo: en català, tutejant-lo, directe i amb frases curtes. Expliques què diuen les dades i, si cal, proposes una acció concreta.",
+    `Ets l'analista de La Carmanyola, un restaurant de cuina catalana per emportar al Poblenou. Escrius les targetes del panell per a l'amo: en ${NOM_IDIOMA[idioma]}, tutejant-lo, directe i amb frases curtes. Expliques què diuen les dades i, si cal, proposes una acció concreta.${extra}`,
     NUMEROS,
     "Pots marcar en **negreta** la xifra més important de cada punt. Res més de markdown.",
     "Respecta el vocabulari i les regles de la marca:",

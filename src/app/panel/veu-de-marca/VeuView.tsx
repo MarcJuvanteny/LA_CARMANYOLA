@@ -138,7 +138,7 @@ export function VeuView({ inicial }: { inicial: SeccioVeu[] }) {
                   onClick={() => setSituacio(s)}
                   className={cx(
                     "min-h-9 rounded-full px-3.5 text-[0.82rem] font-medium",
-                    situacio === s ? "bg-granat text-groc" : "bg-white/70 hover:bg-white",
+                    situacio === s ? "bg-granat text-groc" : "bg-paper hover:bg-crema",
                   )}
                 >
                   {t(`situacions.${s}`)}
@@ -166,7 +166,7 @@ export function VeuView({ inicial }: { inicial: SeccioVeu[] }) {
               {error && <p className="mt-4 text-sm font-semibold text-granat">{t("error")}</p>}
               {resultat && !pendent && (
                 <>
-                  <p className="mt-4 rounded-2xl bg-white p-4 leading-relaxed">
+                  <p className="mt-4 rounded-2xl bg-paper p-4 leading-relaxed">
                     <Marcat text={resultat.text} re={re} />
                   </p>
                   {resultat.font === "exemple" && <p className="mt-2 text-[0.82rem] font-semibold text-granat">{t("exemple")}</p>}

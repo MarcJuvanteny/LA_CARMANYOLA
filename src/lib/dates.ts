@@ -1,9 +1,36 @@
-// Dates en català, sempre en hora de Barcelona i deterministes (servidor = navegador).
+// Dates sempre en hora de Barcelona i deterministes (servidor = navegador).
+// Català per defecte; el panell les demana en el seu idioma (ca, es, en).
+
+import type { Locale } from "@/i18n/idiomes";
 
 const TZ = "Europe/Madrid";
-export const mesos = ["gener", "febrer", "març", "abril", "maig", "juny", "juliol", "agost", "setembre", "octubre", "novembre", "desembre"];
-export const diesSetmana = ["diumenge", "dilluns", "dimarts", "dimecres", "dijous", "divendres", "dissabte"];
-export const diesCurts = ["Dg", "Dl", "Dt", "Dc", "Dj", "Dv", "Ds"];
+
+const NOMS: Record<Locale, { mesos: string[]; dies: string[]; curts: string[] }> = {
+  ca: {
+    mesos: ["gener", "febrer", "març", "abril", "maig", "juny", "juliol", "agost", "setembre", "octubre", "novembre", "desembre"],
+    dies: ["diumenge", "dilluns", "dimarts", "dimecres", "dijous", "divendres", "dissabte"],
+    curts: ["Dg", "Dl", "Dt", "Dc", "Dj", "Dv", "Ds"],
+  },
+  es: {
+    mesos: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+    dies: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
+    curts: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"],
+  },
+  en: {
+    mesos: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    dies: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    curts: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  },
+};
+
+export const mesos = NOMS.ca.mesos;
+export const diesSetmana = NOMS.ca.dies;
+export const diesCurts = NOMS.ca.curts;
+
+/** Noms de mesos i dies (0 = diumenge) en l'idioma demanat. */
+export const nomsMesos = (l: Locale = "ca") => NOMS[l].mesos;
+export const nomsDies = (l: Locale = "ca") => NOMS[l].dies;
+export const nomsDiesCurts = (l: Locale = "ca") => NOMS[l].curts;
 
 /** Parts de la data en hora local de Barcelona. */
 export function local(d: Date | string) {
@@ -39,16 +66,32 @@ export function deMes(mes: number) {
   return /^[aeiouàèéíòóú]/.test(nom) ? `d'${nom}` : `de ${nom}`;
 }
 
-/** "13 d'octubre" */
-export function diaMes(d: Date | string) {
+/** "13 d'octubre" · "13 de octubre" · "13 October" */
+export function diaMes(d: Date | string, idioma: Locale = "ca") {
   const l = local(d);
-  return `${l.dia} ${deMes(l.mes)}`;
+  if (idioma === "ca") return `${l.dia} ${deMes(l.mes)}`;
+  if (idioma === "es") return `${l.dia} de ${NOMS.es.mesos[l.mes]}`;
+  return `${l.dia} ${NOMS.en.mesos[l.mes]}`;
 }
 
-/** "dimarts 13 d'octubre" */
-export function diaComplet(d: Date | string) {
+/** "dimarts 13 d'octubre" · "martes 13 de octubre" · "Tuesday 13 October" */
+export function diaComplet(d: Date | string, idioma: Locale = "ca") {
   const l = local(d);
-  return `${diesSetmana[l.diaSetmana]} ${l.dia} ${deMes(l.mes)}`;
+  return `${NOMS[idioma].dies[l.diaSetmana]} ${diaMes(d, idioma)}`;
+}
+
+/** Interval de dies: "del 5 al 11 de novembre" · "del 5 al 11 de noviembre" · "5–11 November" (amb el mes del principi si canvia). */
+export function rangDies(desDe: Date | string, finsA: Date | string, idioma: Locale = "ca") {
+  const a = local(desDe);
+  const b = local(finsA);
+  const canvia = a.mes !== b.mes;
+  if (idioma === "ca") {
+    const de = (n: number) => (n === 1 || n === 11 ? `de l'${n}` : `del ${n}`);
+    const al = (n: number) => (n === 1 || n === 11 ? `a l'${n}` : `al ${n}`);
+    return `${de(a.dia)}${canvia ? ` ${deMes(a.mes)}` : ""} ${al(b.dia)} ${deMes(b.mes)}`;
+  }
+  if (idioma === "es") return `del ${a.dia}${canvia ? ` de ${NOMS.es.mesos[a.mes]}` : ""} al ${b.dia} de ${NOMS.es.mesos[b.mes]}`;
+  return `${a.dia}${canvia ? ` ${NOMS.en.mesos[a.mes]}` : ""}–${b.dia} ${NOMS.en.mesos[b.mes]}`;
 }
 
 /** "14:05" */

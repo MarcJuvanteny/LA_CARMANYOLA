@@ -36,25 +36,23 @@ export interface DadesFranges {
   proposta: { titol: string; punts: string[]; nota: string };
 }
 
-/** Secció "Quan es ven" de Vendes: mapa de franges, proposta de la IA i previsió. Sempre les últimes 8 setmanes. */
-export function QuanEsVen({ dies, franges, comandes: comandesPerFranja, fluixes: frangesFluixes, previsio, proposta: propostaFranja }: DadesFranges) {
+/** Secció "Quan es ven" de Vendes: mapa de franges i previsió. Sempre les últimes 8 setmanes. La proposta va al calaix de la IA. */
+export function QuanEsVen({ dies, franges, comandes: comandesPerFranja, fluixes: frangesFluixes, previsio }: DadesFranges) {
   const t = useTranslations("panel.franges");
-  const { resolts, resol, desfes } = usePanelState();
   const esFluixa = (d: number, f: number) => frangesFluixes.some(([a, b]) => a === d && b === f);
   const maxPrev = Math.max(1, ...previsio.map((p) => p.base + p.extra));
   const maxFranja = Math.max(1, ...comandesPerFranja.flat());
-  const estat = resolts[PROPOSTA];
 
   return (
     <section id="quan" aria-labelledby="quan-titol" className="mt-10 scroll-mt-6">
       <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
-        <h2 id="quan-titol" className="text-[1.5rem]">
+        <h2 id="quan-titol" className="titol-seccio text-[1.5rem]">
           {t("seccio")}
         </h2>
         <p className="text-[0.85rem] text-suau">{t("subtitol")}</p>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_380px]">
+      <div>
         <Card>
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <CardTitle>{t("perFranja")}</CardTitle>
@@ -115,29 +113,6 @@ export function QuanEsVen({ dies, franges, comandes: comandesPerFranja, fluixes:
           </p>
         </Card>
 
-        <AiCard className="self-start">
-          <AiEyebrow>{t("iaEyebrow")}</AiEyebrow>
-          <h2 className="mt-3 text-[1.6rem]">{propostaFranja.titol}</h2>
-          <NumberedList items={propostaFranja.punts} className="mt-4" />
-          <p className="mt-4 text-[0.88rem]">
-            <Rich text={propostaFranja.nota} />
-          </p>
-          {estat && estat !== "esborrany" ? (
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm">
-              <span className="font-semibold">{t(`estat.${estat}`)}</span>
-              <button type="button" className="min-h-11 underline" onClick={() => desfes(PROPOSTA)}>
-                {t("desfes")}
-              </button>
-            </div>
-          ) : (
-            <div className="mt-5 flex flex-wrap gap-2">
-              <ButtonLink href="/panel/campanyes?c=segell-doble">{t("prepara")}</ButtonLink>
-              <Button variant="ghost" onClick={() => resol(PROPOSTA, "ara-no")}>
-                {t("araNo")}
-              </Button>
-            </div>
-          )}
-        </AiCard>
       </div>
 
       <Card className="mt-5">
@@ -197,3 +172,38 @@ export function QuanEsVen({ dies, franges, comandes: comandesPerFranja, fluixes:
     </section>
   );
 }
+
+/** La proposta de la IA sobre les franges fluixes (segell doble). Viu al calaix de la IA de Vendes. */
+export function PropostaFranja({ proposta: propostaFranja }: { proposta: DadesFranges["proposta"] }) {
+  const t = useTranslations("panel.franges");
+  const { resolts, resol, desfes } = usePanelState();
+  const estat = resolts[PROPOSTA];
+  return (
+    <AiCard>
+      <AiEyebrow>{t("iaEyebrow")}</AiEyebrow>
+      <h2 className="mt-3 text-[1.2rem]">{propostaFranja.titol}</h2>
+      <NumberedList items={propostaFranja.punts} className="mt-4" />
+      <p className="mt-4 text-[0.88rem]">
+        <Rich text={propostaFranja.nota} />
+      </p>
+      {estat && estat !== "esborrany" ? (
+        <div className="mt-5 flex flex-wrap items-center gap-3 text-sm">
+          <span className="font-semibold">{t(`estat.${estat}`)}</span>
+          <button type="button" className="min-h-11 underline" onClick={() => desfes(PROPOSTA)}>
+            {t("desfes")}
+          </button>
+        </div>
+      ) : (
+        <div className="mt-5 flex flex-wrap gap-2">
+          <ButtonLink href="/panel/campanyes?c=segell-doble">{t("prepara")}</ButtonLink>
+          <Button variant="ghost" onClick={() => resol(PROPOSTA, "ara-no")}>
+            {t("araNo")}
+          </Button>
+        </div>
+      )}
+    </AiCard>
+  );
+}
+
+/** Pendent mentre l'amo no l'ha resolta. */
+export const franjaPendent = (resolts: Record<string, string | undefined>) => !resolts[PROPOSTA] || resolts[PROPOSTA] === "esborrany";

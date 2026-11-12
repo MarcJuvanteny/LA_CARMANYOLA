@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { CalaixIA } from "@/components/panel/CalaixIA";
 import { usePanelState } from "@/components/panel/PanelState";
 import {
   AiCard,
@@ -56,8 +57,8 @@ export function PadroView({ ingredients, avisos }: { ingredients: Ingredient[]; 
         actions={<Pill>{t(`estacio.${estacioActual}`)} {new Date().getFullYear()}</Pill>}
       />
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_380px]">
-        <Card className="self-start">
+      <div>
+        <Card>
           <CardTitle>{t("cens")}</CardTitle>
           <TableWrap>
             <table className="mt-4 w-full min-w-[640px] text-[0.92rem]">
@@ -95,66 +96,6 @@ export function PadroView({ ingredients, avisos }: { ingredients: Ingredient[]; 
           <p className="mt-4 text-[0.82rem] text-suau">{t("nota")}</p>
         </Card>
 
-        <div className="space-y-5">
-          {avisos.map((a) => {
-            const estat = resolts[clau(a.id)];
-            const anunci = anuncis[a.id] ?? a.anunci;
-            return (
-              <AiCard key={a.id}>
-                <AiEyebrow>
-                  {t("proposta")} · {t(a.tipus === "alta" ? "tipusAlta" : "tipusBaixa")}
-                </AiEyebrow>
-                <h2 className="mt-3 text-[1.4rem]">{a.titol}</h2>
-                <NumberedList items={a.punts} className="mt-4" />
-                <p className="eyebrow mt-5 mb-2 text-granat">{t("anunci")}</p>
-                {editant === a.id ? (
-                  <>
-                    <label htmlFor={`anunci-${a.id}`} className="sr-only">
-                      {t("anunci")}
-                    </label>
-                    <textarea
-                      id={`anunci-${a.id}`}
-                      value={anunci}
-                      rows={4}
-                      onChange={(e) => setAnuncis((s) => ({ ...s, [a.id]: e.target.value }))}
-                      className="w-full rounded-2xl border border-granat/20 bg-white p-3.5 text-[0.92rem] leading-relaxed outline-none focus:border-granat"
-                    />
-                  </>
-                ) : (
-                  <p className="rounded-2xl bg-white p-4 text-[0.92rem] leading-relaxed">{anunci}</p>
-                )}
-
-                {estat ? (
-                  <div className="mt-5 flex flex-wrap items-center gap-3 text-sm" role="status">
-                    <span className="font-semibold">
-                      {estat === "aprovada" ? t(a.tipus === "alta" ? "altaFeta" : "baixaFeta") : t("perMesEndavant")}
-                    </span>
-                    <button type="button" className="min-h-11 underline" onClick={() => desfes(clau(a.id))}>
-                      {t("desfes")}
-                    </button>
-                  </div>
-                ) : (
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    <Button onClick={() => { setEditant(null); resol(clau(a.id), "aprovada"); }}>
-                      {t(a.tipus === "alta" ? "aprovaAlta" : "aprovaBaixa")}
-                    </Button>
-                    <Button variant="ghost" aria-pressed={editant === a.id} onClick={() => setEditant(editant === a.id ? null : a.id)}>
-                      {editant === a.id ? t("fet") : t("edita")}
-                    </Button>
-                    <Button variant="ghost" onClick={() => resol(clau(a.id), "ara-no")}>
-                      {t("araNo")}
-                    </Button>
-                  </div>
-                )}
-                {a.campanya && estat === "aprovada" && (
-                  <ButtonLink href={`/panel/campanyes?c=${a.campanya}`} variant="outline" className="mt-3">
-                    {t("veureCampanya")}
-                  </ButtonLink>
-                )}
-              </AiCard>
-            );
-          })}
-        </div>
       </div>
 
       <Card className="mt-5">
@@ -170,7 +111,7 @@ export function PadroView({ ingredients, avisos }: { ingredients: Ingredient[]; 
                 aria-current={actual ? "true" : undefined}
               >
                 <p className="flex items-center justify-between">
-                  <span className="font-titol text-[1.15rem]">{t(`estacio.${es}`)}</span>
+                  <span className="text-[1.05rem] font-semibold">{t(`estacio.${es}`)}</span>
                   {actual && <span className="eyebrow text-granat">{t("ara")}</span>}
                 </p>
                 <ul className="mt-3 space-y-1.5 text-[0.9rem]">
@@ -186,6 +127,66 @@ export function PadroView({ ingredients, avisos }: { ingredients: Ingredient[]; 
           })}
         </ul>
       </Card>
+      <CalaixIA n={avisos.filter((a) => !resolts[clau(a.id)]).length}>
+        {avisos.map((a) => {
+          const estat = resolts[clau(a.id)];
+          const anunci = anuncis[a.id] ?? a.anunci;
+          return (
+            <AiCard key={a.id}>
+              <AiEyebrow>
+                {t("proposta")} · {t(a.tipus === "alta" ? "tipusAlta" : "tipusBaixa")}
+              </AiEyebrow>
+              <h2 className="mt-3 text-[1.2rem]">{a.titol}</h2>
+              <NumberedList items={a.punts} className="mt-4" />
+              <p className="eyebrow mt-5 mb-2 text-granat">{t("anunci")}</p>
+              {editant === a.id ? (
+                <>
+                  <label htmlFor={`anunci-${a.id}`} className="sr-only">
+                    {t("anunci")}
+                  </label>
+                  <textarea
+                    id={`anunci-${a.id}`}
+                    value={anunci}
+                    rows={4}
+                    onChange={(e) => setAnuncis((s) => ({ ...s, [a.id]: e.target.value }))}
+                    className="w-full rounded-2xl border border-linia bg-paper p-3.5 text-[0.92rem] leading-relaxed outline-none focus:border-granat"
+                  />
+                </>
+              ) : (
+                <p className="rounded-2xl bg-paper p-4 text-[0.92rem] leading-relaxed">{anunci}</p>
+              )}
+
+              {estat ? (
+                <div className="mt-5 flex flex-wrap items-center gap-3 text-sm" role="status">
+                  <span className="font-semibold">
+                    {estat === "aprovada" ? t(a.tipus === "alta" ? "altaFeta" : "baixaFeta") : t("perMesEndavant")}
+                  </span>
+                  <button type="button" className="min-h-11 underline" onClick={() => desfes(clau(a.id))}>
+                    {t("desfes")}
+                  </button>
+                </div>
+              ) : (
+                <div className="mt-5 flex flex-wrap gap-2">
+                  <Button onClick={() => { setEditant(null); resol(clau(a.id), "aprovada"); }}>
+                    {t(a.tipus === "alta" ? "aprovaAlta" : "aprovaBaixa")}
+                  </Button>
+                  <Button variant="ghost" aria-pressed={editant === a.id} onClick={() => setEditant(editant === a.id ? null : a.id)}>
+                    {editant === a.id ? t("fet") : t("edita")}
+                  </Button>
+                  <Button variant="ghost" onClick={() => resol(clau(a.id), "ara-no")}>
+                    {t("araNo")}
+                  </Button>
+                </div>
+              )}
+              {a.campanya && estat === "aprovada" && (
+                <ButtonLink href={`/panel/campanyes?c=${a.campanya}`} variant="outline" className="mt-3">
+                  {t("veureCampanya")}
+                </ButtonLink>
+              )}
+            </AiCard>
+          );
+        })}
+      </CalaixIA>
     </>
   );
 }

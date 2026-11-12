@@ -9,18 +9,19 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ResumPage() {
+  const t = await getTranslations("panel.resum");
   const [avui, setmana, qq, pd, cb, camps] = await Promise.all([vendes("avui"), vendes("setmana"), queQueda(), padro(), carnet(), campanyes()]);
   const titol = (slug: string) => camps.campanyes.find((c) => c.id === slug)?.titol ?? slug;
   const avis = (id: string) => pd.avisos.find((a) => a.id === id)?.titol ?? id;
 
   const propostes = [
     { id: "campanya:recupera-habituals", seccio: "campanyes", titol: titol("recupera-habituals"), href: "/panel/campanyes?c=recupera-habituals" },
-    { id: "campanya:segell-doble", seccio: "vendes", titol: titol("segell-doble"), href: "/panel/vendes#quan" },
+    { id: "campanya:segell-doble", seccio: "vendes", titol: titol("segell-doble"), href: "/panel/vendes#ia" },
     { id: "campanya:carxofa", seccio: "campanyes", titol: titol("carxofa"), href: "/panel/campanyes?c=carxofa" },
-    { id: "padro:alta-carxofa", seccio: "padro", titol: avis("alta-carxofa"), href: "/panel/padro" },
-    { id: "padro:baixa-tomaquet", seccio: "padro", titol: avis("baixa-tomaquet"), href: "/panel/padro" },
-    { id: "quequeda:avis", seccio: "carta", titol: `Obre l'hora del Què Queda a les ${qq.ara.hora}`, href: "/panel/carta#que-queda" },
-    { id: "vendes:produccio", seccio: "vendes", titol: `Ajusta la ${qq.produccio.titol.charAt(0).toLowerCase()}${qq.produccio.titol.slice(1)}`, href: "/panel/vendes" },
+    { id: "padro:alta-carxofa", seccio: "padro", titol: avis("alta-carxofa"), href: "/panel/padro#ia" },
+    { id: "padro:baixa-tomaquet", seccio: "padro", titol: avis("baixa-tomaquet"), href: "/panel/padro#ia" },
+    { id: "quequeda:avis", seccio: "carta", titol: t("obreQueQueda", { hora: qq.ara.hora }), href: "/panel/carta#que-queda" },
+    { id: "vendes:produccio", seccio: "vendes", titol: t("ajustaProduccio"), href: "/panel/vendes#ia" },
   ];
 
   return (

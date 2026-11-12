@@ -2,11 +2,11 @@ import { cookies, headers } from "next/headers";
 import { getRequestConfig } from "next-intl/server";
 import ca from "../../messages/ca.json";
 
-// El panell de l'amo és sempre en català (el proxy marca les seves peticions amb `x-zona: panel`).
+// El panell de l'amo (el proxy marca les seves peticions amb `x-zona: panel`) té el seu idioma: galeta PANEL_LOCALE, català per defecte.
 // La web pública: la galeta NEXT_LOCALE (selector de la capçalera) o, si no n'hi ha, l'idioma del navegador.
 // Sense prefix a l'URL: el QR de la faixa i el del carnet han de funcionar igual per a tothom.
-export const IDIOMES = ["ca", "es", "en"] as const;
-export type Locale = (typeof IDIOMES)[number];
+import { IDIOMES, type Locale } from "./idiomes";
+export { IDIOMES, type Locale };
 
 type Missatges = Record<string, unknown>;
 
@@ -21,7 +21,10 @@ function fusiona(base: Missatges, sobre: Missatges): Missatges {
 
 async function triaIdioma(): Promise<Locale> {
   const h = await headers();
-  if (h.get("x-zona") === "panel") return "ca";
+  if (h.get("x-zona") === "panel") {
+    const panell = (await cookies()).get("PANEL_LOCALE")?.value;
+    return IDIOMES.includes(panell as Locale) ? (panell as Locale) : "ca";
+  }
   const galeta = (await cookies()).get("NEXT_LOCALE")?.value;
   if (IDIOMES.includes(galeta as Locale)) return galeta as Locale;
   // Accept-Language: "es-ES,es;q=0.9,ca;q=0.8" → el primer que tinguem.

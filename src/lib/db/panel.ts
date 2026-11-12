@@ -1,7 +1,9 @@
 import "server-only";
 import { cache } from "react";
+import { getLocale, getTranslations } from "next-intl/server";
+import type { Locale } from "@/i18n/idiomes";
 import { supabaseServidor } from "@/lib/supabase/server";
-import { deDiaIso, deMes, diaComplet, diaMes, diesCurts, diesSetmana, hora, local, majuscula, mesos, properDia } from "@/lib/dates";
+import { deDiaIso, diaComplet, diaMes, hora, local, majuscula, nomsDies, nomsDiesCurts, nomsMesos, properDia, rangDies } from "@/lib/dates";
 import type { Campanya, EstatCampanya, To } from "@/lib/data/campanyes";
 import type { Idioma, Plat } from "@/lib/data/carta";
 import type { Client, Segment } from "@/lib/data/clients";
@@ -29,10 +31,19 @@ async function taula<T>(q: (s: Awaited<ReturnType<typeof supabaseServidor>>) => 
   return data as T;
 }
 
-/** "del 5" / "de l'11" i "al 5" / "a l'11" */
-const de = (n: number) => (n === 1 || n === 11 ? `de l'${n}` : `del ${n}`);
-const a = (n: number) => (n === 1 || n === 11 ? `a l'${n}` : `al ${n}`);
-const plural = (dow: number) => (dow === 6 ? "dissabtes" : diesSetmana[dow % 7]);
+/** L'idioma del panell (galeta PANEL_LOCALE; vegeu i18n/request.ts). */
+const idioma = async () => (await getLocale()) as Locale;
+
+/** Clau de la memòria de la IA: la catalana es manté (textos ja redactats); els altres idiomes en tenen una de pròpia. */
+const clauIA = (clau: string, l: Locale) => (l === "ca" ? clau : `${clau}:${l}`);
+
+/** "dimarts" → "dimarts" / "dissabtes"; "martes" / "sábados"; "Tuesdays". */
+function pluralDia(dow: number, l: Locale) {
+  const nom = nomsDies(l)[dow % 7];
+  if (l === "en") return `${nom}s`;
+  if (l === "es") return dow % 7 === 6 ? "sábados" : dow % 7 === 0 ? "domingos" : nom;
+  return dow % 7 === 6 ? "dissabtes" : dow % 7 === 0 ? "diumenges" : nom;
+}
 
 /* ---------------------------------------------------------------------------
  * Vendes
@@ -58,28 +69,25 @@ interface Totals {
 const zero: Totals = { ingressos: 0, comandes: 0, dinar: 0, directe: 0, plataformes: 0 };
 
 export const vendes = cache(async (periode: Periode): Promise<DadesVendes> => {
-  const r = await rpc<VendesRpc>("panel_vendes", { p_periode: periode });
+  const [r, l, t] = await Promise.all([rpc<VendesRpc>("panel_vendes", { p_periode: periode }), idioma(), getTranslations("panel.dades")]);
   const c = r.actual ?? zero;
   const p = r.anterior ?? zero;
   const ara = new Date();
   const desDe = new Date(r.des_de);
   const finsA = new Date(new Date(r.fins_a).getTime() - 86400000);
-  const ld = local(desDe);
-  const lf = local(finsA);
 
   const subtitol =
     periode === "avui"
-      ? `${majuscula(diaComplet(ara))}, fins a les ${hora(ara)} · comparat amb ${diesSetmana[local(ara).diaSetmana]} passat`
+      ? t("subtitolAvui", { dia: majuscula(diaComplet(ara, l)), hora: hora(ara), diaSetmana: nomsDies(l)[local(ara).diaSetmana] })
       : periode === "setmana"
-        ? `Setmana ${de(ld.dia)}${ld.mes !== lf.mes ? ` ${deMes(ld.mes)}` : ""} ${a(lf.dia)} ${deMes(lf.mes)} · comparada amb l'anterior`
-        : `${majuscula(de(ld.dia))} ${deMes(ld.mes)} ${a(lf.dia)} ${deMes(lf.mes)} · comparat amb les 4 setmanes anteriors`;
+        ? t("subtitolSetmana", { rang: rangDies(desDe, finsA, l) })
+        : t("subtitolMes", { rang: majuscula(rangDies(desDe, finsA, l)) });
 
   const etiqueta = (k: string) => {
     if (periode === "avui") return k;
-    if (periode === "setmana") return diesCurts[Number(k) % 7];
-    const d = new Date(desDe.getTime() + Number(k) * 7 * 86400000);
-    const l = local(d);
-    return `${l.dia} ${mesos[l.mes].slice(0, 3)}`;
+    if (periode === "setmana") return nomsDiesCurts(l)[Number(k) % 7];
+    const d = local(new Date(desDe.getTime() + Number(k) * 7 * 86400000));
+    return `${d.dia} ${nomsMesos(l)[d.mes].slice(0, 3)}`;
   };
 
   const dades: DadesVendes = {
@@ -93,7 +101,7 @@ export const vendes = cache(async (periode: Periode): Promise<DadesVendes> => {
     ambDinar: c.comandes ? c.dinar / c.comandes : 0,
     comandesDinar: c.dinar,
     extraDinar: c.dinar * 200,
-    titolGrafic: periode === "avui" ? "Ingressos per franja" : periode === "setmana" ? "Ingressos per dia" : "Ingressos per setmana",
+    titolGrafic: t(`grafic.${periode}`),
     perDia: r.buckets.map((b) => ({ etiqueta: etiqueta(b.k), actual: b.actual, anterior: b.anterior })),
     canal: { web: c.directe, plataformes: c.plataformes, comissions: Math.round(c.plataformes * 0.3) },
     plats: (r.plats ?? []).map((x) => ({
@@ -107,7 +115,8 @@ export const vendes = cache(async (periode: Periode): Promise<DadesVendes> => {
   };
   const dinarAnterior = p.comandes ? p.dinar / p.comandes : 0;
   const fets = iaTargetes.fetsVendes(periode, dades, dinarAnterior);
-  dades.ia = (await ambIA(`vendes:${periode}`, fets, ia.vendes(periode, dades, dinarAnterior), () => iaTargetes.redactaVendes(fets))).valor;
+  const plantilla = ia.vendes(periode, dades, dinarAnterior, await getTranslations("panel.plantilles"), l);
+  dades.ia = (await ambIA(clauIA(`vendes:${periode}`, l), fets, plantilla, () => iaTargetes.redactaVendes(fets, l))).valor;
   return dades;
 });
 
@@ -125,10 +134,12 @@ interface FrangesRpc {
 }
 
 export const FRANGES = ["12-13", "13-14", "14-15", "15-16", "19-20", "20-21", "21-22", "22-23"] as const;
-export const DIES = ["Dl", "Dt", "Dc", "Dj", "Dv", "Ds"] as const;
+/** Dies de la graella (dilluns a dissabte), en l'idioma del panell. */
+export const diesGraella = async () => nomsDiesCurts(await idioma()).slice(1);
 
 export const franges = cache(async () => {
-  const r = await rpc<FrangesRpc>("panel_franges");
+  const [r, l, tp] = await Promise.all([rpc<FrangesRpc>("panel_franges"), idioma(), getTranslations("panel.plantilles")]);
+  const DIES = nomsDiesCurts(l).slice(1);
   const matriu = DIES.map((_, d) => FRANGES.map((f) => Math.round(r.mitjanes.find((m) => m.dow === d + 1 && m.slot === f)?.n ?? 0)));
   const fluixes = (r.fluixes ?? []).map((x) => [x.dow - 1, FRANGES.indexOf(x.slot as (typeof FRANGES)[number])] as [number, number]);
   const previsio = DIES.map((dia, i) => {
@@ -138,9 +149,9 @@ export const franges = cache(async () => {
   const prova = r.prova && r.prova.abans ? r.prova.durant / r.prova.abans - 1 : null;
   const mitjanaFluixes = Math.round(r.mitjana_fluixes ?? 0);
   const mitjanaMigdia = Math.round(r.mitjana_migdia ?? 0);
-  const plantilla = ia.franges(r.fluixes ?? [], mitjanaFluixes, mitjanaMigdia, prova);
+  const plantilla = ia.franges(r.fluixes ?? [], mitjanaFluixes, mitjanaMigdia, prova, tp, l);
   const fets = iaTargetes.fetsFranges(r.fluixes ?? [], mitjanaFluixes, mitjanaMigdia, prova);
-  const redactada = await ambIA("franges", fets, { titol: plantilla.titol, punts: plantilla.punts }, () => iaTargetes.redactaFranges(fets));
+  const redactada = await ambIA(clauIA("franges", l), fets, { titol: plantilla.titol, punts: plantilla.punts }, () => iaTargetes.redactaFranges(fets, l));
   return {
     matriu,
     fluixes,
@@ -189,14 +200,18 @@ export interface ClientPanell extends Client {
   consentiment: boolean;
 }
 
-function venia(interval: number | null) {
-  if (!interval) return "—";
-  const setmana = 7 / interval;
-  return setmana >= 1 ? `${Math.round(setmana)}/setmana` : `${Math.max(1, Math.round(30 / interval))}/mes`;
-}
-
 export const clients = cache(async () => {
-  const r = await rpc<{ total_comandes_90: number; clients: ClientRpc[] | null }>("panel_clients");
+  const [r, l, t, tp] = await Promise.all([
+    rpc<{ total_comandes_90: number; clients: ClientRpc[] | null }>("panel_clients"),
+    idioma(),
+    getTranslations("panel.dades"),
+    getTranslations("panel.plantilles"),
+  ]);
+  const venia = (interval: number | null) => {
+    if (!interval) return "—";
+    const setmana = 7 / interval;
+    return setmana >= 1 ? t("veniaSetmana", { n: Math.round(setmana) }) : t("veniaMes", { n: Math.max(1, Math.round(30 / interval)) });
+  };
   const ara = Date.now();
   const llista: ClientPanell[] = (r.clients ?? []).map((c) => ({
     id: c.id,
@@ -209,8 +224,8 @@ export const clients = cache(async () => {
     risc: c.risc,
     comandes: c.comandes,
     mesos: Math.floor((ara - new Date(c.created_at).getTime()) / (30.4 * 86400000)),
-    ultima: c.ultima ? diaMes(c.ultima) : "—",
-    liFalta: c.li_falta ?? (c.paraules < 8 ? "paraula pendent" : "—"),
+    ultima: c.ultima ? diaMes(c.ultima, l) : "—",
+    liFalta: c.li_falta ?? (c.paraules < 8 ? t("paraulaPendent") : "—"),
     avisos: c.wallet && c.consent_email ? "carnet-correu" : c.wallet ? "carnet" : "correu",
     segments: [
       "tots",
@@ -226,13 +241,13 @@ export const clients = cache(async () => {
   }));
   const segments: Segment[] = ["tots", "risc", "nous", "adormits"];
   const recompte = Object.fromEntries(segments.map((s) => [s, llista.filter((c) => c.segments.includes(s)).length])) as Record<Segment, number>;
-  const plantilles = ia.clients(llista, r.total_comandes_90);
+  const plantilles = ia.clients(llista, tp);
   const propostes = await Promise.all(
     (["risc", "nous", "adormits"] as const).map(async (s) => {
       const plantilla = plantilles[s];
       const fets = iaTargetes.fetsClients(s, llista);
       if (!plantilla || !fets) return [s, plantilla] as const;
-      const r = await ambIA(`clients:${s}`, fets, { titol: plantilla.titol, punts: plantilla.punts }, () => iaTargetes.redactaClients(fets));
+      const r = await ambIA(clauIA(`clients:${s}`, l), fets, { titol: plantilla.titol, punts: plantilla.punts }, () => iaTargetes.redactaClients(fets, l));
       return [s, { ...plantilla, ...r.valor }] as const;
     }),
   );
@@ -256,11 +271,11 @@ interface QueQuedaRpc {
   produccio: { id: number; name: string; abans: number; proposat: number; sobra: number; esgota: number; estat: string | null }[] | null;
 }
 
-const temps = (t: { pluja: number; max: number | null } | null) =>
-  t ? `${Number(t.pluja) >= 1 ? "Pluja" : "Sense pluja"}${t.max != null ? ` · ${Math.round(Number(t.max))} °C` : ""}` : "Sense dades del temps";
-
 export const queQueda = cache(async () => {
-  const [r, cl] = await Promise.all([rpc<QueQuedaRpc>("panel_que_queda"), clients()]);
+  const [r, cl, l, t] = await Promise.all([rpc<QueQuedaRpc>("panel_que_queda"), clients(), idioma(), getTranslations("panel.dades")]);
+  const temps = (x: { pluja: number; max: number | null } | null) =>
+    x ? `${t(Number(x.pluja) >= 1 ? "pluja" : "sensePluja")}${x.max != null ? ` · ${Math.round(Number(x.max))} °C` : ""}` : t("senseTemps");
+  const dies = (dow: number) => pluralDia(dow, l);
   const ara = new Date(r.ara);
   const dema = deDiaIso(r.dema);
   const dowDema = local(dema).diaSetmana;
@@ -270,7 +285,7 @@ export const queQueda = cache(async () => {
 
   return {
     ara: {
-      subtitol: `${majuscula(diaComplet(ara))} · servei de ${r.servei} · ara són les ${hora(ara)}`,
+      subtitol: t("subtitolQueQueda", { dia: majuscula(diaComplet(ara, l)), servei: r.servei, hora: hora(ara) }),
       temps: temps(r.temps),
       hora: r.hora_qq,
     },
@@ -280,7 +295,7 @@ export const queQueda = cache(async () => {
     proposta: { destinataris, encert: r.encert ?? 0 },
     produccio: {
       dema: r.dema,
-      titol: `Producció del matí de ${diesSetmana[dowDema]}`,
+      titol: majuscula(t("produccio", { dia: nomsDies(l)[dowDema] })),
       estat: r.produccio?.find((x) => x.estat)?.estat ?? null,
       items: (r.produccio ?? []).map((x) => ({
         id: x.id,
@@ -289,12 +304,12 @@ export const queQueda = cache(async () => {
         despres: x.proposat,
         motiu:
           x.proposat < x.abans && x.sobra > 0
-            ? `En sobren ${x.sobra} ${plural(dowDema)} de cada 6`
+            ? t("sobren", { n: x.sobra, dies: dies(dowDema) })
             : x.proposat > x.abans && x.esgota > 0
-              ? `S'esgota ${x.esgota} ${plural(dowDema)} de cada 6`
+              ? t("esgota", { n: x.esgota, dies: dies(dowDema) })
               : pluja
-                ? "Demà plou: hi comptem"
-                : `Mitjana dels últims 4 ${plural(dowDema)}`,
+                ? t("plou")
+                : t("mitjana", { dies: dies(dowDema) }),
       })),
     },
   };
@@ -331,11 +346,12 @@ interface CampanyaRpc {
 const omple = (t: string, vars: Record<string, string | number>) => t.replace(/\{\{(\w+)\}\}/g, (_, k) => String(vars[k] ?? "—"));
 
 export const campanyes = cache(async () => {
-  const [files, cl, fr, peticions] = await Promise.all([
+  const [files, cl, fr, peticions, l] = await Promise.all([
     rpc<CampanyaRpc[] | null>("panel_campanyes"),
     clients(),
     franges(),
     taula<{ id: number; goal: string }[]>((s) => s.from("campaign_requests").select("id, goal").order("created_at")),
+    idioma(),
   ]);
   // Per revisar primer (la més recent dalt), després les enviades de la més nova a la més antiga.
   const llista = [...(files ?? [])].sort((x, y) =>
@@ -389,7 +405,7 @@ export const campanyes = cache(async () => {
         correuAcceptat: c.segment === "bolets" ? Math.round((bolets?.clients ?? 0) * 0.6) : dest.filter((d) => d.consentiment).length,
       },
       quan: { text: c.schedule_text ?? "", motiu: c.schedule_reason ?? "" },
-      previsualitzacio: { data: previDia ? diaComplet(previDia) : "", hora: c.preview_time ?? "" },
+      previsualitzacio: { data: previDia ? diaComplet(previDia, l) : "", hora: c.preview_time ?? "" },
       resultat: c.resultat && c.sent_at ? { clients: c.resultat.clients, tornat: c.resultat.tornat ?? 0, control: c.resultat.control ?? 0 } : undefined,
     };
   });
@@ -402,7 +418,7 @@ export const campanyes = cache(async () => {
  * ------------------------------------------------------------------------- */
 
 export const padro = cache(async () => {
-  const [ings, alertes] = await Promise.all([
+  const [ings, alertes, l] = await Promise.all([
     taula<
       {
         id: number;
@@ -426,6 +442,7 @@ export const padro = cache(async () => {
     taula<{ id: string; kind: "alta" | "baixa"; title: string; reasons: string[]; announcement: string; campaign_slug: string | null; status: string; ingredients: { slug: string } | null }[]>(
       (s) => s.from("ingredient_alerts").select("id, kind, title, reasons, announcement, campaign_slug, status, ingredients(slug)").order("id"),
     ),
+    idioma(),
   ]);
 
   const ingredients: Ingredient[] = (ings ?? []).map((i) => ({
@@ -434,8 +451,8 @@ export const padro = cache(async () => {
     comarca: i.comarca,
     estacio: i.season,
     estat: i.status,
-    alta: i.alta_on ? diaMes(deDiaIso(i.alta_on)) : i.alta_label,
-    baixa: i.baixa_on ? diaMes(deDiaIso(i.baixa_on)) : i.baixa_label,
+    alta: i.alta_on ? diaMes(deDiaIso(i.alta_on), l) : i.alta_label,
+    baixa: i.baixa_on ? diaMes(deDiaIso(i.baixa_on), l) : i.baixa_label,
     plats: i.dish_ingredients.map((d) => d.dishes?.name).filter(Boolean) as string[],
   }));
   const avisos: (AvisPadro & { estat: string })[] = (alertes ?? []).map((a) => ({
@@ -453,7 +470,7 @@ export const padro = cache(async () => {
     avisos.map(async (a) => {
       if (a.estat !== "proposada") return a;
       const fets = iaTargetes.fetsPadro(a, ingredients.find((i) => i.id === a.ingredient));
-      const r = await ambIA(`padro:${a.id}`, fets, { titol: a.titol, punts: a.punts, anunci: a.anunci }, () => iaTargetes.redactaPadro(fets));
+      const r = await ambIA(clauIA(`padro:${a.id}`, l), fets, { titol: a.titol, punts: a.punts, anunci: a.anunci }, () => iaTargetes.redactaPadro(fets, l));
       return { ...a, ...r.valor };
     }),
   );
@@ -477,10 +494,11 @@ export const carta = cache(async (): Promise<Plat[]> => {
       que_queda_ok: boolean;
       available: boolean;
       archived: boolean;
+      image_url: string | null;
       description: Record<Idioma, string>;
       supplement: { name: string; price_cents: number } | null;
     }[]
-  >((s) => s.from("dishes").select("slug, name, section, price_cents, season, tags, allergens, que_queda_ok, available, archived, description, supplement").order("sort"));
+  >((s) => s.from("dishes").select("slug, name, section, price_cents, season, tags, allergens, que_queda_ok, available, archived, image_url, description, supplement").order("sort"));
   return (files ?? []).map((d) => ({
     slug: d.slug,
     nom: d.name,
@@ -492,6 +510,7 @@ export const carta = cache(async (): Promise<Plat[]> => {
     queQuedaOk: d.que_queda_ok,
     disponible: d.available,
     arxivat: d.archived,
+    imatge: d.image_url ?? undefined,
     descripcio: d.description,
     suplement: d.supplement ? { nom: d.supplement.name, preu: d.supplement.price_cents } : undefined,
   }));

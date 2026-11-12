@@ -1,17 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { BarresComparades, Llegenda } from "@/components/charts/BarresComparades";
 import { usePanelState } from "@/components/panel/PanelState";
 import { AiCard, AiEyebrow, ButtonLink, Card, CardTitle, Meter, PageHeader, Pill, StatCard, cx } from "@/components/panel/ui";
 import type { Ingredient } from "@/lib/data/padro";
 import type { DadesVendes } from "@/lib/data/vendes";
 import type { DadesCarnet } from "@/lib/db/panel";
-import { diesSetmana, local } from "@/lib/dates";
+import type { Locale } from "@/i18n/idiomes";
+import { local, nomsDies } from "@/lib/dates";
 import { euros, nombre, percent } from "@/lib/format";
 
-const signe = (n: number) => (n > 0 ? `+${n} comandes` : n < 0 ? `−${-n} comandes` : "Les mateixes comandes");
 
 interface Props {
   avui: DadesVendes;
@@ -34,7 +34,7 @@ export function ResumView({ avui, setmana, ara, queden, empadronats, carnet: cb,
   ] as const;
   const maxTram = Math.max(1, ...trams.map((x) => x.n));
   const n = pendents();
-  const dia = diesSetmana[local(new Date()).diaSetmana];
+  const dia = nomsDies(useLocale() as Locale)[local(new Date()).diaSetmana];
 
   return (
     <>
@@ -46,7 +46,7 @@ export function ResumView({ avui, setmana, ara, queden, empadronats, carnet: cb,
           value={euros(avui.ingressos, { senseDecimals: true })}
           note={t("vsDimarts", { v: avui.ingressosAnteriors ? percent(avui.ingressos / avui.ingressosAnteriors - 1, { signe: true }) : "—", dia })}
         />
-        <StatCard label={t("comandes")} value={nombre(avui.comandes)} note={t("mesQue", { v: signe(avui.comandes - avui.comandesAnteriors), dia })} />
+        <StatCard label={t("comandes")} value={nombre(avui.comandes)} note={t("mesQue", { v: t("diferencia", { n: avui.comandes - avui.comandesAnteriors }), dia })} />
         <StatCard
           label={t("tiquet")}
           value={euros(avui.tiquetMitja)}

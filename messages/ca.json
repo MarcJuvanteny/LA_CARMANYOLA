@@ -22,7 +22,8 @@
       "simula": "Posa al dia",
       "simulant": "Simulant…",
       "surt": "Surt",
-      "comandes": "Comandes"
+      "comandes": "Comandes",
+      "idioma": "Idioma del panell"
     },
     "resum": {
       "titol": "Resum",
@@ -65,7 +66,10 @@
         "meitat": "3-5 paraules",
         "aPunt": "6-7 paraules (a punt de completar)"
       },
-      "postresSetmana": "{n, plural, =0 {Cap postres de regal aquesta setmana.} one {# postres de regal aquesta setmana.} other {# postres de regal aquesta setmana.}}"
+      "postresSetmana": "{n, plural, =0 {Cap postres de regal aquesta setmana.} one {# postres de regal aquesta setmana.} other {# postres de regal aquesta setmana.}}",
+      "obreQueQueda": "Obre l'hora del Què Queda a les {hora}",
+      "ajustaProduccio": "Ajusta la producció de demà",
+      "diferencia": "{n, plural, =0 {Les mateixes comandes} one {{n, number, ::sign-always} comanda} other {{n, number, ::sign-always} comandes}}"
     },
     "vendes": {
       "titol": "Vendes",
@@ -74,14 +78,14 @@
       "setmana": "Setmana",
       "mes": "Mes",
       "anterior": {
-        "avui": "dimarts passat",
+        "avui": "el mateix dia de la setmana passada",
         "setmana": "la setmana passada",
         "mes": "les 4 setmanes anteriors"
       },
       "llegenda": {
         "avui": {
           "actual": "Avui",
-          "anterior": "Dimarts passat"
+          "anterior": "Fa una setmana"
         },
         "setmana": {
           "actual": "Aquesta setmana",
@@ -388,7 +392,13 @@
         "estiu": "Estiu"
       },
       "editaPlat": "Edita {plat}",
-      "fet": "Fet"
+      "fet": "Fet",
+      "fotoPuja": "Puja una foto",
+      "fotoCanvia": "Canvia la foto",
+      "fotoPujant": "Pujant…",
+      "fotoTreu": "Treu-la",
+      "fotoNota": "Millor amb fons transparent. La reduïm a 900 px abans de pujar-la.",
+      "fotoError": "No s'ha pogut pujar la foto. Prova amb un altre fitxer (webp, png o jpg)."
     },
     "veu": {
       "titol": "Veu de marca",
@@ -444,7 +454,85 @@
       "imprimeix": "Imprimeix la faixa",
       "faixa": "Desbowlitza aquí"
     },
-    "tanca": "Tanca"
+    "tanca": "Tanca",
+    "ia": {
+      "pestanya": "IA",
+      "titol": "Què proposa la IA",
+      "tanca": "Tanca",
+      "perRevisar": "per revisar",
+      "nota": "La IA proposa a partir de les dades d'aquesta pàgina. No es fa res sense que ho aprovis."
+    },
+    "dades": {
+      "subtitolAvui": "{dia}, fins a les {hora} · comparat amb {diaSetmana} passat",
+      "subtitolSetmana": "Setmana {rang} · comparada amb l'anterior",
+      "subtitolMes": "{rang} · comparat amb les 4 setmanes anteriors",
+      "grafic": {
+        "avui": "Ingressos per franja",
+        "setmana": "Ingressos per dia",
+        "mes": "Ingressos per setmana"
+      },
+      "veniaSetmana": "{n}/setmana",
+      "veniaMes": "{n}/mes",
+      "paraulaPendent": "paraula pendent",
+      "pluja": "Pluja",
+      "sensePluja": "Sense pluja",
+      "senseTemps": "Sense dades del temps",
+      "subtitolQueQueda": "{dia} · {servei, select, migdia {servei de migdia} other {servei de vespre}} · ara són les {hora}",
+      "produccio": "Producció del matí de {dia}",
+      "sobren": "En sobren {n} {dies} de cada 6",
+      "esgota": "S'esgota {n} {dies} de cada 6",
+      "plou": "Demà plou: hi comptem",
+      "mitjana": "Mitjana dels últims 4 {dies}"
+    },
+    "plantilles": {
+      "anterior": {
+        "avui": "fa una setmana",
+        "setmana": "la setmana passada",
+        "mes": "les 4 setmanes anteriors"
+      },
+      "franjaDe": "la franja de {e} h",
+      "setmanaDel": "la setmana del {e}",
+      "millorPitjor": "{millor} ha estat {periode, select, avui {la millor franja} setmana {el millor dia} other {la millor setmana}} (**{v}**) i {pitjor} {periode, select, setmana {el més fluix} other {la més fluixa}} ({v2}).",
+      "baixaFred": "{plat} baixa un {p}: és un plat fred i ha arribat la tardor. Proposo fer-ne menys els dies fluixos.",
+      "baixa": "{plat} baixa un {p} respecte a {anterior}.",
+      "puja": "{plat} puja un {p} respecte a {anterior}.",
+      "dinarPuja": "El Dinar ha pujat del {a} al **{b}** des que surt a la fitxa del plat.",
+      "dinar": "El Dinar és al {a} de les comandes ({b} {anterior}).",
+      "titolBuit": "Encara no hi ha prou comandes per dir res",
+      "titolTiraApaga": "{top} tira del carro, {baixa} s'apaga",
+      "titolTira": "{top} tira del carro",
+      "senseComandes": "Encara no hi ha comandes en aquest període.",
+      "tram": "de {a} a {b} h",
+      "segellDoble": "Segell doble {dies} {tram}",
+      "senseFluixes": "Encara no hi ha franges fluixes",
+      "fluixes": "Són les quatre franges més fluixes: **{f} comandes** de mitjana, quan el migdia en fa {m}.",
+      "senseProva": "Encara no has provat el segell doble en cap franja: seria la primera prova.",
+      "prova": "Quan vas provar el segell doble els dilluns al vespre: **{p}**.",
+      "cost": "Costa una paraula extra al carnet, no un descompte. El preu no es toca.",
+      "notaFranges": "**De 15 a 16 h també és fluix**, però és l'hora del Què Queda: no ho toco.",
+      "risc": {
+        "oficina": "Són gent d'oficina que ha canviat de rutina",
+        "despistats": "Habituals que s'han despistat",
+        "migdia": "{n} de {total} demanaven al migdia, de dimarts a dijous. Treballen al 22@.",
+        "freds": "{n} tenien L'Esqueixat de preferit i van baixar quan vam passar a la carta de tardor.",
+        "dies": "Fa {n} dies de mitjana que no demanen.",
+        "aProp": "{n} estan a 3 paraules o menys de completar el carnet."
+      },
+      "nous": {
+        "titol": "Arriben pel carnet i tornen aviat",
+        "alta": "{n} persones s'han donat d'alta els últims 30 dies.",
+        "tornat": "{n} ja han tornat a demanar després de la primera comanda.",
+        "tardor": "{n} tenen un plat de tardor de preferit.",
+        "accio": "Prepara una benvinguda"
+      },
+      "adormits": {
+        "titol": "Fa més d'un mes i mig que no els veiem",
+        "poques": "{n} de {total} només van fer una o dues comandes.",
+        "wallet": "Només {n} tenen el carnet al wallet; la resta només es poden avisar per correu.",
+        "freds": "{n} tenien un plat fred de preferit."
+      },
+      "creaCampanya": "Crea una campanya per a ells"
+    }
   },
   "entra": {
     "titol": "Entra al panell",
@@ -524,7 +612,7 @@
       "onEyebrow": "On som",
       "onTitol": "Un taulell petit al Poblenou.",
       "adreca": "Adreça",
-      "adrecaValor": "[ADREÇA], Poblenou",
+      "adrecaValor": "Carrer de Pujades, 118 · Poblenou",
       "horari": "Horari",
       "horariValor": "Dilluns a dissabte, migdia i vespre",
       "recollida": "Recollida",
@@ -615,7 +703,7 @@
         "limit": "Massa intents seguits. Espera uns minuts i torna-ho a provar.",
         "servidor": "No hem pogut fer la comanda. Torna-ho a provar d'aquí a una estona."
       },
-      "adreca": "[ADREÇA], Poblenou",
+      "adreca": "Carrer de Pujades, 118 · Poblenou",
       "faixa": "Si tens el carnet, escaneja el QR de la faixa en recollir-la i hi sumarem la paraula.",
       "esperant": "Confirmant el pagament…",
       "cancellada": "Aquesta comanda no s'ha arribat a pagar.",
@@ -731,7 +819,7 @@
           {
             "titol": "Qui som",
             "text": [
-              "Aquesta web és de [RAÓ SOCIAL], amb NIF [NIF] i domicili a [ADREÇA], 08005 Barcelona. Correu de contacte: [CORREU].",
+              "Aquesta web és de Carmanyola del Poblenou, S.L., amb NIF B65912479 i domicili a Carrer de Pujades, 118, 08005 Barcelona. Correu de contacte: hola@lacarmanyola.cat.",
               "La Carmanyola és un projecte de portfolio: el restaurant és fictici, però la web, els pagaments (en mode de prova), el carnet i els correus funcionen de veritat."
             ]
           },
@@ -751,7 +839,7 @@
           {
             "titol": "Propietat intel·lectual",
             "text": [
-              "Els textos, el logotip, les fotos i el disseny són de [RAÓ SOCIAL] o dels seus autors. No els reprodueixis sense permís."
+              "Els textos, el logotip, les fotos i el disseny són de Carmanyola del Poblenou, S.L. o dels seus autors. No els reprodueixis sense permís."
             ]
           },
           {
@@ -768,7 +856,7 @@
           {
             "titol": "Qui en és responsable",
             "text": [
-              "[RAÓ SOCIAL], NIF [NIF], [ADREÇA], 08005 Barcelona. Per a qualsevol cosa sobre les teves dades: [CORREU]."
+              "Carmanyola del Poblenou, S.L., NIF B65912479, Carrer de Pujades, 118, 08005 Barcelona. Per a qualsevol cosa sobre les teves dades: hola@lacarmanyola.cat."
             ]
           },
           {
@@ -794,7 +882,7 @@
           {
             "titol": "Els teus drets",
             "text": [
-              "Pots demanar veure, corregir o esborrar les teves dades, limitar-ne o oposar-te'n a l'ús i endur-te-les, escrivint a [CORREU]. Si creus que no les tractem bé, pots reclamar a l'Autoritat Catalana de Protecció de Dades (apdcat.gencat.cat)."
+              "Pots demanar veure, corregir o esborrar les teves dades, limitar-ne o oposar-te'n a l'ús i endur-te-les, escrivint a hola@lacarmanyola.cat. Si creus que no les tractem bé, pots reclamar a l'Autoritat Catalana de Protecció de Dades (apdcat.gencat.cat)."
             ]
           }
         ]

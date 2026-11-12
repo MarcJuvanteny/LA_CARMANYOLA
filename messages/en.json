@@ -68,7 +68,7 @@
       "onEyebrow": "Find us",
       "onTitol": "A small counter in Poblenou.",
       "adreca": "Address",
-      "adrecaValor": "[ADREÇA], Poblenou",
+      "adrecaValor": "Carrer de Pujades, 118 · Poblenou",
       "horari": "Opening hours",
       "horariValor": "Monday to Saturday, lunch and dinner",
       "recollida": "Pick-up",
@@ -177,7 +177,7 @@
         "limit": "Too many attempts in a row. Wait a few minutes and try again.",
         "servidor": "We couldn't place the order. Please try again in a while."
       },
-      "adreca": "[ADREÇA], Poblenou",
+      "adreca": "Carrer de Pujades, 118 · Poblenou",
       "faixa": "If you have the card, scan the QR on the band when you collect it and we'll add the word.",
       "esperant": "Confirming payment…",
       "cancellada": "This order was never paid.",
@@ -275,7 +275,7 @@
           {
             "titol": "Who we are",
             "text": [
-              "This website belongs to [RAÓ SOCIAL], tax ID [NIF], registered at [ADREÇA], 08005 Barcelona. Contact: [CORREU].",
+              "This website belongs to Carmanyola del Poblenou, S.L., tax ID B65912479, registered at Carrer de Pujades, 118, 08005 Barcelona. Contact: hola@lacarmanyola.cat.",
               "La Carmanyola is a portfolio project: the restaurant is fictional, but the website, payments (in test mode), the card and the emails really work."
             ]
           },
@@ -295,7 +295,7 @@
           {
             "titol": "Intellectual property",
             "text": [
-              "The texts, logo, photos and design belong to [RAÓ SOCIAL] or their authors. Please don't reproduce them without permission."
+              "The texts, logo, photos and design belong to Carmanyola del Poblenou, S.L. or their authors. Please don't reproduce them without permission."
             ]
           },
           {
@@ -312,7 +312,7 @@
           {
             "titol": "Who is responsible",
             "text": [
-              "[RAÓ SOCIAL], tax ID [NIF], [ADREÇA], 08005 Barcelona. For anything about your data: [CORREU]."
+              "Carmanyola del Poblenou, S.L., tax ID B65912479, Carrer de Pujades, 118, 08005 Barcelona. For anything about your data: hola@lacarmanyola.cat."
             ]
           },
           {
@@ -338,7 +338,7 @@
           {
             "titol": "Your rights",
             "text": [
-              "You can ask to see, correct or delete your data, restrict or object to its use and take it with you, by writing to [CORREU]. If you think we're not handling it properly, you can complain to the Catalan Data Protection Authority (apdcat.gencat.cat)."
+              "You can ask to see, correct or delete your data, restrict or object to its use and take it with you, by writing to hola@lacarmanyola.cat. If you think we're not handling it properly, you can complain to the Catalan Data Protection Authority (apdcat.gencat.cat)."
             ]
           }
         ]
@@ -362,5 +362,549 @@
         ]
       }
     }
+  },
+  "panel": {
+    "nav": {
+      "label": "Dashboard",
+      "resum": "Overview",
+      "vendes": "Sales",
+      "clients": "Customers",
+      "franges": "Time slots",
+      "campanyes": "Campaigns",
+      "queQueda": "Què Queda",
+      "padro": "Padró",
+      "carta": "Menu",
+      "veu": "Brand voice",
+      "perRevisar": "to review",
+      "revisio": "The AI reviewed the data today at {hora}. <b>{n, plural, =0 {All reviewed} one {# proposal} other {# proposals}}</b>{n, plural, =0 {.} other { to review.}}",
+      "simulades": "Simulated data",
+      "menu": "Menu",
+      "tanca": "Close",
+      "enDirecte": "Live",
+      "desconnectat": "Offline",
+      "ultima": "last {hora}",
+      "simula": "Catch up",
+      "simulant": "Simulating…",
+      "surt": "Sign out",
+      "comandes": "Orders",
+      "idioma": "Dashboard language"
+    },
+    "resum": {
+      "titol": "Overview",
+      "ingressos": "Today's revenue",
+      "comandes": "Orders",
+      "tiquet": "Average ticket",
+      "ambDinar": "With El Dinar",
+      "vsDimarts": "{v} vs last {dia}",
+      "mesQue": "{v} vs last {dia}",
+      "dinarNota": "{n} orders",
+      "iaEyebrow": "What the AI sees",
+      "propostes": "You have {n, plural, one {# proposal} other {# proposals}} to review today",
+      "totRevisat": "You're all caught up",
+      "revisa": "Review it",
+      "estat": {
+        "aprovada": "Approved",
+        "descartada": "Dismissed",
+        "ara-no": "Not now",
+        "enviada": "Sent",
+        "esborrany": "Draft"
+      },
+      "araMateix": "Right now",
+      "queQueda": "What will be left at {hora}",
+      "preparaAvis": "Prepare the alert",
+      "avisActiu": "Alert on",
+      "padro": "Padró",
+      "empadronats": "{n} ingredients registered this autumn.",
+      "setmana": "Last week",
+      "aquesta": "This week",
+      "passada": "Last week",
+      "veureVendes": "See sales",
+      "carnet": "The card",
+      "ambCarnet": "{n} people with a card",
+      "paraulesSetmana": "Words recovered",
+      "complets": "Cards completed",
+      "directes": "{pct} of orders now come direct, where words are earned.",
+      "enCurs": "Words on the current card",
+      "tram": {
+        "inici": "1-2 words",
+        "meitat": "3-5 words",
+        "aPunt": "6-7 words (almost complete)"
+      },
+      "postresSetmana": "{n, plural, =0 {No free desserts this week.} one {# free dessert this week.} other {# free desserts this week.}}",
+      "obreQueQueda": "Open the Què Queda hour at {hora}",
+      "ajustaProduccio": "Adjust tomorrow's production",
+      "diferencia": "{n, plural, =0 {Same number of orders} one {{n, number, ::sign-always} order} other {{n, number, ::sign-always} orders}}"
+    },
+    "vendes": {
+      "titol": "Sales",
+      "periode": "Period",
+      "avui": "Today",
+      "setmana": "Week",
+      "mes": "Month",
+      "anterior": {
+        "avui": "the same day last week",
+        "setmana": "last week",
+        "mes": "the previous 4 weeks"
+      },
+      "llegenda": {
+        "avui": {
+          "actual": "Today",
+          "anterior": "Last week"
+        },
+        "setmana": {
+          "actual": "This week",
+          "anterior": "Last week"
+        },
+        "mes": {
+          "actual": "These 4 weeks",
+          "anterior": "The previous ones"
+        }
+      },
+      "ingressos": "Revenue",
+      "comandes": "Orders",
+      "comandesNota": "{n} vs {anterior}",
+      "tiquet": "Average ticket",
+      "ambDinar": "With El Dinar",
+      "dinarNota": "{n} orders · {extra} extra",
+      "perCanal": "By channel",
+      "webLocal": "Web and in-store",
+      "plataformes": "Platforms",
+      "comissions": "Platform fees",
+      "perPlat": "Sales by dish",
+      "ames": "Plus: El Dinar {dinar} · sides and drinks {altres}",
+      "plat": "Dish",
+      "unitats": "Units",
+      "pes": "Share of total",
+      "vs": "Vs. {anterior}",
+      "iaEyebrow": "What the AI sees",
+      "ajusta": "Adjust production",
+      "produccioAjustada": "Production adjusted: the kitchen will see it.",
+      "decideixXef": "The chef decides.",
+      "desfes": "Undo"
+    },
+    "clients": {
+      "titol": "Customers",
+      "subtitol": "{n} with a card. The AI groups them every night by how and when they order.",
+      "segments": "Segments",
+      "segment": {
+        "tots": "All",
+        "risc": "At risk",
+        "nous": "New",
+        "adormits": "Dormant"
+      },
+      "descripcio": {
+        "tots": "Everyone with a card",
+        "risc": "More than twice their usual gap without ordering",
+        "nous": "Signed up in the last 30 days",
+        "adormits": "Haven't ordered for over 45 days"
+      },
+      "client": "Customer",
+      "venia": "Used to come",
+      "senseVenir": "Since last visit",
+      "carnet": "Card",
+      "preferit": "Favourite dish",
+      "risc": "Risk",
+      "dies": "{n, plural, =0 {Today} one {# day} other {# days}}",
+      "paraules": "{n} of {total} words",
+      "peu": "{n} of {total} · sorted by risk",
+      "mes": "Show more",
+      "menys": "Show less",
+      "iaEyebrow": "What the AI sees",
+      "comandes": "Orders",
+      "comandesMesos": "{n} in {mesos, plural, =0 {less than a month} one {# month} other {# months}}",
+      "ultima": "Last order",
+      "liFalta": "Missing word",
+      "avisos": "Alerts",
+      "avis": {
+        "carnet-correu": "Card and email",
+        "carnet": "Card",
+        "correu": "Email"
+      },
+      "complets": "{n, plural, =0 {No cards completed} one {# card completed} other {# cards completed}}",
+      "veureFitxa": "Show {nom}'s profile",
+      "comandesTotal": "Orders",
+      "plat": "Favourite dish",
+      "venia2": "Used to come",
+      "sense": "Since last visit",
+      "riscLabel": "Risk of not coming back",
+      "riscNota": "From 0 to 100, based on how far they've drifted from their usual rhythm."
+    },
+    "franges": {
+      "titol": "Time slots",
+      "subtitol": "Orders by day and hour · average of the last 8 weeks",
+      "ultimes": "Last 8 weeks",
+      "perFranja": "Orders by time slot",
+      "poques": "Few",
+      "moltes": "Many",
+      "cella": "{dia}, {franja}: {n} orders",
+      "fluixa": "slow slot",
+      "llegendaFluixes": "Slots the AI flags as slow",
+      "iaEyebrow": "AI proposal · Slow slot",
+      "prepara": "Prepare the campaign",
+      "araNo": "Not now",
+      "estat": {
+        "aprovada": "Campaign approved and scheduled.",
+        "descartada": "Campaign dismissed.",
+        "ara-no": "We'll leave it for later."
+      },
+      "desfes": "Undo",
+      "previsio": "Forecast for next week",
+      "previsioIa": "AI forecast",
+      "ambSegell": "With double stamp",
+      "tooltipPrevisio": "{dia}: {base} orders expected{extra, plural, =0 {} other { + # with the double stamp}}",
+      "seccio": "When it sells"
+    },
+    "campanyes": {
+      "titol": "Campaigns",
+      "subtitol": "The AI spots the opportunity, writes the message and tells you why. You decide.",
+      "demana": "Request a campaign",
+      "demanaLabel": "What do you want to achieve?",
+      "demanaPlaceholder": "For example: get new customers back within two weeks",
+      "demanaNota": "The AI will pick the group from current data and suggest the message in a few seconds. Nothing is sent until you approve it.",
+      "demanaEnvia": "Request it",
+      "iaPreparant": "The AI is preparing it…",
+      "iaReescriu": "Rewrite with AI",
+      "iaEscrivint": "Writing…",
+      "iaNoRespon": "The AI didn't respond (busy or out of quota). Try again in a while.",
+      "cancel": "Cancel",
+      "enPreparacio": "Being prepared",
+      "aquestaNit": "The AI couldn't prepare it. It will try again tonight.",
+      "reintenta": "Try again",
+      "perRevisar": "To review",
+      "enviades": "Sent",
+      "proposta": "AI proposal",
+      "tipus": {
+        "recuperacio": "Win-back",
+        "franja": "Slow slot",
+        "padro": "Padró",
+        "calendari": "Calendar"
+      },
+      "estat": {
+        "esborrany": "Draft",
+        "aprovada": "Approved",
+        "descartada": "Dismissed",
+        "ara-no": "Not now",
+        "enviada": "Sent"
+      },
+      "perQue": "Why I suggest it",
+      "missatge": "The message",
+      "idioma": "Language",
+      "demanali": "Ask it:",
+      "to": {
+        "curt": "Shorter",
+        "calid": "Warmer",
+        "senseExtra": "Simpler"
+      },
+      "editaMa": "Edit by hand",
+      "fetEdicio": "Done",
+      "variables": "You can use '{nom}' and '{paraula}': they're filled in for each customer.",
+      "varNom": "name",
+      "varParaula": "word",
+      "perOn": "Channels",
+      "wallet": "Alert on the card (Apple and Google Wallet)",
+      "correu": "Email, only to the {n} who opted in",
+      "quan": "When",
+      "previsualitzacio": "How it will look on the phone",
+      "ara": "now",
+      "descarta": "Dismiss",
+      "desa": "Save draft",
+      "desat": "Draft saved",
+      "aprova": "Approve and schedule",
+      "triaCanal": "Choose at least one channel",
+      "programada": "Approved and scheduled: {quan}",
+      "desfes": "Undo",
+      "resum": "{clients} customers · {tornat} came back",
+      "destinataris": "Recipients",
+      "hanTornat": "Came back",
+      "control": "Control group",
+      "ambAvis": "With alert",
+      "senseAvis": "Without alert",
+      "atribucio": "A customer counts as coming back thanks to the campaign if they order within 14 days of sending. It's compared with a control group that didn't get the alert.",
+      "enviat": "The message sent",
+      "walletCurt": "Wallet",
+      "correuCurt": "Email ({n})"
+    },
+    "queQueda": {
+      "titol": "The Què Queda hour",
+      "quedara": "What will be left at {hora}",
+      "plat": "Dish",
+      "fets": "Made",
+      "venuts": "Sold",
+      "venutsBarra": "Share sold",
+      "previsio": "AI forecast",
+      "avis": "Alert",
+      "entra": "In the alert",
+      "afegeix": "Add it",
+      "noEnQuedara": "None left",
+      "corregeixPlat": "Expected amount of {plat}",
+      "nota": "The forecast comes from today's sales so far, the same days in previous weeks and the weather. You can correct it by hand before sending.",
+      "iaEyebrow": "AI proposal · Què Queda",
+      "obre": "Open the Què Queda hour at {hora}",
+      "perAls": "For the <b>{n} card holders</b> who agreed to receive alerts. Until 4 pm, only for them.",
+      "missatge": "Què queda avui? {plats}. Fins a les 16 h, només per als clients amb carnet. Baixa a buscar-ne un.",
+      "missatgeBuit": "Choose at least one dish for the alert.",
+      "iaReescriu": "Rewrite with AI",
+      "iaEscrivint": "Writing…",
+      "iaNoRespon": "The AI didn't respond (busy or out of quota). The usual text stays.",
+      "i": "i",
+      "activa": "Turn on the alert",
+      "corregeix": "Correct the amounts",
+      "fet": "Done",
+      "activat": "Alert on for {hora} · {n} card holders",
+      "desfes": "Undo",
+      "encert": "Over the last 4 weeks, the alert sold <b>{pct}</b> of what was left.",
+      "dema": "For tomorrow, the AI suggests",
+      "deA": "From {abans} to {despres}",
+      "enviaCuina": "Send to the kitchen",
+      "xef": "The chef decides",
+      "enviatCuina": "Sent to the kitchen for tomorrow's production.",
+      "decideixXef": "The chef decides.",
+      "alAvis": "In the alert",
+      "foraAvis": "Not in the alert",
+      "senseProduccio": "There's no production planned for this service yet today.",
+      "titolCarta": "The Què Queda hour · {hora}",
+      "resumCarta": "{n, plural, =0 {No dishes expected to be left over yet} one {# dish expected to have portions left} other {# dishes expected to have portions left}} · {temps}",
+      "prepara": "Prepare the alert",
+      "amaga": "Hide",
+      "quedaran": "Left",
+      "fetsVenuts": "{fets} made · {venuts} sold",
+      "entraPlat": "{plat} goes in the alert",
+      "elMissatge": "The message"
+    },
+    "padro": {
+      "titol": "Ingredient padró",
+      "subtitol": "Seasonal ingredients get registered and deregistered. There are {n} registered right now.",
+      "estacio": {
+        "tardor": "Autumn",
+        "hivern": "Winter",
+        "primavera": "Spring",
+        "estiu": "Summer"
+      },
+      "cens": "The register",
+      "ingredient": "Ingredient",
+      "comarca": "Area",
+      "estat": "Status",
+      "alta": "In",
+      "baixa": "Out",
+      "plats": "Dishes",
+      "perConfirmar": "To be confirmed",
+      "estats": {
+        "empadronat": "Registered",
+        "alta-proposada": "Registration proposed",
+        "baixa-proposada": "Removal proposed",
+        "ve-aviat": "Coming soon",
+        "de-baixa": "Out of season"
+      },
+      "nota": "Dates come from the seasonal calendar. The area and supplier are confirmed with each registration.",
+      "proposta": "AI proposal",
+      "tipusAlta": "Join the padró",
+      "tipusBaixa": "Leave the padró",
+      "anunci": "The announcement",
+      "aprovaAlta": "Approve registration",
+      "aprovaBaixa": "Approve removal",
+      "edita": "Edit",
+      "fet": "Done",
+      "araNo": "Not now",
+      "altaFeta": "Registered. The announcement will appear on the website on the start date.",
+      "baixaFeta": "Removed. The announcement is already on the website.",
+      "perMesEndavant": "We'll leave it for later.",
+      "desfes": "Undo",
+      "veureCampanya": "Review the campaign",
+      "calendari": "Seasonal calendar",
+      "ara": "Now"
+    },
+    "carta": {
+      "titol": "Menu",
+      "subtitol": "{n} of {total} products on sale today. Changes show on the website straight away.",
+      "dinar": "El Dinar: +{preu}",
+      "seccio": {
+        "casa": "House carmanyoles",
+        "fes": "Fes-te'l tu",
+        "acompanyar": "On the side",
+        "postres": "Desserts",
+        "begudes": "Drinks"
+      },
+      "nota": "Sauces always come on the side. El Dinar: any carmanyola with a drink or dessert.",
+      "preu": "Price",
+      "descripcio": "Description",
+      "idioma": "Language",
+      "senseDescripcio": "No description",
+      "nomCatala": "The dish name is always shown in Catalan.",
+      "temporada": "Season",
+      "alergens": "Allergens",
+      "errorDesa": "The last change couldn't be saved. Try again.",
+      "afegeix": "Add a dish",
+      "nom": "Name",
+      "nomPlaceholder": "For example: Cap i Pota",
+      "seccioLabel": "Section",
+      "crea": "Create the dish",
+      "creant": "Creating…",
+      "cancel": "Cancel",
+      "nouNota": "The dish is created off sale. Add the price, description and allergens and switch it on when it's ready.",
+      "aLaVenda": "On sale",
+      "aLaVendaPlat": "{plat} on sale today",
+      "arxivats": "Archived dishes ({n})",
+      "recupera": "Restore",
+      "arxiva": "Remove from the menu",
+      "arxivaPregunta": "{plat} will no longer appear on the website. Past sales are kept and you can restore it whenever you like.",
+      "arxivaSi": "Yes, remove it",
+      "temporades": {
+        "tot l'any": "All year",
+        "tardor": "Autumn",
+        "hivern": "Winter",
+        "primavera": "Spring",
+        "estiu": "Summer"
+      },
+      "editaPlat": "Edit {plat}",
+      "fet": "Done",
+      "fotoPuja": "Upload a photo",
+      "fotoCanvia": "Change photo",
+      "fotoPujant": "Uploading…",
+      "fotoTreu": "Remove it",
+      "fotoNota": "Best with a transparent background. We resize it to 900 px before uploading.",
+      "fotoError": "The photo couldn't be uploaded. Try another file (webp, png or jpg)."
+    },
+    "veu": {
+      "titol": "Brand voice",
+      "subtitol": "This is the AI's prompt: the way you write here is how it'll speak in every alert.",
+      "desa": "Save changes",
+      "desfes": "Undo",
+      "totDesat": "All saved",
+      "prompt": "How La Carmanyola speaks",
+      "promptNota": "Each section goes to the AI exactly as you see it. Write it as if you were explaining it to someone new in the kitchen.",
+      "proves": "Test area",
+      "provesTitol": "Try the voice before using it",
+      "situacio": "Situation",
+      "situacions": {
+        "recuperacio": "Win back a regular",
+        "franja": "Slow slot",
+        "queQueda": "Què Queda",
+        "padro": "New in the padró"
+      },
+      "idioma": "Language",
+      "prova": "Try it",
+      "escrivint": "Writing…",
+      "error": "Couldn't run the test. Try again.",
+      "exemple": "The AI didn't respond (busy or out of quota). This is sample text.",
+      "trobades": "Words we don't use: {paraules}",
+      "netes": "No words from the blacklist.",
+      "provesNota": "The word check is done by code, not by the AI.",
+      "revisa": "Check your own text",
+      "revisaNota": "Paste a text and we'll flag the words we don't use.",
+      "revisaPlaceholder": "Type or paste a text here…"
+    },
+    "comandes": {
+      "titol": "Orders",
+      "subtitol": "Real orders from the last 24 hours, with the band to print.",
+      "local": "In-store order",
+      "nom": "Name (optional)",
+      "creaFaixa": "Print the band",
+      "localNota": "For orders paid at the counter: the band has the QR that adds the word to the card.",
+      "buit": "No real orders yet.",
+      "numero": "Order {n}",
+      "senseNumero": "In store",
+      "canal": {
+        "web": "Web",
+        "local": "In store",
+        "plataforma": "Platform"
+      },
+      "estat": {
+        "pendent": "Awaiting payment",
+        "confirmada": "Paid",
+        "cancellada": "Cancelled"
+      },
+      "sumada": "Word added",
+      "perSumar": "Word pending",
+      "imprimeix": "Print the band",
+      "faixa": "Desbowlitza aquí"
+    },
+    "tanca": "Close",
+    "ia": {
+      "pestanya": "AI",
+      "titol": "What the AI suggests",
+      "tanca": "Close",
+      "perRevisar": "to review",
+      "nota": "The AI makes suggestions from the data on this page. Nothing happens until you approve it."
+    },
+    "dades": {
+      "subtitolAvui": "{dia}, up to {hora} · compared with last {diaSetmana}",
+      "subtitolSetmana": "Week of {rang} · compared with the previous one",
+      "subtitolMes": "{rang} · compared with the previous 4 weeks",
+      "grafic": {
+        "avui": "Revenue by time slot",
+        "setmana": "Revenue by day",
+        "mes": "Revenue by week"
+      },
+      "veniaSetmana": "{n}/week",
+      "veniaMes": "{n}/month",
+      "paraulaPendent": "word pending",
+      "pluja": "Rain",
+      "sensePluja": "No rain",
+      "senseTemps": "No weather data",
+      "subtitolQueQueda": "{dia} · {servei, select, migdia {lunch service} other {dinner service}} · it's {hora}",
+      "produccio": "{dia} morning production",
+      "sobren": "Surplus on {n} of the last 6 {dies}",
+      "esgota": "Sold out on {n} of the last 6 {dies}",
+      "plou": "Rain tomorrow: factored in",
+      "mitjana": "Average of the last 4 {dies}"
+    },
+    "plantilles": {
+      "anterior": {
+        "avui": "a week ago",
+        "setmana": "last week",
+        "mes": "the previous 4 weeks"
+      },
+      "franjaDe": "the {e} slot",
+      "setmanaDel": "the week of {e}",
+      "millorPitjor": "{millor} was {periode, select, avui {the best slot} setmana {the best day} other {the best week}} (**{v}**) and {pitjor} the quietest ({v2}).",
+      "baixaFred": "{plat} is down {p}: it's a cold dish and autumn is here. I suggest making less of it on quiet days.",
+      "baixa": "{plat} is down {p} compared with {anterior}.",
+      "puja": "{plat} is up {p} compared with {anterior}.",
+      "dinarPuja": "El Dinar has gone from {a} to **{b}** since it appears on the dish page.",
+      "dinar": "El Dinar is in {a} of orders ({b} {anterior}).",
+      "titolBuit": "Not enough orders yet to say anything",
+      "titolTiraApaga": "{top} leads the way, {baixa} is fading",
+      "titolTira": "{top} leads the way",
+      "senseComandes": "No orders in this period yet.",
+      "tram": "{a}–{b} h",
+      "segellDoble": "Double stamp on {dies}, {tram}",
+      "senseFluixes": "No slow slots yet",
+      "fluixes": "These are the four slowest slots: **{f} orders** on average, while lunchtime does {m}.",
+      "senseProva": "You haven't tried the double stamp in any slot yet: this would be the first test.",
+      "prova": "When you tried the double stamp on Monday evenings: **{p}**.",
+      "cost": "It costs one extra word on the card, not a discount. The price stays the same.",
+      "notaFranges": "**3 to 4 pm is slow too**, but that's the Què Queda hour: I'm leaving it alone.",
+      "risc": {
+        "oficina": "Office workers who've changed their routine",
+        "despistats": "Regulars who've drifted away",
+        "migdia": "{n} of {total} ordered at lunchtime, Tuesday to Thursday. They work in 22@.",
+        "freds": "{n} had L'Esqueixat as their favourite and dropped off when we switched to the autumn menu.",
+        "dies": "On average they haven't ordered for {n} days.",
+        "aProp": "{n} are 3 words or fewer from completing the card."
+      },
+      "nous": {
+        "titol": "They come for the card and come back soon",
+        "alta": "{n} people have signed up in the last 30 days.",
+        "tornat": "{n} have already ordered again after their first order.",
+        "tardor": "{n} have an autumn dish as their favourite.",
+        "accio": "Prepare a welcome"
+      },
+      "adormits": {
+        "titol": "We haven't seen them for over six weeks",
+        "poques": "{n} of {total} only placed one or two orders.",
+        "wallet": "Only {n} have the card in their wallet; the rest can only be reached by email.",
+        "freds": "{n} had a cold dish as their favourite."
+      },
+      "creaCampanya": "Create a campaign for them"
+    }
+  },
+  "entra": {
+    "titol": "Sign in to the dashboard",
+    "subtitol": "For the owner of La Carmanyola only.",
+    "correu": "Email",
+    "contrasenya": "Password",
+    "entra": "Sign in",
+    "entrant": "Signing in…",
+    "error": "The email or password is incorrect."
   }
 }

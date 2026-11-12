@@ -54,6 +54,27 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
   }
+  /* Panell: la marca queda als títols; la resta, tipografia de cos i llegible (les dades manen). */
+  .panell {
+    font-size: 16px;
+  }
+  .panell h2:not(.titol-seccio),
+  .panell h3:not(.titol-seccio) {
+    font-family: var(--font-cos);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+  }
+  .panell .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+  }
+  .xifra {
+    font-family: var(--font-cos);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
   /* Textura de marca: el morter repetit to sobre to (public/brand/textura-*.svg) */
   .textura-granat {
     background: var(--color-granat) url("/brand/textura-granat.svg") center / 760px auto repeat;
