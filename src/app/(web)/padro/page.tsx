@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import type { Idioma } from "@/lib/data/carta";
-import { padroPublic, type IngredientPublic } from "@/lib/db/web";
+import { anuncisPadro, padroPublic, type IngredientPublic } from "@/lib/db/web";
 import { padro as padroIllustrat } from "@/lib/web/contingut";
 
 export const revalidate = 300;
@@ -32,7 +32,8 @@ function Llista({ titol, items, nota }: { titol: string; items: IngredientPublic
 
 export default async function PadroPage() {
   const t = await getTranslations("web.padro");
-  const padro = await padroPublic();
+  const idioma = (await getLocale()) as Idioma;
+  const [padro, anuncis] = await Promise.all([padroPublic(), anuncisPadro(idioma)]);
   const empadronats = padro.filter((i) => i.estat === "empadronat" || i.estat === "baixa-proposada");
   const venen = padro.filter((i) => i.estat === "ve-aviat" || i.estat === "alta-proposada");
   const baixes = padro.filter((i) => i.estat === "de-baixa");
@@ -45,10 +46,28 @@ export default async function PadroPage() {
         <p className="m-0 text-[15px] leading-[1.6] md:text-[17px]">{t("text")}</p>
       </header>
 
+      {anuncis.length > 0 && (
+        <section aria-labelledby="novetats" className="flex flex-col gap-4">
+          <h2 id="novetats" className="m-0 text-[clamp(24px,3vw,36px)] text-granat">
+            {t("novetats")}
+          </h2>
+          <ul className="m-0 grid list-none gap-3 p-0 md:grid-cols-2">
+            {anuncis.map((a) => (
+              <li key={a.id} className={`flex flex-col gap-2 rounded-[22px] p-5 ${a.tipus === "alta" ? "bg-groc" : "bg-white"}`}>
+                <span className="text-xs font-semibold tracking-[.08em] text-granat uppercase">
+                  {t(a.tipus === "alta" ? "anunciAlta" : "anunciBaixa", { ingredient: a.ingredient })} · {a.data}
+                </span>
+                <p className="m-0 text-[16px] leading-[1.55]">{a.text}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section className="flex flex-col gap-4">
         <h2 className="m-0 text-[clamp(24px,3vw,36px)] text-granat">{t("qui")}</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {padroIllustrat((await getLocale()) as Idioma).map((p) => (
+          {padroIllustrat(idioma).map((p) => (
             <article key={p.ingredient} className="flex flex-col overflow-hidden rounded-[22px] bg-white">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={p.imatge} alt={p.foto} className="aspect-[4/3] w-full object-cover" loading="lazy" />

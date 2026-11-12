@@ -267,7 +267,10 @@
       "fins": "Until: {quan}",
       "desDe": "From: {quan}",
       "tornara": "Back next season.",
-      "carnet": "With the <a>card</a>, we'll tell you about every new arrival."
+      "carnet": "With the <a>card</a>, we'll tell you about every new arrival.",
+      "novetats": "Padró news",
+      "anunciAlta": "Joins · {ingredient}",
+      "anunciBaixa": "Leaves · {ingredient}"
     },
     "legal": {
       "actualitzat": "Last updated: 6 November 2026",

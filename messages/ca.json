@@ -799,7 +799,10 @@
       "fins": "Fins: {quan}",
       "desDe": "A partir de: {quan}",
       "tornara": "Tornarà la temporada que ve.",
-      "carnet": "Amb el <a>carnet</a>, t'avisem de cada alta."
+      "carnet": "Amb el <a>carnet</a>, t'avisem de cada alta.",
+      "novetats": "Novetats del padró",
+      "anunciAlta": "Alta · {ingredient}",
+      "anunciBaixa": "Baixa · {ingredient}"
     },
     "legal": {
       "actualitzat": "Última actualització: 6 de novembre de 2026",

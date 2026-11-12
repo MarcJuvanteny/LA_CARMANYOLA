@@ -267,7 +267,10 @@
       "fins": "Hasta: {quan}",
       "desDe": "A partir de: {quan}",
       "tornara": "Volverá la temporada que viene.",
-      "carnet": "Con el <a>carnet</a>, te avisamos de cada alta."
+      "carnet": "Con el <a>carnet</a>, te avisamos de cada alta.",
+      "novetats": "Novedades del padró",
+      "anunciAlta": "Alta · {ingredient}",
+      "anunciBaixa": "Baja · {ingredient}"
     },
     "legal": {
       "actualitzat": "Última actualización: 6 de noviembre de 2026",

@@ -80,6 +80,16 @@ export async function resolProposta(id: string, r: Resolucio, payload: PayloadPr
   }
 
   if (tipus === "padro") {
+    // Si l'amo reescriu l'anunci, les traduccions de l'original ja no valen: la web mostrarà el seu text.
+    if (payload.anunci) {
+      const { data: abans } = await supabase.from("ingredient_alerts").select("announcement, i18n").eq("id", clau).single();
+      if (abans && abans.announcement !== payload.anunci && abans.i18n) {
+        const i18n = Object.fromEntries(
+          Object.entries(abans.i18n as Record<string, Record<string, unknown>>).map(([l, tr]) => [l, Object.fromEntries(Object.entries(tr).filter(([k]) => k !== "announcement"))]),
+        );
+        comprova((await supabase.from("ingredient_alerts").update({ i18n }).eq("id", clau)).error);
+      }
+    }
     const { data: alerta, error: e1 } = await supabase
       .from("ingredient_alerts")
       .update({ status: r === "aprovada" ? "aprovada" : "ara-no", resolved_at: new Date().toISOString(), ...(payload.anunci && { announcement: payload.anunci }) })

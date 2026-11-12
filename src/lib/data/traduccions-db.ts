@@ -17,6 +17,8 @@ export type TraduccioCampanya = {
 export type TraduccioAvis = {
   title?: string;
   reasons?: string[];
+  /** L'anunci per als clients (web del padró). Si l'amo el reescriu, es descarta i surt el seu, en català. */
+  announcement?: string;
 };
 
 export type PerIdioma<T> = { es?: T; en?: T };
@@ -91,6 +93,8 @@ export const traduccionsAvisos: Record<string, PerIdioma<TraduccioAvis>> = {
         "Puede entrar en el Fes-te'l tu como guarnición sin tocar ningún plato de la casa.",
         "Ya tienes preparada la campaña para quienes recibieron el aviso de las setas.",
       ],
+      announcement:
+        "Nueva vecina en el padró: la alcachofa del Prat se empadrona en La Carmanyola a partir del {{alta}}. Viene del Baix Llobregat y se quedará hasta la primavera.",
     },
     en: {
       title: "The Prat artichoke wants to join the padró",
@@ -99,6 +103,7 @@ export const traduccionsAvisos: Record<string, PerIdioma<TraduccioAvis>> = {
         "It can go into Fes-te'l tu as a side without changing any house dish.",
         "The campaign for people who got the mushroom message is ready.",
       ],
+      announcement: "New neighbour on the padró: the Prat artichoke joins La Carmanyola from {{alta}}. It comes from the Baix Llobregat and will stay until spring.",
     },
   },
   "baixa-tomaquet": {
@@ -109,6 +114,7 @@ export const traduccionsAvisos: Record<string, PerIdioma<TraduccioAvis>> = {
         "Solo afecta a L'Esqueixat, que ya baja con la llegada del otoño.",
         "No hace falta avisar a nadie con una campaña: basta con el anuncio en la web.",
       ],
+      announcement: "El tomate se da de baja del padró hasta el verano. Gracias por todos los servicios, vecino.",
     },
     en: {
       title: "Tomatoes leave the padró",
@@ -117,6 +123,7 @@ export const traduccionsAvisos: Record<string, PerIdioma<TraduccioAvis>> = {
         "It only affects L'Esqueixat, which is already dropping now that autumn is here.",
         "No campaign needed: the announcement on the website is enough.",
       ],
+      announcement: "Tomatoes leave the padró until summer. Thanks for everything, neighbour.",
     },
   },
 };
