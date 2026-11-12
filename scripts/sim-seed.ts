@@ -16,6 +16,7 @@ import { carregaContext, serviceClient } from "../src/lib/sim/db";
 import { desaFestius, desaTemps, tempsHistoric, tempsRecent } from "../src/lib/sim/externs";
 import { Rng } from "../src/lib/sim/rng";
 import { diaMes } from "../src/lib/dates";
+import { traduccionsCampanyes } from "../src/lib/data/traduccions-db";
 
 const db = serviceClient();
 const sql = postgres(process.env.DATABASE_URL!, { onnotice: () => {} });
@@ -129,6 +130,8 @@ async function enviaCampanya(c: (typeof campanyes)[number]) {
       true, true, true, ${c.doble?.days ?? null}, ${c.doble?.from ?? null}, ${c.doble?.to ?? null},
       ${c.doble?.starts ?? null}, ${c.doble?.ends ?? null}, ${enviada})
     returning id`;
+  const tr = traduccionsCampanyes[c.slug];
+  if (tr) await sql`update public.campaigns set i18n = ${sql.json(tr)} where id = ${id}`;
   const ids = (await sql.unsafe(c.destinataris, [enviada.toISOString()])) as unknown as { id: string }[];
   // Grup de control determinista: 1 de cada 4 no rep l'avís.
   const files = ids.map(({ id: customer }) => ({

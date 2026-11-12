@@ -1,6 +1,7 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Plat } from "@/lib/data/carta";
+import { etiquetesPeticio } from "@/lib/data/traduccions-db";
 import { fetsNegoci, redactaCampanyaNova, type ClientFets } from "./campanyes";
 import { iaDisponible } from "./gemini";
 
@@ -13,10 +14,25 @@ export interface DadesNegoci {
   carta: Pick<Plat, "nom" | "disponible" | "seccio">[];
 }
 
-const DIES = ["", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte"];
+// Dies ISO (1 = dilluns). La campanya la redacta la IA en català; les etiquetes que posa el codi van també en es i en.
+const DIES = {
+  ca: ["", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte"],
+  es: ["", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+  en: ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+};
+const HORA = { ca: "a les", es: "a las", en: "at" };
+const XIP = {
+  risc: { ca: "{n} clients en risc", es: "{n} clientes en riesgo", en: "{n} customers at risk" },
+  wallet: { ca: "{n} clients amb wallet", es: "{n} clientes con wallet", en: "{n} customers with wallet" },
+};
 
 /** Prepara la campanya i la desa com a esborrany. Torna l'slug, o null si la IA no ha respost o no s'ha pogut desar. */
-export async function preparaCampanya(db: SupabaseClient, objectiu: string, dades: DadesNegoci, etiqueta: string): Promise<string | null> {
+export async function preparaCampanya(
+  db: SupabaseClient,
+  objectiu: string,
+  dades: DadesNegoci,
+  etiqueta: "araMateix" | "aquestaNit",
+): Promise<string | null> {
   const r = await redactaCampanyaNova(objectiu, fetsNegoci(dades.clients, dades.franges, dades.carta));
   if (!r) return null;
 
@@ -24,24 +40,34 @@ export async function preparaCampanya(db: SupabaseClient, objectiu: string, dade
   const slug = `ia-${Date.now().toString(36)}`;
   // Qui la rep ho decideix el codi, no la IA.
   const n = c.segment === "risc" ? dades.clients.filter((x) => x.risc).length : dades.clients.filter((x) => x.wallet).length;
+  const xip = (l: "ca" | "es" | "en") => XIP[c.segment === "risc" ? "risc" : "wallet"][l].replace("{n}", String(n));
+  const quan = (l: "ca" | "es" | "en") => `${DIES[l][c.dia]} ${HORA[l]} ${c.hora}`;
+  // Només les etiquetes del codi: el títol i els motius els escriu la IA en català.
+  const i18n = Object.fromEntries(
+    (["es", "en"] as const).map((l) => [
+      l,
+      { chips: [xip(l), etiquetesPeticio.proposadaIA[l]], schedule_text: quan(l), proposed_label: etiquetesPeticio[etiqueta][l] },
+    ]),
+  );
   const { error } = await db.from("campaigns").insert({
     slug,
     kind: c.tipus,
     segment: c.segment === "risc" ? "risc" : null,
     title: c.titol,
-    chips: [c.segment === "risc" ? `${n} clients en risc` : `${n} clients amb wallet`, "Proposada per la IA"],
+    chips: [xip("ca"), etiquetesPeticio.proposadaIA.ca],
     reasons: c.perQue,
     ai_reasoning: objectiu,
     messages: c.missatges,
     simpler_label: c.etiquetaSenseExtra,
     channel_wallet: true,
     channel_email: false,
-    schedule_text: `${DIES[c.dia]} a les ${c.hora}`,
+    schedule_text: quan("ca"),
     schedule_reason: c.motiuHora,
     preview_date: String(c.dia),
     preview_time: c.hora,
     status: "esborrany",
-    proposed_label: etiqueta,
+    proposed_label: etiquetesPeticio[etiqueta].ca,
+    i18n,
   });
   if (error) {
     console.warn("[ia] no s'ha pogut desar la campanya:", error.message.slice(0, 160));
@@ -99,7 +125,7 @@ export async function preparaPeticionsPendents(db: SupabaseClient) {
   const dades = await dadesNegoci(db);
   let preparades = 0;
   for (const p of peticions) {
-    const slug = await preparaCampanya(db, p.goal, dades, "Demanada per tu · preparada aquesta nit");
+    const slug = await preparaCampanya(db, p.goal, dades, "aquestaNit");
     if (slug) {
       preparades++;
       await db.from("campaign_requests").delete().eq("id", p.id);

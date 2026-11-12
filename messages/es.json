@@ -846,7 +846,8 @@
       "sobren": "Sobran {n} de cada 6 {dies}",
       "esgota": "Se agota {n} de cada 6 {dies}",
       "plou": "Mañana llueve: lo tenemos en cuenta",
-      "mitjana": "Media de los últimos 4 {dies}"
+      "mitjana": "Media de los últimos 4 {dies}",
+      "senseDadesProva": "aún sin datos"
     },
     "plantilles": {
       "anterior": {

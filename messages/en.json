@@ -846,7 +846,8 @@
       "sobren": "Surplus on {n} of the last 6 {dies}",
       "esgota": "Sold out on {n} of the last 6 {dies}",
       "plou": "Rain tomorrow: factored in",
-      "mitjana": "Average of the last 4 {dies}"
+      "mitjana": "Average of the last 4 {dies}",
+      "senseDadesProva": "no data yet"
     },
     "plantilles": {
       "anterior": {

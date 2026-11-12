@@ -482,7 +482,8 @@
       "sobren": "En sobren {n} {dies} de cada 6",
       "esgota": "S'esgota {n} {dies} de cada 6",
       "plou": "Demà plou: hi comptem",
-      "mitjana": "Mitjana dels últims 4 {dies}"
+      "mitjana": "Mitjana dels últims 4 {dies}",
+      "senseDadesProva": "encara sense dades"
     },
     "plantilles": {
       "anterior": {

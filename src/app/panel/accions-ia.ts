@@ -58,7 +58,7 @@ export async function demanaCampanya(objectiu: string): Promise<string | null> {
   const goal = objectiu.trim().slice(0, 500);
   if (goal.length < 3) return null;
 
-  const slug = (await gastaQuota("campanya-nova")) ? await preparaCampanya(supabase, goal, await dadesNegoci(), "Demanada per tu · ara mateix") : null;
+  const slug = (await gastaQuota("campanya-nova")) ? await preparaCampanya(supabase, goal, await dadesNegoci(), "araMateix") : null;
   if (!slug) await supabase.from("campaign_requests").insert({ goal });
   revalidatePath("/panel", "layout");
   return slug;
@@ -71,7 +71,7 @@ export async function reintentaPeticio(id: number): Promise<string | null> {
   const { data: p } = await supabase.from("campaign_requests").select("id, goal").eq("id", id).maybeSingle();
   if (!p) return null;
   if (!(await gastaQuota("campanya-nova"))) return null;
-  const slug = await preparaCampanya(supabase, p.goal, await dadesNegoci(), "Demanada per tu · ara mateix");
+  const slug = await preparaCampanya(supabase, p.goal, await dadesNegoci(), "araMateix");
   if (slug) {
     await supabase.from("campaign_requests").delete().eq("id", id);
     revalidatePath("/panel", "layout");

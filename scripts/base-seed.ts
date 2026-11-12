@@ -20,6 +20,7 @@ import { createClient } from "@supabase/supabase-js";
 import postgres from "postgres";
 import { plats } from "../src/lib/data/carta";
 import { campanyes } from "../src/lib/data/campanyes";
+import { traduccionsAvisos, traduccionsCampanyes } from "../src/lib/data/traduccions-db";
 import { veuInicial } from "../src/lib/data/veu";
 import { diaMes, local } from "../src/lib/dates";
 
@@ -152,6 +153,9 @@ async function dadesFixes() {
       ]},
       'El tomàquet es dona de baixa del padró fins a l''estiu. Gràcies per tots els serveis, veí.'
     from public.ingredients where slug = 'tomaquet'`;
+  for (const [id, tr] of Object.entries(traduccionsAvisos)) {
+    await sql`update public.ingredient_alerts set i18n = ${sql.json(tr)} where id = ${id}`;
+  }
 
   for (const [i, s] of veuInicial.entries()) {
     await sql`insert into public.brand_voice (id, title, body, sort) values (${s.id}, ${s.titol}, ${s.text}, ${i})`;
@@ -198,6 +202,9 @@ async function campanyesFixes() {
       ]},
       ${sql.json(missatges("carxofa"))}, null, true, true,
       'El dia de l''alta, a les 10:00.', 'Abans que es decideixi el dinar.', ${dia(26)}, '10:00', 'esborrany', 'Proposada ahir', now() - interval '1 day')`;
+  for (const [slug, tr] of Object.entries(traduccionsCampanyes)) {
+    await sql`update public.campaigns set i18n = ${sql.json(tr)} where slug = ${slug}`;
+  }
 }
 
 // ---------------------------------------------------------------------------

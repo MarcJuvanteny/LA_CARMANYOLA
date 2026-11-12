@@ -8,6 +8,7 @@ import type { Campanya, EstatCampanya, To } from "@/lib/data/campanyes";
 import type { Idioma, Plat } from "@/lib/data/carta";
 import type { Client, Segment } from "@/lib/data/clients";
 import type { AvisPadro, Estacio, EstatPadro, Ingredient } from "@/lib/data/padro";
+import type { PerIdioma, TraduccioAvis, TraduccioCampanya } from "@/lib/data/traduccions-db";
 import type { SeccioVeu } from "@/lib/data/veu";
 import type { DadesVendes, Periode } from "@/lib/data/vendes";
 import { euros, percent } from "@/lib/format";
@@ -36,6 +37,16 @@ const idioma = async () => (await getLocale()) as Locale;
 
 /** Clau de la memòria de la IA: la catalana es manté (textos ja redactats); els altres idiomes en tenen una de pròpia. */
 const clauIA = (clau: string, l: Locale) => (l === "ca" ? clau : `${clau}:${l}`);
+
+/** La traducció desada a la columna i18n (buida en català o si no n'hi ha). */
+const traduccio = <T extends object>(i18n: PerIdioma<T> | null | undefined, l: Locale): Partial<T> => (l === "ca" ? {} : (i18n?.[l] ?? {}));
+/** Una llista traduïda només si té els mateixos elements (si no, la catalana). */
+const llistaTraduida = (ca: string[], tr: string[] | undefined) => (tr && tr.length === ca.length ? tr : ca);
+/** "desembre" (etiqueta desada en català) → el mes en l'idioma del panell. */
+const mesEtiqueta = (etiqueta: string | null, l: Locale) => {
+  const i = etiqueta ? nomsMesos("ca").indexOf(etiqueta) : -1;
+  return i >= 0 ? nomsMesos(l)[i] : etiqueta;
+};
 
 /** "dimarts" → "dimarts" / "dissabtes"; "martes" / "sábados"; "Tuesdays". */
 function pluralDia(dow: number, l: Locale) {
@@ -341,17 +352,19 @@ interface CampanyaRpc {
   proposed_label: string | null;
   created_at: string | null;
   resultat: { clients: number; control_n: number; tornat: number | null; control: number | null } | null;
+  i18n?: PerIdioma<TraduccioCampanya> | null;
 }
 
 const omple = (t: string, vars: Record<string, string | number>) => t.replace(/\{\{(\w+)\}\}/g, (_, k) => String(vars[k] ?? "—"));
 
 export const campanyes = cache(async () => {
-  const [files, cl, fr, peticions, l] = await Promise.all([
+  const [files, cl, fr, peticions, l, td] = await Promise.all([
     rpc<CampanyaRpc[] | null>("panel_campanyes"),
     clients(),
     franges(),
     taula<{ id: number; goal: string }[]>((s) => s.from("campaign_requests").select("id, goal").order("created_at")),
     idioma(),
+    getTranslations("panel.dades"),
   ]);
   // Per revisar primer (la més recent dalt), després les enviades de la més nova a la més antiga.
   const llista = [...(files ?? [])].sort((x, y) =>
@@ -379,7 +392,7 @@ export const campanyes = cache(async () => {
     control: percent(rec?.control ?? 0),
     fluixes: fr.mitjanaFluixes,
     migdia: fr.mitjanaMigdia,
-    prova: fr.prova == null ? "encara sense dades" : percent(fr.prova, { signe: true }),
+    prova: fr.prova == null ? td("senseDadesProva") : percent(fr.prova, { signe: true }),
     bolets_n: bolets?.clients ?? 0,
     bolets_tornat: percent(bolets?.tornat ?? 0),
   };
@@ -388,23 +401,24 @@ export const campanyes = cache(async () => {
 
   const resultat: Campanya[] = llista.map((c) => {
     const dest = destinataris(c.segment);
+    const tr = traduccio(c.i18n, l);
     const previDia = c.preview_date?.length === 1 ? properDia(Number(c.preview_date)) : c.preview_date ? deDiaIso(c.preview_date) : null;
     return {
       id: c.slug,
       tipus: c.kind,
-      titol: omple(c.title, vars),
+      titol: omple(tr.title ?? c.title, vars),
       estat: c.status === "ara-no" ? "descartada" : c.status,
-      proposada: c.proposed_label ?? "",
-      xips: c.chips.map((x) => omple(x, vars)),
-      perQue: c.reasons.map((x) => omple(x, vars)),
+      proposada: tr.proposed_label ?? c.proposed_label ?? "",
+      xips: llistaTraduida(c.chips, tr.chips).map((x) => omple(x, vars)),
+      perQue: llistaTraduida(c.reasons, tr.reasons).map((x) => omple(x, vars)),
       missatges: c.messages,
-      senseExtra: c.simpler_label ?? undefined,
+      senseExtra: (c.simpler_label && tr.simpler_label) || c.simpler_label || undefined,
       canals: {
         wallet: c.channel_wallet,
         correu: c.channel_email,
         correuAcceptat: c.segment === "bolets" ? Math.round((bolets?.clients ?? 0) * 0.6) : dest.filter((d) => d.consentiment).length,
       },
-      quan: { text: c.schedule_text ?? "", motiu: c.schedule_reason ?? "" },
+      quan: { text: tr.schedule_text ?? c.schedule_text ?? "", motiu: tr.schedule_reason ?? c.schedule_reason ?? "" },
       previsualitzacio: { data: previDia ? diaComplet(previDia, l) : "", hora: c.preview_time ?? "" },
       resultat: c.resultat && c.sent_at ? { clients: c.resultat.clients, tornat: c.resultat.tornat ?? 0, control: c.resultat.control ?? 0 } : undefined,
     };
@@ -439,8 +453,20 @@ export const padro = cache(async () => {
         .select("id, slug, name, comarca, season, status, alta_on, baixa_on, alta_label, baixa_label, dish_ingredients(dishes(name))")
         .order("id"),
     ),
-    taula<{ id: string; kind: "alta" | "baixa"; title: string; reasons: string[]; announcement: string; campaign_slug: string | null; status: string; ingredients: { slug: string } | null }[]>(
-      (s) => s.from("ingredient_alerts").select("id, kind, title, reasons, announcement, campaign_slug, status, ingredients(slug)").order("id"),
+    taula<
+      {
+        id: string;
+        kind: "alta" | "baixa";
+        title: string;
+        reasons: string[];
+        announcement: string;
+        campaign_slug: string | null;
+        status: string;
+        i18n: PerIdioma<TraduccioAvis> | null;
+        ingredients: { slug: string; alta_on: string | null; baixa_on: string | null } | null;
+      }[]
+    >((s) =>
+      s.from("ingredient_alerts").select("id, kind, title, reasons, announcement, campaign_slug, status, i18n, ingredients(slug, alta_on, baixa_on)").order("id"),
     ),
     idioma(),
   ]);
@@ -451,20 +477,25 @@ export const padro = cache(async () => {
     comarca: i.comarca,
     estacio: i.season,
     estat: i.status,
-    alta: i.alta_on ? diaMes(deDiaIso(i.alta_on), l) : i.alta_label,
-    baixa: i.baixa_on ? diaMes(deDiaIso(i.baixa_on), l) : i.baixa_label,
+    alta: i.alta_on ? diaMes(deDiaIso(i.alta_on), l) : mesEtiqueta(i.alta_label, l),
+    baixa: i.baixa_on ? diaMes(deDiaIso(i.baixa_on), l) : mesEtiqueta(i.baixa_label, l),
     plats: i.dish_ingredients.map((d) => d.dishes?.name).filter(Boolean) as string[],
   }));
-  const avisos: (AvisPadro & { estat: string })[] = (alertes ?? []).map((a) => ({
-    id: a.id,
-    ingredient: a.ingredients?.slug ?? "",
-    tipus: a.kind,
-    titol: a.title,
-    punts: a.reasons,
-    anunci: a.announcement,
-    campanya: a.campaign_slug ?? undefined,
-    estat: a.status,
-  }));
+  const avisos: (AvisPadro & { estat: string })[] = (alertes ?? []).map((a) => {
+    const tr = traduccio(a.i18n, l);
+    const data = (d: string | null | undefined) => (d ? diaMes(deDiaIso(d), l) : "—");
+    const dates = { alta: data(a.ingredients?.alta_on), baixa: data(a.ingredients?.baixa_on) };
+    return {
+      id: a.id,
+      ingredient: a.ingredients?.slug ?? "",
+      tipus: a.kind,
+      titol: tr.title ?? a.title,
+      punts: llistaTraduida(a.reasons, tr.reasons).map((x) => omple(x, dates)),
+      anunci: a.announcement,
+      campanya: a.campaign_slug ?? undefined,
+      estat: a.status,
+    };
+  });
   // La IA redacta el titular, els punts i l'anunci de cada avís (els aprovats ja no es toquen).
   const redactats = await Promise.all(
     avisos.map(async (a) => {
