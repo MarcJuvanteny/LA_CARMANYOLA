@@ -3,8 +3,8 @@
 export type Segment = "tots" | "risc" | "nous" | "adormits";
 export type Avisos = "carnet-correu" | "carnet" | "correu";
 
-/** Diccionari conegut. Les altres 4 paraules estan pendents. */
-export const paraulesConegudes = ["carmanyola", "picada", "per emportar", "esmorzar de forquilla"];
+/** Les 8 paraules del diccionari del carnet. */
+export const paraulesConegudes = ["carmanyola", "picada", "per emportar", "esmorzar de forquilla", "dinar", "berenar", "de l'hort", "bona forquilla"];
 export const PARAULES_CARNET = 8;
 
 export interface Client {

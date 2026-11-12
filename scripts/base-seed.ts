@@ -93,16 +93,16 @@ async function dadesFixes() {
         ${p.suplement ? sql.json({ name: p.suplement.nom, price_cents: p.suplement.preu }) : null}, ${p.queQuedaOk}, true, ${i})`;
   }
 
-  // Diccionari: 4 paraules conegudes; les altres 4 estan pendents (no les inventem).
+  // Diccionari del carnet: les 8 paraules. La vuitena completa el carnet.
   const paraules: [number, string | null, string | null][] = [
     [1, "bowl", "carmanyola"],
     [2, "topping", "picada"],
     [3, "takeaway", "per emportar"],
     [4, "brunch", "esmorzar de forquilla"],
-    [5, null, null],
-    [6, null, null],
-    [7, null, null],
-    [8, null, null],
+    [5, "lunch", "dinar"],
+    [6, "snack", "berenar"],
+    [7, "veggie", "de l'hort"],
+    [8, "foodie", "bona forquilla"],
   ];
   for (const [id, from, to] of paraules) {
     await sql`insert into public.words (id, from_word, to_word) values (${id}, ${from}, ${to})`;

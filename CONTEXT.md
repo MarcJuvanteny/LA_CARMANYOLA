@@ -105,7 +105,7 @@ Projecte de portfolio d'un Frontend Developer (perfil creatiu i tècnic). Consis
   - Cada comanda directa (web o local) recupera **1 paraula** del diccionari. Màxim 1 segell per comanda.
   - Amb **8 paraules** el carnet és complet: recompensa **"postres de regal"** i comença un carnet nou, buit.
   - **No hi ha cap altra recompensa**, ni nivells ni rànquings.
-  - Diccionari conegut: bowl→carmanyola, topping→picada, takeaway→per emportar, brunch→esmorzar de forquilla. Les altres 4 paraules estan pendents.
+  - Diccionari: bowl→carmanyola, topping→picada, takeaway→per emportar, brunch→esmorzar de forquilla, lunch→dinar, snack→berenar, veggie→de l'hort, foodie→bona forquilla.
   - Els segells **només es sumen demanant directe**, mai a les plataformes.
   - **Targeta del wallet:** nom, paraules recuperades (X de 8), la paraula que falta i el nombre de carnets completats.
 - **L'hora del Què Queda:** l'última mitja hora de cada servei. Avís amb el que queda a **tots els clients amb carnet i consentiment comercial**.
