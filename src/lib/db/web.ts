@@ -1,7 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import { createClient } from "@supabase/supabase-js";
-import { plats as cartaLocal, type Idioma, type Plat } from "@/lib/data/carta";
+import { plats as cartaLocal, nutricioValida, type Idioma, type Plat } from "@/lib/data/carta";
 import { deDiaIso, diaMes } from "@/lib/dates";
 
 /* Lectures de la web pública: clau anònima i sense galetes. L'RLS només deixa llegir la carta, el padró i les paraules. */
@@ -19,6 +19,7 @@ interface FilaPlat {
   description: Record<Idioma, string>;
   supplement: { name: string; price_cents: number } | null;
   image_url: string | null;
+  nutrition: unknown;
 }
 
 /** La carta tal com la deixa l'amo des del panell. Si la base de dades no respon, la carta de docs/CARTA.md. */
@@ -30,7 +31,7 @@ export const cartaPublica = cache(async (): Promise<Plat[]> => {
     const supabase = createClient(url, clau, { auth: { persistSession: false } });
     const { data, error } = await supabase
       .from("dishes")
-      .select("slug, name, section, price_cents, season, tags, allergens, que_queda_ok, available, description, supplement, image_url")
+      .select("slug, name, section, price_cents, season, tags, allergens, que_queda_ok, available, description, supplement, image_url, nutrition")
       .eq("archived", false)
       .order("sort");
     if (error || !data?.length) return cartaLocal;
@@ -47,6 +48,7 @@ export const cartaPublica = cache(async (): Promise<Plat[]> => {
       descripcio: d.description,
       suplement: d.supplement ? { nom: d.supplement.name, preu: d.supplement.price_cents } : undefined,
       imatge: d.image_url ?? undefined,
+      nutricio: nutricioValida(d.nutrition),
     }));
   } catch {
     return cartaLocal;

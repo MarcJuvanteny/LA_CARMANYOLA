@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { actualitzaPlat, creaPlat, pujaFoto, treuFoto, type CanvisPlat } from "@/app/panel/actions";
 import { Isotip } from "@/components/brand/Isotip";
 import { Button, Card, CardTitle, PageHeader, Pill, Segmented, cx } from "@/components/panel/ui";
-import { ALERGENS, temporades, type Idioma, type Plat, type Seccio, type Temporada } from "@/lib/data/carta";
+import { ALERGENS, CAMPS_NUTRICIO, nutricioValida, temporades, type Idioma, type Nutricio, type Plat, type Seccio, type Temporada } from "@/lib/data/carta";
 import { euros } from "@/lib/format";
 import { Finestra } from "@/components/panel/Finestra";
 import { QueQueda, type DadesQueQueda } from "./QueQueda";
@@ -33,6 +33,7 @@ function aBaseDeDades(p: Partial<Plat>): Partial<CanvisPlat> {
     ...(p.preu !== undefined && { price_cents: p.preu }),
     ...(p.descripcio !== undefined && { description: p.descripcio }),
     ...(p.arxivat !== undefined && { archived: p.arxivat }),
+    ...("nutricio" in p && { nutrition: p.nutricio ?? null }),
   };
 }
 
@@ -352,6 +353,8 @@ function Fitxa({
             })}
           </div>
         </fieldset>
+
+        <NutricioCamps key={plat.slug} nutricio={plat.nutricio} onDesa={(nutricio) => onCanvi({ nutricio })} />
       </div>
 
       <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-linia pt-4">
@@ -441,6 +444,54 @@ function Foto({ plat, fotoFitxa, onCanvi }: { plat: Plat; fotoFitxa?: string; on
         </p>
       </div>
     </div>
+  );
+}
+
+/** Informació nutricional per ració. Es desa quan hi ha els 8 valors (o quan es buiden tots, per treure-la). */
+function NutricioCamps({ nutricio, onDesa }: { nutricio?: Nutricio; onDesa: (n: Nutricio | undefined) => void }) {
+  const t = useTranslations("panel.carta.nutricio");
+  const [valors, setValors] = useState<Record<string, string>>(() =>
+    Object.fromEntries(CAMPS_NUTRICIO.map((k) => [k, nutricio ? String(nutricio[k]).replace(".", ",") : ""])),
+  );
+  const [incomplet, setIncomplet] = useState(false);
+
+  const desa = () => {
+    const nets = Object.fromEntries(CAMPS_NUTRICIO.map((k) => [k, valors[k].trim().replace(",", ".")]));
+    if (CAMPS_NUTRICIO.every((k) => nets[k] === "")) {
+      setIncomplet(false);
+      if (nutricio) onDesa(undefined);
+      return;
+    }
+    const nombres = Object.fromEntries(CAMPS_NUTRICIO.map((k) => [k, Number(nets[k])]));
+    const nova = nutricioValida(CAMPS_NUTRICIO.every((k) => nets[k] !== "") ? nombres : null);
+    setIncomplet(!nova);
+    if (nova && CAMPS_NUTRICIO.some((k) => nova[k] !== nutricio?.[k])) onDesa(nova);
+  };
+
+  return (
+    <fieldset>
+      <legend className="eyebrow mb-1 text-suau">{t("titol")}</legend>
+      <p className="mb-3 text-[0.8rem] text-suau">{t("nota")}</p>
+      <div className="grid grid-cols-2 gap-x-3 gap-y-2 sm:grid-cols-4">
+        {CAMPS_NUTRICIO.map((k) => (
+          <label key={k} className="flex flex-col gap-1 text-[0.8rem]">
+            {t(k)}
+            <input
+              inputMode="decimal"
+              value={valors[k]}
+              onChange={(e) => setValors((v) => ({ ...v, [k]: e.target.value }))}
+              onBlur={desa}
+              className={cx(camp, "h-11 tabular-nums")}
+            />
+          </label>
+        ))}
+      </div>
+      {incomplet && (
+        <p role="alert" className="mt-2 text-[0.8rem] text-granat">
+          {t("incomplet")}
+        </p>
+      )}
+    </fieldset>
   );
 }
 

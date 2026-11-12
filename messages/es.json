@@ -118,7 +118,19 @@
       "posa": "Añadir una",
       "afegeix": "Añadir · {preu}",
       "afegit": "Añadido al pedido",
-      "veureComanda": "Ver pedido"
+      "veureComanda": "Ver pedido",
+      "nutricio": {
+        "titol": "Información nutricional",
+        "perRacio": "Por ración (aprox. {grams} g)",
+        "energia": "Valor energético",
+        "greixos": "Grasas",
+        "saturats": "de las cuales saturadas",
+        "hidrats": "Hidratos de carbono",
+        "sucres": "de los cuales azúcares",
+        "proteines": "Proteínas",
+        "sal": "Sal",
+        "font": "Valores orientativos calculados con la Base de Datos Española de Composición de Alimentos (BEDCA) y los gramajes de la receta. Pueden variar un poco de una carmanyola a otra."
+      }
     },
     "barra": {
       "resum": "{n, plural, one {# carmanyola} other {# carmanyoles}} · {total}",
@@ -760,7 +772,20 @@
       "fotoPujant": "Subiendo…",
       "fotoTreu": "Quitarla",
       "fotoNota": "Mejor con fondo transparente. La reducimos a 900 px antes de subirla.",
-      "fotoError": "No se ha podido subir la foto. Prueba con otro archivo (webp, png o jpg)."
+      "fotoError": "No se ha podido subir la foto. Prueba con otro archivo (webp, png o jpg).",
+      "nutricio": {
+        "titol": "Información nutricional (por ración)",
+        "nota": "Opcional. Calcúlala con BEDCA y los gramajes de la ficha; la web la muestra plegada, bajo los alérgenos. Déjalo todo vacío para no mostrarla.",
+        "grams": "Ración (g)",
+        "kcal": "Energía (kcal)",
+        "greixos": "Grasas (g)",
+        "saturats": "Saturadas (g)",
+        "hidrats": "Hidratos (g)",
+        "sucres": "Azúcares (g)",
+        "proteines": "Proteínas (g)",
+        "sal": "Sal (g)",
+        "incomplet": "Faltan valores: se guarda cuando están los ocho (o cuando los vacías todos)."
+      }
     },
     "veu": {
       "titol": "Voz de marca",

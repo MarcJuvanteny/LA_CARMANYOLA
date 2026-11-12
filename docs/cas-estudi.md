@@ -22,7 +22,7 @@ Em vaig plantejar una pregunta: **pot un negoci de barri tenir eines de màrquet
 
 - **El nom i el format.** La *carmanyola* és la fiambrera catalana. L'envàs és rodó, com una cassola o un morter, i el morter vist des de dalt és l'isotip.
 - **L'Operació Desbowlitzar.** La campanya de llançament ratlla l'anglicisme i hi posa la paraula d'aquí: ~~bowl~~ carmanyola. Sense anar contra ningú: amb humor de veïnat.
-- **Regles que el codi també compleix.** No hi ha "bowl", ni "healthy", ni descomptes. La veu de marca és un document editable des del panell que fa de prompt per a la IA, amb una zona per provar-la abans de desar.
+- **Regles que el codi també compleix.** No hi ha "bowl", ni "healthy", ni descomptes. La veu de marca és un document editable des del panell que fa de prompt per a la IA, amb una zona per provar-la on el panell marca qualsevol paraula prohibida.
 
 ## Què vaig construir
 
@@ -39,7 +39,7 @@ El **carnet de desbowlitzador** és una targeta d'Apple Wallet i de Google Walle
 La targeta s'actualitza sola: quan escaneges la faixa, el servei web de PassKit avisa el mòbil i hi apareix la paraula nova.
 
 ### El panell de l'amo
-Resum del dia, vendes i franges, clients en risc, campanyes, **l'hora del Què Queda** (l'avís de l'última mitja hora per no llençar menjar), el **padró d'ingredients** de temporada, la carta editable amb fotos i la veu de marca. En català, castellà i anglès.
+Resum del dia, vendes i franges, clients en risc, campanyes que surten a l'hora programada, **l'hora del Què Queda** (l'avís de l'última mitja hora per no llençar menjar), el full de producció per a cuina, el **padró d'ingredients** de temporada (els anuncis aprovats surten a la web), la carta editable amb fotos i informació nutricional, i la veu de marca. En català, castellà i anglès.
 
 ## Com treballa la IA
 

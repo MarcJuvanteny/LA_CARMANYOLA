@@ -391,7 +391,20 @@
       "fotoPujant": "Pujant…",
       "fotoTreu": "Treu-la",
       "fotoNota": "Millor amb fons transparent. La reduïm a 900 px abans de pujar-la.",
-      "fotoError": "No s'ha pogut pujar la foto. Prova amb un altre fitxer (webp, png o jpg)."
+      "fotoError": "No s'ha pogut pujar la foto. Prova amb un altre fitxer (webp, png o jpg).",
+      "nutricio": {
+        "titol": "Informació nutricional (per ració)",
+        "nota": "Opcional. Calcula-la amb BEDCA i els gramatges de la fitxa; la web la mostra plegada, sota els al·lèrgens. Deixa-ho tot buit per no mostrar-ne.",
+        "grams": "Ració (g)",
+        "kcal": "Energia (kcal)",
+        "greixos": "Greixos (g)",
+        "saturats": "Saturats (g)",
+        "hidrats": "Hidrats (g)",
+        "sucres": "Sucres (g)",
+        "proteines": "Proteïnes (g)",
+        "sal": "Sal (g)",
+        "incomplet": "Hi falten valors: es desa quan hi ha els vuit (o quan els buides tots)."
+      }
     },
     "veu": {
       "titol": "Veu de marca",
@@ -673,7 +686,19 @@
       "posa": "Afegeix-ne una",
       "afegeix": "Afegeix · {preu}",
       "afegit": "Afegit a la comanda",
-      "veureComanda": "Veure comanda"
+      "veureComanda": "Veure comanda",
+      "nutricio": {
+        "titol": "Informació nutricional",
+        "perRacio": "Per ració (aprox. {grams} g)",
+        "energia": "Valor energètic",
+        "greixos": "Greixos",
+        "saturats": "dels quals saturats",
+        "hidrats": "Hidrats de carboni",
+        "sucres": "dels quals sucres",
+        "proteines": "Proteïnes",
+        "sal": "Sal",
+        "font": "Valors orientatius calculats amb la Base de Dades Espanyola de Composició d'Aliments (BEDCA) i els gramatges de la recepta. Poden variar una mica d'una carmanyola a l'altra."
+      }
     },
     "barra": {
       "resum": "{n, plural, one {# carmanyola} other {# carmanyoles}} · {total}",

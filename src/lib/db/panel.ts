@@ -5,7 +5,7 @@ import type { Locale } from "@/i18n/idiomes";
 import { supabaseServidor } from "@/lib/supabase/server";
 import { deDiaIso, diaComplet, diaMes, hora, local, majuscula, nomsDies, nomsDiesCurts, nomsMesos, properDia, rangDies } from "@/lib/dates";
 import type { Campanya, EstatCampanya, To } from "@/lib/data/campanyes";
-import type { Idioma, Plat } from "@/lib/data/carta";
+import { nutricioValida, type Idioma, type Plat } from "@/lib/data/carta";
 import type { Client, Segment } from "@/lib/data/clients";
 import type { AvisPadro, Estacio, EstatPadro, Ingredient } from "@/lib/data/padro";
 import type { PerIdioma, TraduccioAvis, TraduccioCampanya } from "@/lib/data/traduccions-db";
@@ -520,8 +520,11 @@ export const carta = cache(async (): Promise<Plat[]> => {
       image_url: string | null;
       description: Record<Idioma, string>;
       supplement: { name: string; price_cents: number } | null;
+      nutrition: unknown;
     }[]
-  >((s) => s.from("dishes").select("slug, name, section, price_cents, season, tags, allergens, que_queda_ok, available, archived, image_url, description, supplement").order("sort"));
+  >((s) =>
+    s.from("dishes").select("slug, name, section, price_cents, season, tags, allergens, que_queda_ok, available, archived, image_url, description, supplement, nutrition").order("sort"),
+  );
   return (files ?? []).map((d) => ({
     slug: d.slug,
     nom: d.name,
@@ -536,6 +539,7 @@ export const carta = cache(async (): Promise<Plat[]> => {
     imatge: d.image_url ?? undefined,
     descripcio: d.description,
     suplement: d.supplement ? { nom: d.supplement.name, preu: d.supplement.price_cents } : undefined,
+    nutricio: nutricioValida(d.nutrition),
   }));
 });
 

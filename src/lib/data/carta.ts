@@ -40,6 +40,32 @@ export interface Plat {
   imatge?: string;
   descripcio: Record<Idioma, string>;
   suplement?: { nom: string; preu: number };
+  /** Informació nutricional per ració (segon nivell a la fitxa). Sense dades, no es mostra. */
+  nutricio?: Nutricio;
+}
+
+/**
+ * Valors per ració, en l'ordre del Reglament (UE) 1169/2011. Els calcula l'amo (BEDCA i els gramatges de la fitxa).
+ * Només informació: cap reclam nutricional (Reglament (UE) 1924/2006).
+ */
+export interface Nutricio {
+  grams: number;
+  kcal: number;
+  greixos: number;
+  saturats: number;
+  hidrats: number;
+  sucres: number;
+  proteines: number;
+  sal: number;
+}
+
+export const CAMPS_NUTRICIO = ["grams", "kcal", "greixos", "saturats", "hidrats", "sucres", "proteines", "sal"] as const;
+
+/** Una fila de la base de dades (jsonb) → Nutricio, o res si hi falta algun valor. */
+export function nutricioValida(x: unknown): Nutricio | undefined {
+  if (!x || typeof x !== "object") return undefined;
+  const o = x as Record<string, unknown>;
+  return CAMPS_NUTRICIO.every((k) => typeof o[k] === "number" && Number.isFinite(o[k]) && (o[k] as number) >= 0) ? (o as unknown as Nutricio) : undefined;
 }
 
 export const plats: Plat[] = [

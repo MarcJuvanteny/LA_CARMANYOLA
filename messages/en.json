@@ -118,7 +118,19 @@
       "posa": "Add one",
       "afegeix": "Add · {preu}",
       "afegit": "Added to your order",
-      "veureComanda": "View order"
+      "veureComanda": "View order",
+      "nutricio": {
+        "titol": "Nutrition information",
+        "perRacio": "Per portion (approx. {grams} g)",
+        "energia": "Energy",
+        "greixos": "Fat",
+        "saturats": "of which saturates",
+        "hidrats": "Carbohydrate",
+        "sucres": "of which sugars",
+        "proteines": "Protein",
+        "sal": "Salt",
+        "font": "Approximate values calculated with the Spanish Food Composition Database (BEDCA) and the recipe weights. They may vary slightly from one carmanyola to the next."
+      }
     },
     "barra": {
       "resum": "{n, plural, one {# carmanyola} other {# carmanyoles}} · {total}",
@@ -760,7 +772,20 @@
       "fotoPujant": "Uploading…",
       "fotoTreu": "Remove it",
       "fotoNota": "Best with a transparent background. We resize it to 900 px before uploading.",
-      "fotoError": "The photo couldn't be uploaded. Try another file (webp, png or jpg)."
+      "fotoError": "The photo couldn't be uploaded. Try another file (webp, png or jpg).",
+      "nutricio": {
+        "titol": "Nutrition information (per portion)",
+        "nota": "Optional. Work it out with BEDCA and the recipe weights; the website shows it folded, below the allergens. Leave everything empty to hide it.",
+        "grams": "Portion (g)",
+        "kcal": "Energy (kcal)",
+        "greixos": "Fat (g)",
+        "saturats": "Saturates (g)",
+        "hidrats": "Carbs (g)",
+        "sucres": "Sugars (g)",
+        "proteines": "Protein (g)",
+        "sal": "Salt (g)",
+        "incomplet": "Some values are missing: it saves once all eight are filled in (or all are empty)."
+      }
     },
     "veu": {
       "titol": "Brand voice",

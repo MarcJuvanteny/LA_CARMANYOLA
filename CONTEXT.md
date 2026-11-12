@@ -152,7 +152,9 @@ Projecte de portfolio d'un Frontend Developer (perfil creatiu i tècnic). Consis
 ### Panell de l'amo (`/panel`, protegit)
 
 - Resum
-- Vendes
+- Comandes
+- Vendes (amb les franges)
+- Cuina: el full de producció de demà, per imprimir
 - Clients
 - Franges
 - Campanyes
@@ -168,7 +170,7 @@ Al panell, **tot el que proposa o escriu la IA va en targetes grogues (`#FFEA80`
 ## 8. Model de dades (resum)
 
 - **Carta:**
-  - `dishes`: preus en cèntims, textos ca/es/en, al·lèrgens, temporada, `que_queda_ok`.
+  - `dishes`: preus en cèntims, textos ca/es/en, al·lèrgens, temporada, `que_queda_ok`, foto (`image_url`) i informació nutricional per ració (`nutrition`, opcional: l'omple l'amo amb BEDCA; la web la mostra plegada).
   - `ingredients`: empadronat, comarca, proveïdor, alta, baixa, referència BEDCA.
   - `dish_ingredients`.
   - `build_options`.
@@ -181,7 +183,7 @@ Al panell, **tot el que proposa o escriu la IA va en targetes grogues (`#FFEA80`
   - `stamps`: una comanda dona com a màxim un segell; cada segell porta el número de carnet (1, 2, 3…).
   - `rewards`: només "postres de regal", una per carnet completat.
 - **Màrqueting:**
-  - `campaigns`: tipus, segment, missatge ca/es/en, canal, estat (esborrany, aprovada, enviada) i **raonament de la IA**.
+  - `campaigns`: tipus, segment, missatge ca/es/en, canal, estat (esborrany, aprovada, enviada) i **raonament de la IA**. En aprovar-la, si té hora d'enviament futura queda programada (`scheduled_at`) i la tasca `/api/enviaments` l'envia.
   - `campaign_recipients`: amb la comanda de tornada.
   - `leftovers`.
   - `brand_voice`.

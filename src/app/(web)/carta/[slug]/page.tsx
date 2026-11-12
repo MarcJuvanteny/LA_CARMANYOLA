@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
-import { plats as cartaLocal, type Idioma } from "@/lib/data/carta";
+import { plats as cartaLocal, type Idioma, type Nutricio as DadesNutricio } from "@/lib/data/carta";
 import { cartaPublica } from "@/lib/db/web";
 import { euros } from "@/lib/format";
 import { fitxa, opcionsDinar, platWeb } from "@/lib/web/contingut";
@@ -109,6 +109,8 @@ export default async function FitxaPage({ params }: PageProps<"/carta/[slug]">) 
             </p>
           </section>
 
+          {plat.nutricio && <Nutricio n={plat.nutricio} idioma={idioma} t={t} />}
+
           <Afegeix plat={{ slug: plat.slug, nom: plat.nom, preu: plat.preu, disponible: plat.disponible }} dinar={dinar} />
         </div>
       </div>
@@ -117,3 +119,44 @@ export default async function FitxaPage({ params }: PageProps<"/carta/[slug]">) 
 }
 
 const titolSeccio = "web-eb m-0 font-cos text-xs tracking-[.1em] text-granat";
+
+/**
+ * Informació nutricional en segon nivell (plegada): transparència, sense reclams (Reglament (UE) 1924/2006).
+ * Taula en l'ordre del Reglament (UE) 1169/2011, per ració.
+ */
+function Nutricio({ n, idioma, t }: { n: DadesNutricio; idioma: Idioma; t: Awaited<ReturnType<typeof getTranslations<"web.fitxa">>> }) {
+  const num = (v: number, decimals = 1) => new Intl.NumberFormat(idioma, { maximumFractionDigits: decimals }).format(v);
+  const files: [string, string, boolean?][] = [
+    [t("nutricio.energia"), `${num(Math.round(n.kcal * 4.184), 0)} kJ / ${num(n.kcal, 0)} kcal`],
+    [t("nutricio.greixos"), `${num(n.greixos)} g`],
+    [t("nutricio.saturats"), `${num(n.saturats)} g`, true],
+    [t("nutricio.hidrats"), `${num(n.hidrats)} g`],
+    [t("nutricio.sucres"), `${num(n.sucres)} g`, true],
+    [t("nutricio.proteines"), `${num(n.proteines)} g`],
+    [t("nutricio.sal"), `${num(n.sal, 2)} g`],
+  ];
+  return (
+    <details className="group rounded-[18px] border border-linia px-4 py-1">
+      <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 text-[15px] font-medium [&::-webkit-details-marker]:hidden">
+        {t("nutricio.titol")}
+        <span aria-hidden className="transition-transform group-open:rotate-180">
+          ⌄
+        </span>
+      </summary>
+      <table className="mb-3 w-full text-[14px]">
+        <caption className="pb-2 text-left text-xs text-suau">{t("nutricio.perRacio", { grams: num(n.grams, 0) })}</caption>
+        <tbody>
+          {files.map(([nom, valor, sub]) => (
+            <tr key={nom} className="border-t border-linia">
+              <th scope="row" className={`py-1.5 text-left font-normal ${sub ? "pl-4 text-suau" : ""}`}>
+                {nom}
+              </th>
+              <td className="py-1.5 text-right tabular-nums">{valor}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="m-0 mb-3 text-xs leading-[1.6] text-suau">{t("nutricio.font")}</p>
+    </details>
+  );
+}

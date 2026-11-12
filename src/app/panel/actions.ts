@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { enviaCampanya, enviaQueQueda, momentProgramat } from "@/lib/enviaments/enviaments";
 import { supabaseServidor } from "@/lib/supabase/server";
-import { ALERGENS, seccions, temporades, type Idioma, type Seccio, type Temporada } from "@/lib/data/carta";
+import { ALERGENS, nutricioValida, seccions, temporades, type Idioma, type Nutricio, type Seccio, type Temporada } from "@/lib/data/carta";
 import { local } from "@/lib/dates";
 import { queQueda } from "@/lib/db/panel";
 import { simulateUntil } from "@/lib/sim/catchup";
@@ -180,6 +180,7 @@ export interface CanvisPlat {
   price_cents: number;
   description: Record<Idioma, string>;
   archived: boolean;
+  nutrition: Nutricio | null;
 }
 
 /** Valida al servidor el que arriba del panell: el client no és de fiar. */
@@ -189,6 +190,7 @@ function validaPlat(c: Partial<CanvisPlat>) {
   if (c.section !== undefined && !seccions.includes(c.section)) throw new Error("Secció no vàlida");
   if (c.season !== undefined && !temporades.includes(c.season)) throw new Error("Temporada no vàlida");
   if (c.allergens !== undefined && !c.allergens.every((x) => (ALERGENS as readonly string[]).includes(x))) throw new Error("Al·lèrgen no vàlid");
+  if (c.nutrition != null && (!nutricioValida(c.nutrition) || c.nutrition.kcal > 5000 || c.nutrition.grams > 5000)) throw new Error("Informació nutricional no vàlida");
   return c.name !== undefined ? { ...c, name: c.name.trim() } : c;
 }
 
