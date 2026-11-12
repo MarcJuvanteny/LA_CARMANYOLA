@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { SUPLEMENT_DINAR, seccions } from "@/lib/data/carta";
 import { carta, queQueda } from "@/lib/db/panel";
+import { fitxa } from "@/lib/web/contingut";
 import { CartaView } from "./CartaView";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -16,6 +17,7 @@ export default async function CartaPage() {
       plats={plats}
       seccions={seccions}
       suplementDinar={SUPLEMENT_DINAR}
+      fotosFitxa={Object.fromEntries(plats.flatMap((p) => (fitxa(p.slug)?.imatge ? [[p.slug, fitxa(p.slug)!.imatge]] : [])))}
       queQueda={{ ara: qq.ara, plats: qq.plats, proposta: qq.proposta, avis: qq.avis }}
     />
   );

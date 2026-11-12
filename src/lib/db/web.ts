@@ -17,6 +17,7 @@ interface FilaPlat {
   available: boolean;
   description: Record<Idioma, string>;
   supplement: { name: string; price_cents: number } | null;
+  image_url: string | null;
 }
 
 /** La carta tal com la deixa l'amo des del panell. Si la base de dades no respon, la carta de docs/CARTA.md. */
@@ -28,7 +29,7 @@ export const cartaPublica = cache(async (): Promise<Plat[]> => {
     const supabase = createClient(url, clau, { auth: { persistSession: false } });
     const { data, error } = await supabase
       .from("dishes")
-      .select("slug, name, section, price_cents, season, tags, allergens, que_queda_ok, available, description, supplement")
+      .select("slug, name, section, price_cents, season, tags, allergens, que_queda_ok, available, description, supplement, image_url")
       .eq("archived", false)
       .order("sort");
     if (error || !data?.length) return cartaLocal;
@@ -44,6 +45,7 @@ export const cartaPublica = cache(async (): Promise<Plat[]> => {
       disponible: d.available,
       descripcio: d.description,
       suplement: d.supplement ? { nom: d.supplement.name, preu: d.supplement.price_cents } : undefined,
+      imatge: d.image_url ?? undefined,
     }));
   } catch {
     return cartaLocal;

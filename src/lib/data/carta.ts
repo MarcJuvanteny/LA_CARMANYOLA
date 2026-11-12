@@ -36,6 +36,8 @@ export interface Plat {
   disponible: boolean;
   /** Tret de la carta: no surt a la web ni es pot demanar, però les vendes antigues el troben. */
   arxivat?: boolean;
+  /** Foto pujada des del panell (Supabase Storage). Si no n'hi ha, la web fa servir la de la fitxa. */
+  imatge?: string;
   descripcio: Record<Idioma, string>;
   suplement?: { nom: string; preu: number };
 }

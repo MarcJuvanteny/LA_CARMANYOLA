@@ -225,6 +225,32 @@ export async function creaPlat(nom: string, seccio: Seccio): Promise<string> {
   return slug;
 }
 
+const TIPUS_FOTO = ["image/webp", "image/png", "image/jpeg"];
+
+/** Foto del plat: el navegador ja l'ha reduïda (900 px, webp). Es puja al bucket públic `plats`. */
+export async function pujaFoto(slug: string, dades: FormData): Promise<string> {
+  const supabase = await client();
+  if (!/^[a-z0-9-]{1,60}$/.test(slug)) throw new Error("Plat no vàlid");
+  const foto = dades.get("foto");
+  if (!(foto instanceof File) || !TIPUS_FOTO.includes(foto.type) || foto.size > 1_000_000) throw new Error("Foto no vàlida");
+  const ext = foto.type === "image/jpeg" ? "jpg" : foto.type.split("/")[1];
+  const cami = `${slug}-${Date.now()}.${ext}`;
+  comprova((await supabase.storage.from("plats").upload(cami, foto, { contentType: foto.type, cacheControl: "31536000" })).error);
+  const url = supabase.storage.from("plats").getPublicUrl(cami).data.publicUrl;
+  comprova((await supabase.from("dishes").update({ image_url: url, updated_at: new Date().toISOString() }).eq("slug", slug)).error);
+  revalidatePath("/panel", "layout");
+  revalidatePath("/", "layout");
+  return url;
+}
+
+/** Treu la foto pujada: la web torna a la de la fitxa (si n'hi ha). El fitxer es queda al bucket. */
+export async function treuFoto(slug: string) {
+  const supabase = await client();
+  comprova((await supabase.from("dishes").update({ image_url: null, updated_at: new Date().toISOString() }).eq("slug", slug)).error);
+  revalidatePath("/panel", "layout");
+  revalidatePath("/", "layout");
+}
+
 export async function desaVeu(seccions: { id: string; text: string }[]) {
   const supabase = await client();
   for (const s of seccions) {

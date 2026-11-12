@@ -3,7 +3,8 @@
 import { useRef, useState, useTransition, type FormEvent, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { actualitzaPlat, creaPlat, type CanvisPlat } from "@/app/panel/actions";
+import { actualitzaPlat, creaPlat, pujaFoto, treuFoto, type CanvisPlat } from "@/app/panel/actions";
+import { Isotip } from "@/components/brand/Isotip";
 import { Button, Card, CardTitle, PageHeader, Pill, Segmented, cx } from "@/components/panel/ui";
 import { ALERGENS, temporades, type Idioma, type Plat, type Seccio, type Temporada } from "@/lib/data/carta";
 import { euros } from "@/lib/format";
@@ -15,6 +16,8 @@ interface Props {
   seccions: Seccio[];
   suplementDinar: number;
   queQueda: DadesQueQueda;
+  /** La foto de la fitxa de la web (fitxers de /public), per als plats sense foto pujada. */
+  fotosFitxa: Record<string, string>;
 }
 
 const camp = "w-full rounded-xl border border-linia bg-white px-3 text-[0.95rem] outline-none focus:border-granat";
@@ -33,7 +36,7 @@ function aBaseDeDades(p: Partial<Plat>): Partial<CanvisPlat> {
   };
 }
 
-export function CartaView({ plats: inicials, seccions, suplementDinar, queQueda }: Props) {
+export function CartaView({ plats: inicials, seccions, suplementDinar, queQueda, fotosFitxa }: Props) {
   const t = useTranslations("panel.carta");
   const router = useRouter();
   const [plats, setPlats] = useState(inicials);
@@ -219,6 +222,7 @@ export function CartaView({ plats: inicials, seccions, suplementDinar, queQueda 
           <Fitxa
             key={actual.slug}
             plat={actual}
+            fotoFitxa={fotosFitxa[actual.slug]}
             seccions={seccions}
             onCanvi={(patch, ara) => canvia(actual.slug, patch, ara)}
             onFet={tanca}
@@ -235,12 +239,14 @@ export function CartaView({ plats: inicials, seccions, suplementDinar, queQueda 
 
 function Fitxa({
   plat,
+  fotoFitxa,
   seccions,
   onCanvi,
   onFet,
   onArxiva,
 }: {
   plat: Plat;
+  fotoFitxa?: string;
   seccions: Seccio[];
   onCanvi: (patch: Partial<Plat>, ara?: boolean) => void;
   onFet: () => void;
@@ -253,6 +259,8 @@ function Fitxa({
   return (
     <>
       <div className="space-y-4">
+        <Foto plat={plat} fotoFitxa={fotoFitxa} onCanvi={(imatge) => onCanvi({ imatge }, false)} />
+
         <Camp label={t("nom")} id="nom" nota={t("nomCatala")}>
           <input
             id="nom"
@@ -365,6 +373,74 @@ function Fitxa({
         )}
       </div>
     </>
+  );
+}
+
+/** Redueix la foto al navegador (900 px de costat, webp) abans de pujar-la: pesa poc i manté la transparència. */
+async function redueix(fitxer: File): Promise<File> {
+  const bmp = await createImageBitmap(fitxer);
+  const escala = Math.min(1, 900 / Math.max(bmp.width, bmp.height));
+  const llenc = document.createElement("canvas");
+  llenc.width = Math.round(bmp.width * escala);
+  llenc.height = Math.round(bmp.height * escala);
+  llenc.getContext("2d")!.drawImage(bmp, 0, 0, llenc.width, llenc.height);
+  const blob = (tipus: string) => new Promise<Blob | null>((r) => llenc.toBlob(r, tipus, 0.85));
+  let b = await blob("image/webp");
+  // Safari antic no fa webp: torna png; si pesa massa, jpeg.
+  if (!b || (b.type !== "image/webp" && b.size > 1_000_000)) b = await blob("image/jpeg");
+  if (!b) throw new Error("No s'ha pogut llegir la foto");
+  return new File([b], `foto.${b.type.split("/")[1]}`, { type: b.type });
+}
+
+function Foto({ plat, fotoFitxa, onCanvi }: { plat: Plat; fotoFitxa?: string; onCanvi: (imatge: string | undefined) => void }) {
+  const t = useTranslations("panel.carta");
+  const input = useRef<HTMLInputElement>(null);
+  const [pujant, startPuja] = useTransition();
+  const [error, setError] = useState(false);
+  const src = plat.imatge ?? fotoFitxa;
+
+  const tria = (fitxer: File | undefined) => {
+    if (!fitxer) return;
+    setError(false);
+    startPuja(async () => {
+      try {
+        const dades = new FormData();
+        dades.set("foto", await redueix(fitxer));
+        onCanvi(await pujaFoto(plat.slug, dades));
+      } catch {
+        setError(true);
+      }
+    });
+  };
+
+  return (
+    <div className="flex items-center gap-4">
+      <div className="grid size-24 shrink-0 place-items-center overflow-hidden rounded-2xl bg-paper">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        {src ? <img src={src} alt={plat.nom} className="size-full object-contain" /> : <Isotip className="size-8 opacity-30" />}
+      </div>
+      <div className="min-w-0 space-y-1">
+        <input ref={input} type="file" accept="image/webp,image/png,image/jpeg" className="sr-only" tabIndex={-1} onChange={(e) => tria(e.target.files?.[0])} />
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" onClick={() => input.current?.click()} disabled={pujant}>
+            {pujant ? t("fotoPujant") : src ? t("fotoCanvia") : t("fotoPuja")}
+          </Button>
+          {plat.imatge && (
+            <button
+              type="button"
+              className="min-h-11 px-2 text-[0.85rem] font-medium text-suau underline underline-offset-2 hover:text-granat"
+              disabled={pujant}
+              onClick={() => treuFoto(plat.slug).then(() => onCanvi(undefined), () => setError(true))}
+            >
+              {t("fotoTreu")}
+            </button>
+          )}
+        </div>
+        <p className={cx("text-[0.78rem]", error ? "font-semibold text-granat" : "text-suau")} role={error ? "alert" : undefined}>
+          {error ? t("fotoError") : t("fotoNota")}
+        </p>
+      </div>
+    </div>
   );
 }
 

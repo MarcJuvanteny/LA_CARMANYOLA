@@ -28,7 +28,7 @@ export function platWeb(p: Plat, idioma: Idioma = "ca"): PlatWeb {
     disponible: p.disponible,
     etiquetes: p.etiquetes,
     alergens: p.alergens,
-    imatge: f?.imatge,
+    imatge: p.imatge ?? f?.imatge,
     lema: f?.lema,
     resum: f?.resum ?? (p.descripcio[idioma] || p.descripcio.ca),
   };
