@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { after } from "next/server";
-import { enviaCampanya, enviaQueQueda } from "@/lib/enviaments/enviaments";
+import { enviaCampanya, enviaQueQueda, momentProgramat } from "@/lib/enviaments/enviaments";
 import { supabaseServidor } from "@/lib/supabase/server";
 import { ALERGENS, seccions, temporades, type Idioma, type Seccio, type Temporada } from "@/lib/data/carta";
 import { local } from "@/lib/dates";
@@ -56,7 +56,10 @@ export async function resolProposta(id: string, r: Resolucio, payload: PayloadPr
   const [tipus, clau] = id.split(":");
 
   if (tipus === "campanya") {
-    const { data: c } = await supabase.from("campaigns").select("messages").eq("slug", clau).single();
+    const { data: c } = await supabase.from("campaigns").select("messages, preview_date, preview_time").eq("slug", clau).single();
+    // Si té hora d'enviament i encara no ha arribat, la programa (l'envia el cron); si no, surt ara.
+    const programada = r === "aprovada" ? momentProgramat(c?.preview_date ?? null, c?.preview_time ?? null) : null;
+    const perMesTard = programada && programada.getTime() > Date.now() + MARGE_DESFER_MS ? programada : null;
     const missatges = c?.messages ?? {};
     if (payload.editat && Object.keys(payload.editat).length) {
       missatges.original = { ...missatges.original, ...payload.editat };
@@ -66,13 +69,14 @@ export async function resolProposta(id: string, r: Resolucio, payload: PayloadPr
       .update({
         status: r,
         saved_at: r === "esborrany" ? new Date().toISOString() : undefined,
+        scheduled_at: perMesTard ? perMesTard.toISOString() : null,
         messages: missatges,
         ...(payload.wallet !== undefined && { channel_wallet: payload.wallet }),
         ...(payload.correu !== undefined && { channel_email: payload.correu }),
       })
       .eq("slug", clau);
     comprova(error);
-    if (r === "aprovada") enviaDespres(() => enviaCampanya(clau));
+    if (r === "aprovada" && !perMesTard) enviaDespres(() => enviaCampanya(clau));
   }
 
   if (tipus === "padro") {

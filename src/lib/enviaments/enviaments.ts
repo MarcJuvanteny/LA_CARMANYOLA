@@ -1,4 +1,6 @@
 import "server-only";
+import { local, properDia } from "@/lib/dates";
+import { momentLocal } from "@/lib/sim/calendar";
 import { CONTROL_SHARE } from "@/lib/sim/config";
 import { serviceClient, totes } from "@/lib/sim/db";
 import { Rng } from "@/lib/sim/rng";
@@ -86,6 +88,38 @@ export async function enviaCampanya(slug: string) {
 
   await db.from("campaigns").update({ status: "enviada", sent_at: ara }).eq("id", c.id).eq("status", "aprovada");
   return { enviats };
+}
+
+/**
+ * Moment en què ha de sortir una campanya, segons el que veu l'amo a la previsualització:
+ * `preview_date` és una data ISO o un dia de la setmana ISO (un sol dígit, "4" = el proper dijous).
+ * Null si la campanya no en té (surt en aprovar-la).
+ */
+export function momentProgramat(previewDate: string | null, previewTime: string | null, ara = new Date()): Date | null {
+  if (!previewDate || !previewTime || !/^\d{1,2}:\d{2}$/.test(previewTime)) return null;
+  let dia = previewDate;
+  if (/^[1-7]$/.test(previewDate)) {
+    const l = local(properDia(Number(previewDate), ara));
+    dia = `${l.any}-${String(l.mes + 1).padStart(2, "0")}-${String(l.dia).padStart(2, "0")}`;
+  }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dia)) return null;
+  return momentLocal(dia, previewTime.padStart(5, "0"));
+}
+
+/** Les campanyes aprovades amb hora d'enviament ja arribada (ho crida el cron cada 10 minuts). */
+export async function enviaProgramades(ara = new Date()) {
+  const db = serviceClient();
+  const { data, error } = await db
+    .from("campaigns")
+    .select("slug")
+    .eq("status", "aprovada")
+    .is("sent_at", null)
+    .not("scheduled_at", "is", null)
+    .lte("scheduled_at", ara.toISOString());
+  if (error) throw new Error(error.message);
+  const resultat: Record<string, number> = {};
+  for (const c of data ?? []) resultat[c.slug] = (await enviaCampanya(c.slug)).enviats;
+  return resultat;
 }
 
 /** L'avís del Què Queda: a tots els clients amb carnet i consentiment. Una vegada per servei. */
