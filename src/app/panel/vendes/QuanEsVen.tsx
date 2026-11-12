@@ -3,20 +3,15 @@
 import { useTranslations } from "next-intl";
 import { Llegenda } from "@/components/charts/BarresComparades";
 import { Rich } from "@/components/Rich";
-import { usePanelState } from "@/components/panel/PanelState";
 import {
   AiCard,
   AiEyebrow,
-  Button,
-  ButtonLink,
   Card,
   CardTitle,
   NumberedList,
   TableWrap,
   cx,
 } from "@/components/panel/ui";
-
-const PROPOSTA = "campanya:segell-doble";
 
 // Escala seqüencial d'un sol to (granat), relativa a la franja amb més comandes.
 function escala(v: number, max: number) {
@@ -32,7 +27,7 @@ export interface DadesFranges {
   franges: string[];
   comandes: number[][];
   fluixes: [number, number][];
-  previsio: { dia: string; base: number; extra: number }[];
+  previsio: { dia: string; base: number }[];
   proposta: { titol: string; punts: string[]; nota: string };
 }
 
@@ -40,7 +35,7 @@ export interface DadesFranges {
 export function QuanEsVen({ dies, franges, comandes: comandesPerFranja, fluixes: frangesFluixes, previsio }: DadesFranges) {
   const t = useTranslations("panel.franges");
   const esFluixa = (d: number, f: number) => frangesFluixes.some(([a, b]) => a === d && b === f);
-  const maxPrev = Math.max(1, ...previsio.map((p) => p.base + p.extra));
+  const maxPrev = Math.max(1, ...previsio.map((p) => p.base));
   const maxFranja = Math.max(1, ...comandesPerFranja.flat());
 
   return (
@@ -118,12 +113,7 @@ export function QuanEsVen({ dies, franges, comandes: comandesPerFranja, fluixes:
       <Card className="mt-5">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <CardTitle>{t("previsio")}</CardTitle>
-          <Llegenda
-            items={[
-              { label: t("previsioIa"), className: "bg-rosa" },
-              { label: t("ambSegell"), className: "bg-groc border border-dashed border-granat" },
-            ]}
-          />
+          <Llegenda items={[{ label: t("previsioIa"), className: "bg-rosa" }]} />
         </div>
         <div className="flex h-[230px] items-end justify-around gap-3" aria-hidden>
           {previsio.map((p) => {
@@ -131,20 +121,11 @@ export function QuanEsVen({ dies, franges, comandes: comandesPerFranja, fluixes:
             return (
               <div key={p.dia} className="group relative flex flex-1 flex-col items-center">
                 <div className="pointer-events-none absolute bottom-full z-10 mb-1 hidden whitespace-nowrap rounded-lg bg-tinta px-2.5 py-1.5 text-xs text-white group-hover:block">
-                  {t("tooltipPrevisio", { dia: p.dia, base: p.base, extra: p.extra })}
+                  {t("tooltipPrevisio", { dia: p.dia, base: p.base })}
                 </div>
-                <span className="mb-1.5 text-[0.78rem]">{p.base + p.extra}</span>
+                <span className="mb-1.5 text-[0.78rem]">{p.base}</span>
                 <div className="flex w-[clamp(28px,5vw,52px)] flex-col">
-                  {p.extra > 0 && (
-                    <span
-                      className="rounded-t border border-b-0 border-dashed border-granat bg-groc"
-                      style={{ height: (p.extra / maxPrev) * alt + 6 }}
-                    />
-                  )}
-                  <span
-                    className={cx("bg-rosa", p.extra > 0 ? "" : "rounded-t")}
-                    style={{ height: (p.base / maxPrev) * alt }}
-                  />
+                  <span className="rounded-t bg-rosa" style={{ height: (p.base / maxPrev) * alt }} />
                 </div>
               </div>
             );
@@ -163,7 +144,7 @@ export function QuanEsVen({ dies, franges, comandes: comandesPerFranja, fluixes:
             {previsio.map((p) => (
               <tr key={p.dia}>
                 <th scope="row">{p.dia}</th>
-                <td>{t("tooltipPrevisio", { dia: p.dia, base: p.base, extra: p.extra })}</td>
+                <td>{t("tooltipPrevisio", { dia: p.dia, base: p.base })}</td>
               </tr>
             ))}
           </tbody>
@@ -173,37 +154,17 @@ export function QuanEsVen({ dies, franges, comandes: comandesPerFranja, fluixes:
   );
 }
 
-/** La proposta de la IA sobre les franges fluixes (segell doble). Viu al calaix de la IA de Vendes. */
-export function PropostaFranja({ proposta: propostaFranja }: { proposta: DadesFranges["proposta"] }) {
+/** Què hi veu la IA a les franges fluixes: només lectura (cap campanya associada). Viu al calaix de la IA de Vendes. */
+export function LecturaFranges({ proposta: lectura }: { proposta: DadesFranges["proposta"] }) {
   const t = useTranslations("panel.franges");
-  const { resolts, resol, desfes } = usePanelState();
-  const estat = resolts[PROPOSTA];
   return (
     <AiCard>
       <AiEyebrow>{t("iaEyebrow")}</AiEyebrow>
-      <h2 className="mt-3 text-[1.2rem]">{propostaFranja.titol}</h2>
-      <NumberedList items={propostaFranja.punts} className="mt-4" />
+      <h2 className="mt-3 text-[1.2rem]">{lectura.titol}</h2>
+      <NumberedList items={lectura.punts} className="mt-4" />
       <p className="mt-4 text-[0.88rem]">
-        <Rich text={propostaFranja.nota} />
+        <Rich text={lectura.nota} />
       </p>
-      {estat && estat !== "esborrany" ? (
-        <div className="mt-5 flex flex-wrap items-center gap-3 text-sm">
-          <span className="font-semibold">{t(`estat.${estat}`)}</span>
-          <button type="button" className="min-h-11 underline" onClick={() => desfes(PROPOSTA)}>
-            {t("desfes")}
-          </button>
-        </div>
-      ) : (
-        <div className="mt-5 flex flex-wrap gap-2">
-          <ButtonLink href="/panel/campanyes?c=segell-doble">{t("prepara")}</ButtonLink>
-          <Button variant="ghost" onClick={() => resol(PROPOSTA, "ara-no")}>
-            {t("araNo")}
-          </Button>
-        </div>
-      )}
     </AiCard>
   );
 }
-
-/** Pendent mentre l'amo no l'ha resolta. */
-export const franjaPendent = (resolts: Record<string, string | undefined>) => !resolts[PROPOSTA] || resolts[PROPOSTA] === "esborrany";

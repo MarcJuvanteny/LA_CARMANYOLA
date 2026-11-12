@@ -18,7 +18,6 @@ export async function resetDemo(db: SupabaseClient) {
   const missatges = (id: string) => campanyes.find((c) => c.id === id)!.missatges;
   const esborranys: [string, string][] = [
     ["recupera-habituals", "recupera-23"],
-    ["segell-doble", "segell-doble"],
     ["carxofa", "carxofa"],
   ];
   for (const [slug, font] of esborranys) {

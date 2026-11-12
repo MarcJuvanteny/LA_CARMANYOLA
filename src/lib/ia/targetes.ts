@@ -55,20 +55,17 @@ export const redactaVendes = (fets: string[], idioma: Locale = "ca") =>
 
 /* Franges */
 
-export function fetsFranges(fluixes: { dow: number; slot: string }[], mitjanaFluixes: number, mitjanaMigdia: number, prova: number | null): string[] {
+export function fetsFranges(fluixes: { dow: number; slot: string }[], mitjanaFluixes: number, mitjanaMigdia: number): string[] {
   return [
     `Les franges més fluixes de la setmana: ${fluixes.map((f) => `${diesSetmana[f.dow % 7]} ${f.slot.replace("-", " a ")} h`).join(", ") || "cap"}.`,
     `Comandes de mitjana en aquestes franges: ${mitjanaFluixes}. Al migdia: ${mitjanaMigdia}.`,
-    prova == null
-      ? "Encara no s'ha provat mai el segell doble en cap franja."
-      : `L'última prova de segell doble (dilluns al vespre) va canviar les comandes un ${percent(prova, { signe: true })}.`,
-    "La proposta és el segell doble: cada carmanyola suma dues paraules al carnet en aquestes franges. No és un descompte i el preu no es toca.",
+    "De 15 a 16 h també és fluix, però és l'hora del Què Queda, que ja té el seu avís.",
   ];
 }
 
 export const redactaFranges = (fets: string[], idioma: Locale = "ca") =>
   redactaTargeta(
-    "Escriu la proposta de la pantalla de Franges: un titular que digui on posar el segell doble (dies i hores) i 3 punts que l'expliquin amb les dades.",
+    "Escriu la targeta de lectura de la pantalla de Franges: un titular que digui quines són les franges més fluixes (dies i hores) i 2 o 3 punts que ho expliquin amb les dades. Només descrius el que passa: no proposis promocions, campanyes ni recompenses.",
     fets,
     idioma,
   );

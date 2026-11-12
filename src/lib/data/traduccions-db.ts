@@ -50,32 +50,6 @@ export const traduccionsCampanyes: Record<string, PerIdioma<TraduccioCampanya>> 
       simpler_label: "Without mentioning the padró",
     },
   },
-  "segell-doble": {
-    es: {
-      title: "Sello doble ma y mi por la noche",
-      chips: ["Martes y miércoles", "De 20 a 22 h", "{{fluixes}} pedidos de media", "Todos los que tienen carnet"],
-      reasons: [
-        "Son las cuatro franjas más flojas: **{{fluixes}} pedidos** de media, cuando el mediodía hace {{migdia}}.",
-        "Cuando probaste el sello doble los lunes por la noche: **{{prova}}**.",
-        "Cuesta una palabra extra en el carnet, no un descuento. El precio no se toca.",
-      ],
-      schedule_text: "Martes a las 18:00.",
-      schedule_reason: "Dos horas antes de que abra la franja.",
-      proposed_label: "Propuesta hoy",
-    },
-    en: {
-      title: "Double stamp Tue and Wed evenings",
-      chips: ["Tuesday and Wednesday", "8 to 10 pm", "{{fluixes}} orders on average", "Everyone with a card"],
-      reasons: [
-        "These are the four slowest slots: **{{fluixes}} orders** on average, while lunchtime does {{migdia}}.",
-        "When you tried the double stamp on Monday evenings: **{{prova}}**.",
-        "It costs one extra word on the card, not a discount. The price stays the same.",
-      ],
-      schedule_text: "Tuesday at 18:00.",
-      schedule_reason: "Two hours before the slot opens.",
-      proposed_label: "Proposed today",
-    },
-  },
   carxofa: {
     es: {
       title: "Llega la alcachofa del Prat",
@@ -103,9 +77,7 @@ export const traduccionsCampanyes: Record<string, PerIdioma<TraduccioCampanya>> 
     },
   },
   // Campanyes enviades (dades simulades)
-  "segell-doble-dijous": { es: { title: "Sello doble jueves por la noche" }, en: { title: "Double stamp Thursday evenings" } },
   "benvinguda-estiu": { es: { title: "Bienvenida a los nuevos del verano" }, en: { title: "Welcome to summer's newcomers" } },
-  "segell-doble-dilluns": { es: { title: "Sello doble lunes por la noche" }, en: { title: "Double stamp Monday evenings" } },
   "recuperacio-setembre": { es: { title: "Recuperación de septiembre" }, en: { title: "September win-back" } },
   bolets: { es: { title: "Setas empadronadas" }, en: { title: "Mushrooms join the padró" } },
 };

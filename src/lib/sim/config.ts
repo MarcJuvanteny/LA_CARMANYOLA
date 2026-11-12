@@ -156,8 +156,6 @@ export const REGISTERED_CAP_OF_DIRECT = 0.8;
 /** Qui rep una campanya (i no és del grup de control) demana més els 14 dies següents. */
 export const CAMPAIGN_BOOST = 2.3;
 export const CAMPAIGN_WINDOW_DAYS = 14;
-/** Un segell doble en una franja n'augmenta el volum. */
-export const DOUBLE_STAMP_SLOT_BOOST = 1.15;
 /** Proporció de destinataris que van al grup de control (no reben l'avís). */
 export const CONTROL_SHARE = 0.25;
 

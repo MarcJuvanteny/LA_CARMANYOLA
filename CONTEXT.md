@@ -199,7 +199,7 @@ Al panell, **tot el que proposa o escriu la IA va en targetes grogues (`#FFEA80`
 
 **Funcions base:**
 - clients que deixen de venir, amb el missatge per recuperar-los;
-- franges fluixes, amb la proposta de segell doble;
+- franges fluixes: la IA les explica (sense cap promoció associada);
 - previsió del Què Queda i ajust de la producció;
 - avisos d'altes i baixes del padró;
 - veu de marca, amb una zona per provar-la.
@@ -272,3 +272,4 @@ El restaurant no té clients reals. Les dades es generen amb `scripts/seed.ts`:
 Decisions de producte que ja no es fan. No les tornis a introduir.
 
 - **Nivells i rànquings del carnet.**
+- **Segell doble.** Cada comanda directa suma una paraula, sempre. Cap franja ni campanya en suma dues.

@@ -46,13 +46,8 @@ export async function carregaContext(db: SupabaseClient): Promise<SimContext> {
     totes<{
       id: string;
       sent_at: string;
-      double_days: number[] | null;
-      double_from: string | null;
-      double_to: string | null;
-      starts_on: string | null;
-      ends_on: string | null;
     }>((a, b) =>
-      db.from("campaigns").select("id, sent_at, double_days, double_from, double_to, starts_on, ends_on").not("sent_at", "is", null).order("id").range(a, b),
+      db.from("campaigns").select("id, sent_at").not("sent_at", "is", null).order("id").range(a, b),
     ),
     totes<{ campaign_id: string; customer_id: string }>((a, b) =>
       db.from("campaign_recipients").select("campaign_id, customer_id").eq("control", false).order("campaign_id").order("customer_id").range(a, b),
@@ -76,11 +71,6 @@ export async function carregaContext(db: SupabaseClient): Promise<SimContext> {
   const campaigns: SimCampaign[] = campanyes.map((c) => ({
     id: c.id,
     sent_at: new Date(c.sent_at),
-    double_days: c.double_days,
-    double_from: c.double_from,
-    double_to: c.double_to,
-    starts_on: c.starts_on,
-    ends_on: c.ends_on,
     recipients: new Set(destinataris.filter((r) => r.campaign_id === c.id).map((r) => r.customer_id)),
   }));
 

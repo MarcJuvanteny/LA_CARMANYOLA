@@ -27,47 +27,24 @@ export interface Campanya {
 
 const recuperacio: Campanya["missatges"] = {
   original: {
-    ca: "Fa dies que no et veiem, {nom}. Et falta recuperar la paraula «{paraula}», i el fricandó amb bolets només està empadronat fins al desembre. Aquesta setmana, la teva carmanyola suma doble.",
-    es: "Hace días que no te vemos, {nom}. Te falta recuperar la palabra «{paraula}», y el fricandó con setas solo está empadronado hasta diciembre. Esta semana, tu carmanyola suma doble.",
-    en: "We haven't seen you in a while, {nom}. You still need to win back the word “{paraula}”, and the fricandó with mushrooms is only registered until December. This week, your carmanyola counts double.",
+    ca: "Fa dies que no et veiem, {nom}. Et falta recuperar la paraula «{paraula}», i el fricandó amb bolets només està empadronat fins al desembre. La propera carmanyola te la torna.",
+    es: "Hace días que no te vemos, {nom}. Te falta recuperar la palabra «{paraula}», y el fricandó con setas solo está empadronado hasta diciembre. La próxima carmanyola te la devuelve.",
+    en: "We haven't seen you in a while, {nom}. You still need to win back the word “{paraula}”, and the fricandó with mushrooms is only registered until December. Your next carmanyola brings it back.",
   },
   curt: {
-    ca: "Fa dies que no et veiem, {nom}. Et falta la paraula «{paraula}». Aquesta setmana, la carmanyola suma doble.",
-    es: "Hace días que no te vemos, {nom}. Te falta la palabra «{paraula}». Esta semana, la carmanyola suma doble.",
-    en: "Long time no see, {nom}. You're missing “{paraula}”. This week, your carmanyola counts double.",
+    ca: "Fa dies que no et veiem, {nom}. Et falta la paraula «{paraula}»: la propera carmanyola te la torna.",
+    es: "Hace días que no te vemos, {nom}. Te falta la palabra «{paraula}»: la próxima carmanyola te la devuelve.",
+    en: "Long time no see, {nom}. You're missing “{paraula}”: your next carmanyola brings it back.",
   },
   calid: {
-    ca: "{nom}, al barri se't troba a faltar! Encara tens pendent la paraula «{paraula}» i el fricandó amb bolets t'espera fins al desembre. Aquesta setmana, cada carmanyola et suma doble.",
-    es: "{nom}, ¡en el barrio se te echa de menos! Aún tienes pendiente la palabra «{paraula}» y el fricandó con setas te espera hasta diciembre. Esta semana, cada carmanyola te suma doble.",
-    en: "{nom}, the neighbourhood misses you! You've still got “{paraula}” to win back, and the fricandó with mushrooms is waiting until December. This week, every carmanyola counts double.",
+    ca: "{nom}, al barri se't troba a faltar! Encara tens pendent la paraula «{paraula}» i el fricandó amb bolets t'espera fins al desembre. Vine a buscar-la, que et guardem el lloc.",
+    es: "{nom}, ¡en el barrio se te echa de menos! Aún tienes pendiente la palabra «{paraula}» y el fricandó con setas te espera hasta diciembre. Ven a buscarla, que te guardamos el sitio.",
+    en: "{nom}, the neighbourhood misses you! You've still got “{paraula}” to win back, and the fricandó with mushrooms is waiting until December. Come and get it, we're saving you a spot.",
   },
   senseExtra: {
-    ca: "Fa dies que no et veiem, {nom}. Et falta recuperar la paraula «{paraula}». Aquesta setmana, la teva carmanyola suma doble.",
-    es: "Hace días que no te vemos, {nom}. Te falta recuperar la palabra «{paraula}». Esta semana, tu carmanyola suma doble.",
-    en: "We haven't seen you in a while, {nom}. You still need to win back the word “{paraula}”. This week, your carmanyola counts double.",
-  },
-};
-
-const franja: Campanya["missatges"] = {
-  original: {
-    ca: "{nom}, dimarts i dimecres al vespre la cuina va més tranquil·la i ho celebrem: de 20 a 22 h, cada carmanyola et suma dues paraules al carnet.",
-    es: "{nom}, los martes y miércoles por la noche la cocina va más tranquila y lo celebramos: de 20 a 22 h, cada carmanyola te suma dos palabras en el carnet.",
-    en: "{nom}, Tuesday and Wednesday evenings are calmer in the kitchen, so we're celebrating: from 8 to 10 pm, every carmanyola adds two words to your card.",
-  },
-  curt: {
-    ca: "{nom}, dimarts i dimecres de 20 a 22 h, segell doble al carnet.",
-    es: "{nom}, martes y miércoles de 20 a 22 h, sello doble en el carnet.",
-    en: "{nom}, Tuesday and Wednesday 8–10 pm: double stamp on your card.",
-  },
-  calid: {
-    ca: "{nom}, et fem un lloc al sopar: dimarts i dimecres de 20 a 22 h, la teva carmanyola et suma dues paraules. Et falta «{paraula}», oi?",
-    es: "{nom}, te hacemos un hueco en la cena: martes y miércoles de 20 a 22 h, tu carmanyola te suma dos palabras. Te falta «{paraula}», ¿verdad?",
-    en: "{nom}, we've saved you a spot for dinner: Tuesday and Wednesday 8–10 pm, your carmanyola adds two words. You're missing “{paraula}”, right?",
-  },
-  senseExtra: {
-    ca: "{nom}, dimarts i dimecres de 20 a 22 h, cada carmanyola et suma dues paraules al carnet.",
-    es: "{nom}, martes y miércoles de 20 a 22 h, cada carmanyola te suma dos palabras en el carnet.",
-    en: "{nom}, Tuesday and Wednesday 8–10 pm, every carmanyola adds two words to your card.",
+    ca: "Fa dies que no et veiem, {nom}. Et falta recuperar la paraula «{paraula}»: la propera carmanyola te la torna.",
+    es: "Hace días que no te vemos, {nom}. Te falta recuperar la palabra «{paraula}»: la próxima carmanyola te la devuelve.",
+    en: "We haven't seen you in a while, {nom}. You still need to win back the word “{paraula}”: your next carmanyola brings it back.",
   },
 };
 
@@ -112,23 +89,6 @@ export const campanyes: Campanya[] = [
     canals: { wallet: true, correu: true, correuAcceptat: 17 },
     quan: { text: "Dijous a les 11:30.", motiu: "És quan aquest grup sol decidir on dina." },
     previsualitzacio: { data: "dijous 15 d'octubre", hora: "11:30" },
-  },
-  {
-    id: "segell-doble",
-    tipus: "franja",
-    titol: "Segell doble dt i dc al vespre",
-    estat: "esborrany",
-    proposada: "Proposada avui",
-    xips: ["Dimarts i dimecres", "De 20 a 22 h", "8 comandes de mitjana", "Tots els que tenen carnet"],
-    perQue: [
-      "Són les quatre franges més fluixes: **8 comandes** de mitjana, quan el migdia en fa 68.",
-      "Al setembre vas provar el segell doble els dilluns al vespre: **+38 %**.",
-      "Costa una paraula extra al carnet, no un descompte. El preu no es toca.",
-    ],
-    missatges: franja,
-    canals: { wallet: true, correu: false, correuAcceptat: 142 },
-    quan: { text: "Dimarts a les 18:00.", motiu: "Dues hores abans que obri la franja." },
-    previsualitzacio: { data: "dimarts 20 d'octubre", hora: "18:00" },
   },
   {
     id: "carxofa",

@@ -175,19 +175,10 @@
       "cella": "{dia}, {franja} h: {n} comandes",
       "fluixa": "franja fluixa",
       "llegendaFluixes": "Franges que la IA marca com a fluixes",
-      "iaEyebrow": "Proposta de la IA · Franja fluixa",
-      "prepara": "Prepara la campanya",
-      "araNo": "Ara no",
-      "estat": {
-        "aprovada": "Campanya aprovada i programada.",
-        "descartada": "Campanya descartada.",
-        "ara-no": "Ho deixem per més endavant."
-      },
-      "desfes": "Desfés",
+      "iaEyebrow": "Què hi veu la IA · Franges fluixes",
       "previsio": "Previsió per a la setmana que ve",
       "previsioIa": "Previsió de la IA",
-      "ambSegell": "Amb el segell doble",
-      "tooltipPrevisio": "{dia}: {base} comandes previstes{extra, plural, =0 {} other { + # amb el segell doble}}",
+      "tooltipPrevisio": "{dia}: {base} comandes previstes",
       "seccio": "Quan es ven"
     },
     "campanyes": {
@@ -413,7 +404,6 @@
       "situacio": "Situació",
       "situacions": {
         "recuperacio": "Recuperar un habitual",
-        "franja": "Franja fluixa",
         "queQueda": "Què Queda",
         "padro": "Alta al padró"
       },
@@ -482,8 +472,7 @@
       "sobren": "En sobren {n} {dies} de cada 6",
       "esgota": "S'esgota {n} {dies} de cada 6",
       "plou": "Demà plou: hi comptem",
-      "mitjana": "Mitjana dels últims 4 {dies}",
-      "senseDadesProva": "encara sense dades"
+      "mitjana": "Mitjana dels últims 4 {dies}"
     },
     "plantilles": {
       "anterior": {
@@ -504,13 +493,9 @@
       "titolTira": "{top} tira del carro",
       "senseComandes": "Encara no hi ha comandes en aquest període.",
       "tram": "de {a} a {b} h",
-      "segellDoble": "Segell doble {dies} {tram}",
       "senseFluixes": "Encara no hi ha franges fluixes",
       "fluixes": "Són les quatre franges més fluixes: **{f} comandes** de mitjana, quan el migdia en fa {m}.",
-      "senseProva": "Encara no has provat el segell doble en cap franja: seria la primera prova.",
-      "prova": "Quan vas provar el segell doble els dilluns al vespre: **{p}**.",
-      "cost": "Costa una paraula extra al carnet, no un descompte. El preu no es toca.",
-      "notaFranges": "**De 15 a 16 h també és fluix**, però és l'hora del Què Queda: no ho toco.",
+      "notaFranges": "**De 15 a 16 h també és fluix**, però és l'hora del Què Queda, que ja té el seu avís.",
       "risc": {
         "oficina": "Són gent d'oficina que ha canviat de rutina",
         "despistats": "Habituals que s'han despistat",
@@ -532,7 +517,9 @@
         "wallet": "Només {n} tenen el carnet al wallet; la resta només es poden avisar per correu.",
         "freds": "{n} tenien un plat fred de preferit."
       },
-      "creaCampanya": "Crea una campanya per a ells"
+      "creaCampanya": "Crea una campanya per a ells",
+      "titolFluixes": "{dies} {tram}: les franges més fluixes",
+      "perQueFluixes": "La previsió ja ho té en compte: és on menys producció cal."
     }
   },
   "entra": {

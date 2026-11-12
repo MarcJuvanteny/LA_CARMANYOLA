@@ -140,8 +140,7 @@ interface FrangesRpc {
   fluixes: { dow: number; slot: string }[] | null;
   mitjana_fluixes: number | null;
   mitjana_migdia: number | null;
-  previsio: { dow: number; base: number; extra: number }[] | null;
-  prova: { enviada: string; durant: number; abans: number } | null;
+  previsio: { dow: number; base: number }[] | null;
 }
 
 export const FRANGES = ["12-13", "13-14", "14-15", "15-16", "19-20", "20-21", "21-22", "22-23"] as const;
@@ -155,13 +154,12 @@ export const franges = cache(async () => {
   const fluixes = (r.fluixes ?? []).map((x) => [x.dow - 1, FRANGES.indexOf(x.slot as (typeof FRANGES)[number])] as [number, number]);
   const previsio = DIES.map((dia, i) => {
     const p = r.previsio?.find((x) => x.dow === i + 1);
-    return { dia, base: p?.base ?? 0, extra: p?.extra ?? 0 };
+    return { dia, base: p?.base ?? 0 };
   });
-  const prova = r.prova && r.prova.abans ? r.prova.durant / r.prova.abans - 1 : null;
   const mitjanaFluixes = Math.round(r.mitjana_fluixes ?? 0);
   const mitjanaMigdia = Math.round(r.mitjana_migdia ?? 0);
-  const plantilla = ia.franges(r.fluixes ?? [], mitjanaFluixes, mitjanaMigdia, prova, tp, l);
-  const fets = iaTargetes.fetsFranges(r.fluixes ?? [], mitjanaFluixes, mitjanaMigdia, prova);
+  const plantilla = ia.franges(r.fluixes ?? [], mitjanaFluixes, mitjanaMigdia, tp, l);
+  const fets = iaTargetes.fetsFranges(r.fluixes ?? [], mitjanaFluixes, mitjanaMigdia);
   const redactada = await ambIA(clauIA("franges", l), fets, { titol: plantilla.titol, punts: plantilla.punts }, () => iaTargetes.redactaFranges(fets, l));
   return {
     matriu,
@@ -169,7 +167,6 @@ export const franges = cache(async () => {
     previsio,
     mitjanaFluixes: Math.round(r.mitjana_fluixes ?? 0),
     mitjanaMigdia: Math.round(r.mitjana_migdia ?? 0),
-    prova,
     proposta: { ...plantilla, ...redactada.valor },
   };
 });
@@ -358,13 +355,11 @@ interface CampanyaRpc {
 const omple = (t: string, vars: Record<string, string | number>) => t.replace(/\{\{(\w+)\}\}/g, (_, k) => String(vars[k] ?? "—"));
 
 export const campanyes = cache(async () => {
-  const [files, cl, fr, peticions, l, td] = await Promise.all([
+  const [files, cl, peticions, l] = await Promise.all([
     rpc<CampanyaRpc[] | null>("panel_campanyes"),
     clients(),
-    franges(),
     taula<{ id: number; goal: string }[]>((s) => s.from("campaign_requests").select("id, goal").order("created_at")),
     idioma(),
-    getTranslations("panel.dades"),
   ]);
   // Per revisar primer (la més recent dalt), després les enviades de la més nova a la més antiga.
   const llista = [...(files ?? [])].sort((x, y) =>
@@ -390,9 +385,6 @@ export const campanyes = cache(async () => {
     cost: euros(Math.round(despesaRisc / 3 / 1000) * 1000, { senseDecimals: true }),
     tornat: percent(rec?.tornat ?? 0),
     control: percent(rec?.control ?? 0),
-    fluixes: fr.mitjanaFluixes,
-    migdia: fr.mitjanaMigdia,
-    prova: fr.prova == null ? td("senseDadesProva") : percent(fr.prova, { signe: true }),
     bolets_n: bolets?.clients ?? 0,
     bolets_tornat: percent(bolets?.tornat ?? 0),
   };

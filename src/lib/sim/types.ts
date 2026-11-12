@@ -26,11 +26,6 @@ export interface SimCustomer {
 export interface SimCampaign {
   id: string;
   sent_at: Date;
-  double_days: number[] | null;
-  double_from: string | null;
-  double_to: string | null;
-  starts_on: string | null;
-  ends_on: string | null;
   /** Destinataris que SÍ reben l'avís (sense el grup de control). */
   recipients: Set<string>;
 }

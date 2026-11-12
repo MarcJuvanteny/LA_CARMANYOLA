@@ -539,19 +539,10 @@
       "cella": "{dia}, {franja}: {n} orders",
       "fluixa": "slow slot",
       "llegendaFluixes": "Slots the AI flags as slow",
-      "iaEyebrow": "AI proposal · Slow slot",
-      "prepara": "Prepare the campaign",
-      "araNo": "Not now",
-      "estat": {
-        "aprovada": "Campaign approved and scheduled.",
-        "descartada": "Campaign dismissed.",
-        "ara-no": "We'll leave it for later."
-      },
-      "desfes": "Undo",
+      "iaEyebrow": "What the AI sees · Slow slots",
       "previsio": "Forecast for next week",
       "previsioIa": "AI forecast",
-      "ambSegell": "With double stamp",
-      "tooltipPrevisio": "{dia}: {base} orders expected{extra, plural, =0 {} other { + # with the double stamp}}",
+      "tooltipPrevisio": "{dia}: {base} orders expected",
       "seccio": "When it sells"
     },
     "campanyes": {
@@ -777,7 +768,6 @@
       "situacio": "Situation",
       "situacions": {
         "recuperacio": "Win back a regular",
-        "franja": "Slow slot",
         "queQueda": "Què Queda",
         "padro": "New in the padró"
       },
@@ -846,8 +836,7 @@
       "sobren": "Surplus on {n} of the last 6 {dies}",
       "esgota": "Sold out on {n} of the last 6 {dies}",
       "plou": "Rain tomorrow: factored in",
-      "mitjana": "Average of the last 4 {dies}",
-      "senseDadesProva": "no data yet"
+      "mitjana": "Average of the last 4 {dies}"
     },
     "plantilles": {
       "anterior": {
@@ -868,13 +857,9 @@
       "titolTira": "{top} leads the way",
       "senseComandes": "No orders in this period yet.",
       "tram": "{a}–{b} h",
-      "segellDoble": "Double stamp on {dies}, {tram}",
       "senseFluixes": "No slow slots yet",
       "fluixes": "These are the four slowest slots: **{f} orders** on average, while lunchtime does {m}.",
-      "senseProva": "You haven't tried the double stamp in any slot yet: this would be the first test.",
-      "prova": "When you tried the double stamp on Monday evenings: **{p}**.",
-      "cost": "It costs one extra word on the card, not a discount. The price stays the same.",
-      "notaFranges": "**3 to 4 pm is slow too**, but that's the Què Queda hour: I'm leaving it alone.",
+      "notaFranges": "**3 to 4 pm is slow too**, but that's the Què Queda hour, which has its own message.",
       "risc": {
         "oficina": "Office workers who've changed their routine",
         "despistats": "Regulars who've drifted away",
@@ -896,7 +881,9 @@
         "wallet": "Only {n} have the card in their wallet; the rest can only be reached by email.",
         "freds": "{n} had a cold dish as their favourite."
       },
-      "creaCampanya": "Create a campaign for them"
+      "creaCampanya": "Create a campaign for them",
+      "titolFluixes": "{dies}, {tram}: the slowest slots",
+      "perQueFluixes": "The forecast already accounts for it: that's where the least production is needed."
     }
   },
   "entra": {

@@ -22,7 +22,7 @@ import {
 import { euros, nombre, percent } from "@/lib/format";
 import type { DadesVendes, Periode } from "@/lib/data/vendes";
 import { CalaixIA } from "@/components/panel/CalaixIA";
-import { PropostaFranja, QuanEsVen, franjaPendent, type DadesFranges } from "./QuanEsVen";
+import { LecturaFranges, QuanEsVen, type DadesFranges } from "./QuanEsVen";
 
 const PROPOSTA = PROPOSTES.vendes[0];
 const signe = (n: number) => (n > 0 ? `+${n}` : n < 0 ? `−${-n}` : "0");
@@ -178,8 +178,8 @@ export function VendesView({ dades, franges }: { dades: Record<Periode, DadesVen
 
       </div>
 
-      <CalaixIA n={(produccio ? 0 : 1) + (franjaPendent(resolts) ? 1 : 0)}>
-        <PropostaFranja proposta={franges.proposta} />
+      <CalaixIA n={produccio ? 0 : 1}>
+        <LecturaFranges proposta={franges.proposta} />
         <AiCard>
           <AiEyebrow>{t("iaEyebrow")}</AiEyebrow>
           <h2 className="mt-3 text-[1.2rem]">{d.ia.titol}</h2>

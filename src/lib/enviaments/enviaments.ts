@@ -21,7 +21,7 @@ interface ClientReal {
 
 const ASSUMPTES: Record<string, Record<Idioma, string>> = {
   recuperacio: { ca: "Fa dies que no et veiem", es: "Hace días que no te vemos", en: "We haven't seen you in a while" },
-  franja: { ca: "Segell doble al carnet", es: "Sello doble en el carnet", en: "Double stamp on your card" },
+  franja: { ca: "Avui hi ha lloc", es: "Hoy hay sitio", en: "There's room today" },
   padro: { ca: "Novetats al padró d'ingredients", es: "Novedades en el padrón de ingredientes", en: "News from the ingredient register" },
   calendari: { ca: "Aquesta setmana, a La Carmanyola", es: "Esta semana, en La Carmanyola", en: "This week at La Carmanyola" },
   quequeda: { ca: "L'hora del Què Queda", es: "La hora del Què Queda", en: "Què Queda hour" },

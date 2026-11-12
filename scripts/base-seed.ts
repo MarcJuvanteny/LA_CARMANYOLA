@@ -184,15 +184,6 @@ async function campanyesFixes() {
       ]},
       ${sql.json(recupera.missatges)}, ${recupera.senseExtra ?? null}, true, true,
       'Dijous a les 11:30.', 'És quan aquest grup sol decidir on dina.', '4', '11:30', 'esborrany', 'Proposada avui a les 6:00', now()),
-    ('segell-doble', 'franja', 'fluixes', 'Segell doble dt i dc al vespre',
-      ${["Dimarts i dimecres", "De 20 a 22 h", "{{fluixes}} comandes de mitjana", "Tots els que tenen carnet"]},
-      ${[
-        "Són les quatre franges més fluixes: **{{fluixes}} comandes** de mitjana, quan el migdia en fa {{migdia}}.",
-        "Quan vas provar el segell doble els dilluns al vespre: **{{prova}}**.",
-        "Costa una paraula extra al carnet, no un descompte. El preu no es toca.",
-      ]},
-      ${sql.json(missatges("segell-doble"))}, null, true, false,
-      'Dimarts a les 18:00.', 'Dues hores abans que obri la franja.', '2', '18:00', 'esborrany', 'Proposada avui', now()),
     ('carxofa', 'padro', 'bolets', 'La carxofa del Prat arriba',
       ${["{{bolets_n}} clients", "Van rebre l'avís dels bolets", "Alta al padró"]},
       ${[

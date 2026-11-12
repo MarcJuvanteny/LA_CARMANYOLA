@@ -12,7 +12,7 @@ import { desfesProposta, resolProposta, type PayloadProposta } from "@/app/panel
 export type Resolucio = "aprovada" | "descartada" | "esborrany" | "enviada" | "ara-no";
 
 export const PROPOSTES = {
-  campanyes: ["campanya:recupera-habituals", "campanya:segell-doble", "campanya:carxofa"],
+  campanyes: ["campanya:recupera-habituals", "campanya:carxofa"],
   padro: ["padro:alta-carxofa", "padro:baixa-tomaquet"],
   queQueda: ["quequeda:avis"],
   vendes: ["vendes:produccio"],

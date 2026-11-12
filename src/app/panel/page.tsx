@@ -16,7 +16,6 @@ export default async function ResumPage() {
 
   const propostes = [
     { id: "campanya:recupera-habituals", seccio: "campanyes", titol: titol("recupera-habituals"), href: "/panel/campanyes?c=recupera-habituals" },
-    { id: "campanya:segell-doble", seccio: "vendes", titol: titol("segell-doble"), href: "/panel/vendes#ia" },
     { id: "campanya:carxofa", seccio: "campanyes", titol: titol("carxofa"), href: "/panel/campanyes?c=carxofa" },
     { id: "padro:alta-carxofa", seccio: "padro", titol: avis("alta-carxofa"), href: "/panel/padro#ia" },
     { id: "padro:baixa-tomaquet", seccio: "padro", titol: avis("baixa-tomaquet"), href: "/panel/padro#ia" },

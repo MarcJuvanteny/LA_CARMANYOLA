@@ -539,19 +539,10 @@
       "cella": "{dia}, {franja} h: {n} pedidos",
       "fluixa": "franja floja",
       "llegendaFluixes": "Franjas que la IA marca como flojas",
-      "iaEyebrow": "Propuesta de la IA · Franja floja",
-      "prepara": "Prepara la campaña",
-      "araNo": "Ahora no",
-      "estat": {
-        "aprovada": "Campaña aprobada y programada.",
-        "descartada": "Campaña descartada.",
-        "ara-no": "Lo dejamos para más adelante."
-      },
-      "desfes": "Deshacer",
+      "iaEyebrow": "Lo que ve la IA · Franjas flojas",
       "previsio": "Previsión para la semana que viene",
       "previsioIa": "Previsión de la IA",
-      "ambSegell": "Con el sello doble",
-      "tooltipPrevisio": "{dia}: {base} pedidos previstos{extra, plural, =0 {} other { + # con el sello doble}}",
+      "tooltipPrevisio": "{dia}: {base} pedidos previstos",
       "seccio": "Cuándo se vende"
     },
     "campanyes": {
@@ -777,7 +768,6 @@
       "situacio": "Situación",
       "situacions": {
         "recuperacio": "Recuperar a un habitual",
-        "franja": "Franja floja",
         "queQueda": "Què Queda",
         "padro": "Alta en el padró"
       },
@@ -846,8 +836,7 @@
       "sobren": "Sobran {n} de cada 6 {dies}",
       "esgota": "Se agota {n} de cada 6 {dies}",
       "plou": "Mañana llueve: lo tenemos en cuenta",
-      "mitjana": "Media de los últimos 4 {dies}",
-      "senseDadesProva": "aún sin datos"
+      "mitjana": "Media de los últimos 4 {dies}"
     },
     "plantilles": {
       "anterior": {
@@ -868,13 +857,9 @@
       "titolTira": "{top} tira del carro",
       "senseComandes": "Aún no hay pedidos en este período.",
       "tram": "de {a} a {b} h",
-      "segellDoble": "Sello doble {dies} {tram}",
       "senseFluixes": "Aún no hay franjas flojas",
       "fluixes": "Son las cuatro franjas más flojas: **{f} pedidos** de media, cuando el mediodía hace {m}.",
-      "senseProva": "Aún no has probado el sello doble en ninguna franja: sería la primera prueba.",
-      "prova": "Cuando probaste el sello doble los lunes por la noche: **{p}**.",
-      "cost": "Cuesta una palabra extra en el carnet, no un descuento. El precio no se toca.",
-      "notaFranges": "**De 15 a 16 h también es flojo**, pero es la hora del Què Queda: no lo toco.",
+      "notaFranges": "**De 15 a 16 h también es flojo**, pero es la hora del Què Queda, que ya tiene su aviso.",
       "risc": {
         "oficina": "Es gente de oficina que ha cambiado de rutina",
         "despistats": "Habituales que se han despistado",
@@ -896,7 +881,9 @@
         "wallet": "Solo {n} tienen el carnet en el wallet; al resto solo se le puede avisar por correo.",
         "freds": "{n} tenían un plato frío de favorito."
       },
-      "creaCampanya": "Crea una campaña para ellos"
+      "creaCampanya": "Crea una campaña para ellos",
+      "titolFluixes": "{dies} {tram}: las franjas más flojas",
+      "perQueFluixes": "La previsión ya lo tiene en cuenta: es donde menos producción hace falta."
     }
   },
   "entra": {

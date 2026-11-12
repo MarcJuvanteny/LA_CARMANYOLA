@@ -64,17 +64,13 @@ export function vendes(periode: Periode, d: DadesVendes, dinarAnterior: number, 
   return { titol, punts: punts.length ? punts : [t("senseComandes")] };
 }
 
-export function franges(fluixes: { dow: number; slot: string }[], mitjanaFluixes: number, mitjanaMigdia: number, prova: number | null, t: T, l: Locale) {
+export function franges(fluixes: { dow: number; slot: string }[], mitjanaFluixes: number, mitjanaMigdia: number, t: T, l: Locale) {
   const dies = [...new Set(fluixes.map((f) => f.dow))].sort().map((d) => nomsDies(l)[d % 7]);
   const hores = fluixes.flatMap((f) => f.slot.split("-").map(Number));
   const tram = hores.length ? t("tram", { a: Math.min(...hores), b: Math.max(...hores) }) : "";
   return {
-    titol: fluixes.length ? t("segellDoble", { dies: new Intl.ListFormat(l, { type: "conjunction" }).format(dies), tram }) : t("senseFluixes"),
-    punts: [
-      t("fluixes", { f: mitjanaFluixes, m: mitjanaMigdia }),
-      prova == null ? t("senseProva") : t("prova", { p: percent(prova, { signe: true }) }),
-      t("cost"),
-    ],
+    titol: fluixes.length ? majuscula(t("titolFluixes", { dies: new Intl.ListFormat(l, { type: "conjunction" }).format(dies), tram })) : t("senseFluixes"),
+    punts: [t("fluixes", { f: mitjanaFluixes, m: mitjanaMigdia }), t("perQueFluixes")],
     nota: t("notaFranges"),
   };
 }

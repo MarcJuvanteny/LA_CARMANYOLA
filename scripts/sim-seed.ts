@@ -41,19 +41,6 @@ const actiusAmbCanal = (dies: number) => `
 
 const campanyes = [
   {
-    slug: "segell-doble-dijous",
-    kind: "franja",
-    title: "Segell doble dijous al vespre",
-    enviada: ["2026-06-01", "10:00"],
-    doble: { days: [4], from: "19:30", to: "22:30", starts: "2026-06-04", ends: "2026-06-25" },
-    missatge: tots(
-      "{nom}, aquest juny els dijous al vespre la teva carmanyola suma dues paraules al carnet.",
-      "{nom}, este junio los jueves por la noche tu carmanyola suma dos palabras en el carnet.",
-      "{nom}, this June, Thursday evenings your carmanyola adds two words to your card.",
-    ),
-    destinataris: actiusAmbCanal(30),
-  },
-  {
     slug: "benvinguda-estiu",
     kind: "calendari",
     title: "Benvinguda als nous de l'estiu",
@@ -69,27 +56,14 @@ const campanyes = [
         and (c.wallet_apple_id is not null or c.wallet_google_id is not null or c.consent_email)`,
   },
   {
-    slug: "segell-doble-dilluns",
-    kind: "franja",
-    title: "Segell doble dilluns al vespre",
-    enviada: ["2026-09-07", "10:00"],
-    doble: { days: [1], from: "19:30", to: "22:30", starts: "2026-09-07", ends: "2026-09-28" },
-    missatge: tots(
-      "{nom}, aquest setembre els dilluns al vespre la teva carmanyola suma dues paraules al carnet.",
-      "{nom}, este septiembre los lunes por la noche tu carmanyola suma dos palabras en el carnet.",
-      "{nom}, this September, Monday evenings your carmanyola adds two words to your card.",
-    ),
-    destinataris: actiusAmbCanal(30),
-  },
-  {
     slug: "recuperacio-setembre",
     kind: "recuperacio",
     title: "Recuperació de setembre",
     enviada: ["2026-09-17", "11:30"],
     missatge: tots(
-      "Fa dies que no et veiem, {nom}. Et falta recuperar la paraula «{paraula}». Aquesta setmana, la teva carmanyola suma doble.",
-      "Hace días que no te vemos, {nom}. Te falta recuperar la palabra «{paraula}». Esta semana, tu carmanyola suma doble.",
-      "We haven't seen you in a while, {nom}. You still need to win back the word “{paraula}”. This week, your carmanyola counts double.",
+      "Fa dies que no et veiem, {nom}. Et falta recuperar la paraula «{paraula}»: la propera carmanyola te la torna.",
+      "Hace días que no te vemos, {nom}. Te falta recuperar la palabra «{paraula}»: la próxima carmanyola te la devuelve.",
+      "We haven't seen you in a while, {nom}. You still need to win back the word “{paraula}”: your next carmanyola brings it back.",
     ),
     // La mateixa regla que el panell: més del doble del seu temps habitual sense venir.
     destinataris: `
@@ -124,11 +98,9 @@ async function enviaCampanya(c: (typeof campanyes)[number]) {
   if (enviada > new Date()) return null;
   const r = await simulateUntil(db, enviada);
   const [{ id }] = await sql`
-    insert into public.campaigns (slug, kind, title, messages, status, sent_at, proposed_label, channel_wallet, channel_email,
-      simulated, double_days, double_from, double_to, starts_on, ends_on, created_at)
+    insert into public.campaigns (slug, kind, title, messages, status, sent_at, proposed_label, channel_wallet, channel_email, simulated, created_at)
     values (${c.slug}, ${c.kind}, ${c.title}, ${sql.json(c.missatge)}, 'enviada', ${enviada}, ${`Enviada el ${diaMes(enviada)}`},
-      true, true, true, ${c.doble?.days ?? null}, ${c.doble?.from ?? null}, ${c.doble?.to ?? null},
-      ${c.doble?.starts ?? null}, ${c.doble?.ends ?? null}, ${enviada})
+      true, true, true, ${enviada})
     returning id`;
   const tr = traduccionsCampanyes[c.slug];
   if (tr) await sql`update public.campaigns set i18n = ${sql.json(tr)} where id = ${id}`;
