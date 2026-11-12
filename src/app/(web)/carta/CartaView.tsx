@@ -91,7 +91,7 @@ export function CartaView({ plats, seccions }: { plats: PlatWeb[]; seccions: Sec
                   >
                     {p.imatge && seccio === "casa" && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={p.imatge} alt="" className="size-[84px] shrink-0 object-contain" />
+                      <img src={p.imatge} alt="" loading="lazy" decoding="async" className="size-[84px] shrink-0 object-contain" />
                     )}
                     <div className="flex min-w-0 flex-1 flex-col gap-1">
                       {seccio === "fes" ? (

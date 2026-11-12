@@ -113,7 +113,7 @@ export function Segmented<T extends string>({
             aria-pressed={actiu}
             onClick={() => onChange(o.value)}
             className={cx(
-              "min-h-9 shrink-0 whitespace-nowrap rounded-full px-3.5 text-sm transition-colors",
+              "min-h-9 pointer-coarse:min-h-11 shrink-0 whitespace-nowrap rounded-full px-3.5 text-sm transition-colors",
               actiu ? "bg-tinta font-semibold text-white" : "text-tinta hover:bg-crema",
             )}
           >

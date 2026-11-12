@@ -151,7 +151,7 @@ export function CampanyesView({ campanyes, peticions, inicial, exemple }: Props)
               <li key={id} className="rounded-xl border border-dashed border-granat/30 px-3 py-2.5">
                 <p className="line-clamp-2 text-[0.92rem]">{d}</p>
                 <p className="mt-0.5 text-[0.78rem] text-suau">{t("enPreparacio")}</p>
-                <button type="button" className="mt-1 min-h-9 text-[0.82rem] font-medium text-granat underline underline-offset-2" onClick={() => reintenta(id)} disabled={enviant}>
+                <button type="button" className="mt-1 min-h-9 pointer-coarse:min-h-11 text-[0.82rem] font-medium text-granat underline underline-offset-2" onClick={() => reintenta(id)} disabled={enviant}>
                   {reintentant === id ? t("iaPreparant") : t("reintenta")}
                 </button>
               </li>
@@ -181,7 +181,7 @@ export function CampanyesView({ campanyes, peticions, inicial, exemple }: Props)
 
             {/* El "per què" de la IA hi és sempre, però plegat: el protagonista és el missatge. */}
             <details className="group mt-4 rounded-2xl bg-paper px-4 py-3">
-              <summary className="flex min-h-8 cursor-pointer list-none items-center gap-2 text-[0.88rem] font-medium text-granat [&::-webkit-details-marker]:hidden">
+              <summary className="flex min-h-8 pointer-coarse:min-h-11 cursor-pointer list-none items-center gap-2 text-[0.88rem] font-medium text-granat [&::-webkit-details-marker]:hidden">
                 <Isotip className="size-4 shrink-0" />
                 {t("perQue")}
                 <span aria-hidden className="ml-auto transition-transform group-open:rotate-180">
@@ -203,7 +203,7 @@ export function CampanyesView({ campanyes, peticions, inicial, exemple }: Props)
                         aria-pressed={m.idioma === idioma}
                         onClick={() => setM({ idioma })}
                         className={cx(
-                          "min-h-9 rounded-full px-3 font-medium uppercase",
+                          "min-h-9 pointer-coarse:min-h-11 rounded-full px-3 font-medium uppercase",
                           m.idioma === idioma ? "bg-tinta text-white" : "text-suau hover:text-tinta",
                         )}
                       >
@@ -301,7 +301,7 @@ function Eina({ actiu, className, children, ...rest }: ComponentProps<"button"> 
       type="button"
       aria-pressed={actiu}
       className={cx(
-        "inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 font-medium transition-colors disabled:opacity-50",
+        "inline-flex min-h-9 pointer-coarse:min-h-11 items-center gap-1.5 rounded-full px-3 font-medium transition-colors disabled:opacity-50",
         actiu ? "bg-tinta text-white" : "text-suau hover:bg-paper hover:text-tinta",
         className,
       )}
@@ -466,7 +466,7 @@ function Xifra({ label, valor }: { label: string; valor: string }) {
 
 function Check({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
-    <label className="flex min-h-10 cursor-pointer items-center gap-2.5">
+    <label className="flex min-h-10 pointer-coarse:min-h-11 cursor-pointer items-center gap-2.5">
       <input
         type="checkbox"
         checked={checked}

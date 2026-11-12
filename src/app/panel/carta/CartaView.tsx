@@ -342,7 +342,7 @@ function Fitxa({
                   aria-pressed={on}
                   onClick={() => onCanvi({ alergens: on ? plat.alergens.filter((x) => x !== a) : [...plat.alergens, a] })}
                   className={cx(
-                    "min-h-9 rounded-full border px-3 text-[0.8rem] transition-colors",
+                    "min-h-9 pointer-coarse:min-h-11 rounded-full border px-3 text-[0.8rem] transition-colors",
                     on ? "border-tinta bg-tinta text-white" : "border-linia text-suau hover:border-tinta/40 hover:text-tinta",
                   )}
                 >

@@ -310,7 +310,7 @@ export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: numbe
                   <article key={p.slug} className="plat-card relative flex w-[clamp(220px,22vw,280px)] shrink-0 flex-col gap-2.5 rounded-[28px] bg-white p-4 pb-[18px]">
                     {p.imatge && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={p.imatge} alt={p.nom} className="aspect-square w-full object-contain" />
+                      <img src={p.imatge} alt={p.nom} loading="lazy" decoding="async" className="aspect-square w-full object-contain" />
                     )}
                     {p.lema && <span className="web-eb text-[11px] text-granat">{p.lema}</span>}
                     <Link
@@ -467,7 +467,7 @@ export function Inici({ plats, preuFeste }: { plats: PlatWeb[]; preuFeste: numbe
               ))}
               <div className={`${paraula} pop bg-groc !p-1.5`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/web/plats/crema-catalana.webp" alt={t("cremaRegal")} className="size-full object-contain" />
+                <img src="/web/plats/crema-catalana.webp" alt={t("cremaRegal")} loading="lazy" decoding="async" className="size-full object-contain" />
               </div>
             </div>
             {/* Des de l'ordinador, el camí curt: escanejar i fer-se'l al mòbil */}

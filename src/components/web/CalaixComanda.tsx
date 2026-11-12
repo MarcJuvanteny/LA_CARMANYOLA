@@ -148,7 +148,7 @@ function FormComanda({ pagamentEnLinia }: { pagamentEnLinia: boolean }) {
                   type="button"
                   aria-label={t("treu", { plat: l.nom })}
                   onClick={() => canvia(l.id, l.quantitat - 1)}
-                  className="size-9 cursor-pointer border-0 bg-transparent text-lg text-tinta"
+                  className="size-11 cursor-pointer border-0 bg-transparent text-lg text-tinta"
                 >
                   −
                 </button>
@@ -157,7 +157,7 @@ function FormComanda({ pagamentEnLinia }: { pagamentEnLinia: boolean }) {
                   type="button"
                   aria-label={t("posa", { plat: l.nom })}
                   onClick={() => canvia(l.id, l.quantitat + 1)}
-                  className="size-9 cursor-pointer border-0 bg-transparent text-lg text-tinta"
+                  className="size-11 cursor-pointer border-0 bg-transparent text-lg text-tinta"
                 >
                   +
                 </button>

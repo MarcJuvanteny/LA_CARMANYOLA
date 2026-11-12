@@ -103,7 +103,7 @@ export function Sidebar() {
               router.refresh();
             })}
             className={cx(
-              "min-h-9 min-w-10 rounded-full px-2.5 text-[0.75rem] font-semibold uppercase tracking-wide transition-colors",
+              "min-h-9 min-w-10 pointer-coarse:min-h-11 pointer-coarse:min-w-11 rounded-full px-2.5 text-[0.75rem] font-semibold uppercase tracking-wide transition-colors",
               idioma === l ? "bg-tinta text-white" : "text-suau hover:bg-crema hover:text-tinta",
             )}
           >

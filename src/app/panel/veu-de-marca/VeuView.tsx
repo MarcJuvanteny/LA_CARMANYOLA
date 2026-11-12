@@ -137,7 +137,7 @@ export function VeuView({ inicial }: { inicial: SeccioVeu[] }) {
                   aria-pressed={situacio === s}
                   onClick={() => setSituacio(s)}
                   className={cx(
-                    "min-h-9 rounded-full px-3.5 text-[0.82rem] font-medium",
+                    "min-h-9 pointer-coarse:min-h-11 rounded-full px-3.5 text-[0.82rem] font-medium",
                     situacio === s ? "bg-granat text-groc" : "bg-paper hover:bg-crema",
                   )}
                 >

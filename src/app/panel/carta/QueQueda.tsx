@@ -127,7 +127,7 @@ export function QueQueda({ ara, plats, proposta, avis }: DadesQueQueda) {
                       />
                     </div>
                     <div className="border-t border-linia py-2.5">
-                      <label className={cx("flex min-h-10 items-center gap-2 text-[0.85rem]", n === 0 && "text-suau")}>
+                      <label className={cx("flex min-h-10 pointer-coarse:min-h-11 items-center gap-2 text-[0.85rem]", n === 0 && "text-suau")}>
                         <input
                           type="checkbox"
                           checked={n > 0 && inclosos[i]}
@@ -155,7 +155,7 @@ export function QueQueda({ ara, plats, proposta, avis }: DadesQueQueda) {
               type="button"
               onClick={reescriu}
               disabled={reescrivint || alAvis.length === 0}
-              className="mt-1 inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-[0.82rem] font-medium text-suau hover:bg-paper hover:text-tinta disabled:opacity-50"
+              className="mt-1 inline-flex min-h-9 pointer-coarse:min-h-11 items-center gap-1.5 rounded-full px-3 text-[0.82rem] font-medium text-suau hover:bg-paper hover:text-tinta disabled:opacity-50"
             >
               <Isotip className="size-3.5" />
               {reescrivint ? t("iaEscrivint") : t("iaReescriu")}
