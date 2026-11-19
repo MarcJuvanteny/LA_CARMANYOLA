@@ -6,6 +6,8 @@ El restaurant és inventat, però la programació és real: els pagaments passen
 
 > Projecte de portfolio. El cas d'estudi és a [`docs/cas-estudi.md`](docs/cas-estudi.md).
 
+![El panell de l'amo: la IA proposa una campanya per recuperar clients habituals, amb el missatge en tres idiomes i la previsualització al mòbil.](docs/img/panell-campanyes.png)
+
 ---
 
 ## Què hi ha
