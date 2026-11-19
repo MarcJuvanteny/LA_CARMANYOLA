@@ -784,7 +784,8 @@
       "recuperada": "Recuperada: <b>{paraula}</b>",
       "nom": "Nom",
       "nomPlaceholder": "Laia",
-      "correu": {
+      "correu": "Correu",
+      "correuBenvinguda": {
         "assumpte": "El teu carnet de desbowlitzador",
         "titol": "Ja tens el carnet, {nom}",
         "cos": "Ja tens la primera paraula: carmanyola. Cada comanda directa en recupera una altra i, amb vuit, les postres són nostres.\n\nDesa el carnet al wallet des del mòbil:\n{enllac}"

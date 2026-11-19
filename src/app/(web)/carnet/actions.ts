@@ -53,7 +53,7 @@ export async function faCarnet(dades: FormData): Promise<CarnetNou> {
   const enllac = `${origen}/carnet/${id}/wallet`;
   // Correu de benvinguda (transaccional): l'enllaç per desar el carnet al wallet des del mòbil.
   if (correu && !jaHi) {
-    const t = await getTranslations("web.carnet.correu");
+    const t = await getTranslations("web.carnet.correuBenvinguda");
     await enviaCorreu({ a: correu, assumpte: t("assumpte"), titol: t("titol", { nom }), cos: t("cos", { enllac }), locale, origen }).catch((e) => console.error("[correu]", e));
   }
   const qr = await QRCode.toString(enllac, { type: "svg", margin: 0, color: { dark: "#77160e", light: "#ffffff00" } });

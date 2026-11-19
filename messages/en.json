@@ -216,7 +216,8 @@
       "recuperada": "Won back: <b>{paraula}</b>",
       "nom": "Name",
       "nomPlaceholder": "Laia",
-      "correu": {
+      "correu": "Email",
+      "correuBenvinguda": {
         "assumpte": "Your desbowlitzador card",
         "titol": "Your card is ready, {nom}",
         "cos": "You've already got the first word: carmanyola. Every direct order wins back another and, with eight, dessert is on us.\n\nSave the card to your wallet from your phone:\n{enllac}"
