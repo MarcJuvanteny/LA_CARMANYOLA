@@ -1,0 +1,72 @@
+# Operacions · La Carmanyola
+
+> Detalls tècnics per mantenir el projecte: simulador, tasques programades, IA i desplegament. La visió general és al [README](../README.md).
+
+## Simulador (`src/lib/sim`)
+
+El restaurant és fictici: totes les dades simulades porten `simulated = true`.
+
+- **Determinista:** cada franja de 15 minuts fa servir la llavor `carmanyola:<slotISO>`. `sim_runs` impedeix duplicats.
+- **Paràmetres:** tots a `src/lib/sim/config.ts`. Les dades de negoci (plats, preus, paraules) surten de la base de dades.
+- **Perfils ocults:** `sim_profiles` només és accessible amb la service role; el panell no la llegeix mai.
+- **Carnet:** `registra_segell()` (SQL) és la mateixa lògica que farà servir `/c/[codi]`.
+
+| Script | Què fa |
+|---|---|
+| `npm run sim:seed` | Esborra només el simulat i el torna a crear |
+| `npm run sim:tick` | Omple les franges pendents fins ara |
+| `npm run sim:report` | Informe de coherència (criteris d'acceptació) |
+| `npm run sim:reset-demo` | Desfà els canvis fets des del panell, sense tocar l'històric |
+| `npm test` | Tests de Vitest |
+
+**Execució periòdica.** `pg_cron` + `pg_net` criden l'app (`supabase/migrations/*_sim_cron.sql`):
+`/api/sim/tick` cada 10 min, i `/api/sim/que-queda` i `/api/sim/nightly` cada 30 min (la ruta decideix si és l'hora a Barcelona).
+`/api/enviaments` cada 10 min envia les campanyes aprovades quan arriba la seva hora (`campaigns.scheduled_at`).
+Cal `Authorization: Bearer $SIM_SECRET`. **Pla B:** en obrir el panell, el servidor posa el restaurant al dia en segon pla.
+`GET /api/sim/status` és públic i només retorna agregats.
+
+**Comprovar que el cron funciona:**
+
+```sql
+select j.jobname, d.status, d.start_time from cron.job_run_details d join cron.job j using (jobid) order by d.start_time desc limit 5;
+select status_code, content from net._http_response order by id desc limit 3;
+```
+
+### IA (Gemini)
+
+La IA redacta; els números els calcula SQL (CONTEXT.md §9). Tot passa per `src/lib/ia/gemini.ts`.
+
+- **Clau:** `GEMINI_API_KEY` a `.env.local` i a Vercel (Google AI Studio). Sense clau, el panell fa servir les plantilles de `src/lib/ia/plantilles.ts`.
+- **Models:** `GEMINI_MODELS` (opcional, per ordre de preferència). Per defecte `gemini-3.5-flash,gemini-flash-lite-latest`.
+- **Targetes** (Vendes, Franges, Clients, Padró): es mostra la plantilla i la IA la redacta en segon pla; el text es desa a `ai_texts` i només es torna a redactar quan canvien les dades.
+- **Sota demanda:** Veu de marca (prova), Què Queda (reescriu l'avís), Campanyes (reescriu i demana una campanya nova).
+- **Quota:** les accions sota demanda comparteixen un límit per hora (`IA_QUOTA_HORA`, per defecte 30; taula `ai_usage`). Si s'exhaureix, el panell es comporta com si la IA no respongués.
+- **Reserves:** `ai_locks` evita que dues instàncies redactin la mateixa targeta alhora.
+- **Peticions pendents:** si la IA no pot preparar una campanya demanada, queda "en preparació"; l'amo la pot reintentar i la tasca nocturna ho prova fins a 3 vegades (funcions `ia_panel_*`, només service role). Les de més de 7 dies s'esborren.
+
+### Producció (Vercel + Supabase)
+
+1. `supabase link` i `supabase db push` per aplicar les migracions.
+2. A Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SIM_SECRET` i `TOKENS_SECRET`. Opcionals (sense elles, aquella part no funciona però la resta sí):
+   - Pagaments: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`.
+   - IA: `GEMINI_API_KEY` (i `GEMINI_MODELS`, `IA_QUOTA_HORA`).
+   - Correu: `RESEND_API_KEY`, `CORREU_DES_DE`.
+   - Apple Wallet: `APPLE_PASS_TYPE_ID`, `APPLE_TEAM_ID`, `APPLE_PASS_CERT`, `APPLE_PASS_KEY`, `APPLE_WWDR` (i `APPLE_PASS_KEY_PASS`). Instruccions a `src/lib/wallet/apple.ts`.
+   - Google Wallet: `GOOGLE_WALLET_ISSUER_ID`, `GOOGLE_WALLET_SA_EMAIL`, `GOOGLE_WALLET_SA_KEY`.
+   - Dominis: `APP_URL`, `PANEL_HOSTS`.
+
+   **Aplica les migracions abans de desplegar el codi:** el codi llegeix les columnes noves.
+3. Al SQL Editor de Supabase:
+   ```sql
+   select vault.create_secret('<SIM_SECRET>', 'sim_secret');
+   select vault.create_secret('https://<la-teva-app>.vercel.app', 'sim_app_url');
+   ```
+4. Una vegada, amb `DATABASE_URL` i les claus del projecte al núvol: `npm run sim:seed`.
+
+## Estructura
+
+- `supabase/migrations/`: esquema amb RLS, motor de simulació i consultes del panell.
+- `src/lib/db/panel.ts`: lectures del panell (sessió de l'amo, sense claus de servei).
+- `src/app/panel/actions.ts`: el que l'amo aprova, descarta o edita queda desat a la base de dades.
+- Textos de la interfície a `messages/ca.json` (next-intl).
+- Tipografia de títols: Redgato (`src/app/fonts/Redgato-Regular.woff2`). Els originals .otf/.ttf són a `docs/brand/type/`, fora del repositori per la llicència.
